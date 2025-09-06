@@ -1,0 +1,51 @@
+/* === Custom Theme Overrides === */
+
+/* ===== DARK MODE ===== */
+body {
+  background-color: #121212 !important; /* dark body */
+}
+
+.sidebar {
+  background: rgba(254, 0, 25, 0.9) !important; /* sidebar */
+}
+
+.navbar.bg-primary {
+  background-color: #FE001A !important; /* purple topbar */
+}
+
+.main-panel,
+.content {
+  background-color: #121212 !important; /* page container */
+}
+
+.card {
+  background-color: #1e1e1e !important;
+  color: #eee !important;
+}
+
+/* ===== LIGHT MODE ===== */
+body.white-content {
+  background-color: #fdfdfd !important; /* light body */
+}
+
+body.white-content .sidebar {
+  background: rgba(254, 0, 25, 0.9) !important; /* sidebar */
+}
+
+/* body.white-content .navbar {
+  background-color: #3498db !important; /* blue topbar 
+}*/
+
+body.white-content .main-panel,
+body.white-content .content {
+  background-color: #fdfdfd !important;
+}
+
+body.white-content .card {
+  background-color: #ffffff !important;
+  color: #333 !important;
+}
+
+.navbar.bg-primary {
+  background: rgba(254, 0, 25, 0.9) !important; /* purple */
+}
