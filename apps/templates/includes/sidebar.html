@@ -25,6 +25,12 @@
                         <p>User Profile</p>
                     </a>
                 </li>
+                <li class="{% if 'customers' in segment %} active {% endif %}">
+                    <a href="{{ url_for('home_blueprint.customers') }}">
+                        <i class="tim-icons icon-badge"></i>
+                        <p>Registro</p>
+                    </a>
+                </li>
                 <li class="{% if 'icons' in segment %} active {% endif %}">
                     <a href="/icons.html">
                         <i class="tim-icons icon-atom"></i>

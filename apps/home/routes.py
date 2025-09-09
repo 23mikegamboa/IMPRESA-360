@@ -4,6 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from apps.home import blueprint
+from apps.home.models import Customer
 from flask import render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
@@ -15,6 +16,19 @@ def index():
 
     return render_template('home/index.html', segment='index')
 
+# NEW: Customer View route
+@blueprint.route('/customers')
+@login_required
+def customers():
+    # Dummy data for now – replace with DB query later
+    customer_data = [
+        {"id": 1, "name": "John Doe", "email": "john@example.com", "phone": "09171234567"},
+        {"id": 2, "name": "Jane Smith", "email": "jane@example.com", "phone": "09181234567"}
+    ]
+
+    return render_template('home/customers.html', 
+                           segment='customers', 
+                           customers=customer_data)
 
 @blueprint.route('/<template>')
 @login_required

@@ -1,0 +1,41 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Customers {% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Registro </h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for c in customers %}
+                                <tr>
+                                    <td>{{ c.id }}</td>
+                                    <td>{{ c.name }}</td>
+                                    <td>{{ c.email }}</td>
+                                    <td>{{ c.phone }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
