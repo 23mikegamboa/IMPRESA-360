@@ -1,0 +1,80 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Registro {% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Registro </h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for c in registro %}
+                                <tr>
+                                    <td>{{ c.id }}</td>
+                                    <td>{{ c.name }}</td>
+                                    <td>{{ c.email }}</td>
+                                    <td>{{ c.phone }}</td>
+                                    <td>
+                                         <a href="{{ url_for('home_blueprint.edit_registro', id=c.id) }}" 
+                                            class="btn btn-sm btn-warning">Edit</a>
+
+                                        <form method="POST" action="{{ url_for('home_blueprint.delete_registro', id=c.id) }}" 
+                                            style="display:inline;" 
+                                            onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                <form method="POST" action="{{ url_for('home_blueprint.registro') }}">
+                                    <div>
+                                        <label for="name">Name &nbsp</label>
+                                        <input type="text" name="name" required>
+                                    </div>
+                                    <div>
+                                        <label for="email">Email &nbsp&nbsp</label>
+                                        <input type="email" name="email" required>
+                                    </div>
+                                    <div>
+                                        <label for="phone">Phone &nbsp</label>
+                                        <input type="text" name="phone" required>
+                                    </div>
+                                    <br>
+                                    <button type="submit">Add Customer</button>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
