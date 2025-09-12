@@ -34,17 +34,49 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for c in registro %}
+                                {% for r in registro %}
                                 <tr>
-                                    <td>{{ c.id }}</td>
-                                    <td>{{ c.name }}</td>
-                                    <td>{{ c.email }}</td>
-                                    <td>{{ c.phone }}</td>
+                                    <td>{{ r.servici }}</td>
+                                    <td>{{ r.jo_no }}</td>
+                                    <td>{{ r.date_in }}</td>
+                                    <td>{{ r.date_out }}</td>
+                                    <td>{{ r.vin }}</td>
+                                    <td>{{ r.make }}</td>
+                                    <td>{{ r.model }}</td>
+                                    <td>{{ r.plate_no }}</td>
+                                    <td>{{ r.color }}</td>
+                                    <td>{{ r.notes }}</td>
+                                    <td>{{ r.cliente }}</td>
+                                    <td>{{ r.tagged }}</td>
+                                    <td>{{ r.paperwork }}</td>
+                                    <td>{{ r.diagnosis }}</td>
+                                    <td>{{ r.estimate }}</td>
+                                    <td>{{ r.parts_and_materials }}</td>
+                                    <td>{{ r.billing }}</td>
+                                    <td>{{ r.posizione }}</td>
+                                    <td>{{ r.day_count }}</td>
+                                    <td>{{ r.released_to }}</td>
+                                    <td>{{ r.received_from }}</td>
+                                    <td>{{ r.related_jo }}</td>
+                                    <td>{{ r.received_by }}</td>
+                                    <td>{{ r.date_checklisted }}</td>
+                                    <td>{{ r.checklisted_by }}</td>
+                                    <td>{{ r.released_by }}</td>
+                                    <td>{{ r.km_mileage }}</td>
+                                    <td>{{ r.concerns_requests }}</td>
+                                    <td>{{ r.scartoffie }}</td>
+                                    <td>{{ r.transazioni }}</td>
+                                    <td>{{ r.created }}</td>
+                                    <td>{{ r.last_edited }}</td>
+                                    <td>{{ r.created_by }}</td>
+                                    <td>{{ r.last_edited_by }}</td>
+                                    <td>{{ r.checklist }}</td>
+                                    <td>{{ r.onsite_details }}</td>
                                     <td>
-                                         <a href="{{ url_for('home_blueprint.edit_registro', id=c.id) }}" 
+                                         <a href="{{ url_for('home_blueprint.edit_registro', id=r.id) }}" 
                                             class="btn btn-sm btn-warning">Edit</a>
 
-                                        <form method="POST" action="{{ url_for('home_blueprint.delete_registro', id=c.id) }}" 
+                                        <form method="POST" action="{{ url_for('home_blueprint.delete_registro', id=r.id) }}" 
                                             style="display:inline;" 
                                             onsubmit="return confirm('Are you sure you want to delete this customer?');">
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
