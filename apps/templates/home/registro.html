@@ -3,140 +3,163 @@
 {% block title %} Registro {% endblock %}
 
 {% block content %}
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
 <div class="content">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title"> Registro </h4>
+
+    <!-- Add Registro Button -->
+    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addRegistroModal">
+        +
+    </button>
+
+    <!-- Registro Table -->
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Registro</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+                        <tr>
+                            <th>Servici</th>
+                            <th>J.O No.</th>
+                            <th>Date In</th>
+                            <th>Date Out</th>
+                            <th>VIN</th>
+                            <th>Model</th>
+                            <th>Plate No.</th>
+                            <th>Color</th>
+                            <th>Notes</th>
+                            <th>Cliente</th>
+                            <th>Tagged</th>
+                            <th>Paperwork</th>
+                            <th>Diagnosis</th>
+                            <th>Estimate</th>
+                            <th>Parts & Materials</th>
+                            <th>Billing</th>
+                            <th>Posizione</th>
+                            <th>Days Count</th>
+                            <th>Released To</th>
+                            <th>Received From</th>
+                            <th>Related J.O</th>
+                            <th>Received By</th>
+                            <th>Date Checklisted</th>
+                            <th>Checklisted By</th>
+                            <th>Released By</th>
+                            <th>KM Mileage</th>
+                            <th>Concerns/Requests</th>
+                            <th>Scartoffie</th>
+                            <th>Transazioni</th>
+                            <th>Created</th>
+                            <th>Last edited</th>
+                            <th>Created by</th>
+                            <th>Last edited by</th>
+                            <th>Checklist</th>
+                            <th>On-site Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in registros %}
+                        <tr>
+                            <td>{{ r.jo_no }}</td>
+                            <td>{{ r.date_in }}</td>
+                            <td>{{ r.date_out }}</td>
+                            <td>{{ r.vin }}</td>
+                            <td>{{ r.make }}</td>
+                            <td>{{ r.model }}</td>
+                            <td>{{ r.plate_no }}</td>
+                            <td>{{ r.color }}</td>
+                            <td>{{ r.notes }}</td>
+                            <td>{{ r.cliente }}</td>
+                            <td>{{ r.tagged }}</td>
+                            <td>{{ r.paperwork }}</td>
+                            <td>{{ r.diagnosis }}</td>
+                            <td>{{ r.estimate }}</td>
+                            <td>{{ r.parts_and_materials }}</td>
+                            <td>{{ r.billing }}</td>
+                            <td>{{ r.posizione }}</td>
+                            <td>{{ r.day_count }}</td>
+                            <td>{{ r.released_to }}</td>
+                            <td>{{ r.received_from }}</td>
+                            <td>{{ r.related_jo }}</td>
+                            <td>{{ r.received_by }}</td>
+                            <td>{{ r.date_checklisted }}</td>
+                            <td>{{ r.checklisted_by }}</td>
+                            <td>{{ r.released_by }}</td>
+                            <td>{{ r.km_mileage }}</td>
+                            <td>{{ r.concerns_request }}</td>
+                            <td>{{ r.scartoffie }}</td>
+                            <td>{{ r.transanzioni }}</td>
+                            <td>{{ r.created }}</td>
+                            <td>{{ r.last_edited }}</td>
+                            <td>{{ r.created_by }}</td>
+                            <td>{{ r.last_edited_by }}</td>
+                            <td>{{ r.checklist }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Add Registro Modal -->
+<div class="modal fade" id="addRegistroModal" tabindex="-1" role="dialog" aria-labelledby="addRegistroLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('home_blueprint.registro') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRegistroLabel">Add New</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class="text-primary">
-                                <tr>
-                                    <th>Servici</th>
-                                    <th>J.O No.</th>
-                                    <th>Date In</th>
-                                    <th>Date Out</th>
-                                    <th>VIN</th>
-                                    <th>Make</th>
-                                    <th>Model</th>
-                                    <th>Plate No.</th>
-                                    <th>Color</th>
-                                    <th>Notes</th>
-                                    <th>Cliente</th>
-                                    <th>Tagged</th>
-                                    <th>Paperwork</th>
-                                    <th>Diagnosis</th>
-                                    <th>Estimate</th>
-                                    <th>Parts & Materials</th>
-                                    <th>Billing</th>
-                                    <th>Posizione</th>
-                                    <th>Days Count</th>
-                                    <th>Released To</th>
-                                    <th>Received From</th>
-                                    <th>Related J.O</th>
-                                    <th>Received By</th>
-                                    <th>Date Checklisted</th>
-                                    <th>Checklisted By</th>
-                                    <th>Released By</th>
-                                    <th>KM Mileage</th>
-                                    <th>Concerns/Requests</th>
-                                    <th>Scartoffie</th>
-                                    <th>Transazioni</th>
-                                    <th>Created</th>
-                                    <th>Last edited</th>
-                                    <th>Created by</th>
-                                    <th>Last edited by</th>
-                                    <th>Checklist</th>
-                                    <th>On-site Details</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for r in registro %}
-                                <tr>
-                                    <td>{{ r.servici }}</td>
-                                    <td>{{ r.jo_no }}</td>
-                                    <td>{{ r.date_in }}</td>
-                                    <td>{{ r.date_out }}</td>
-                                    <td>{{ r.vin }}</td>
-                                    <td>{{ r.make }}</td>
-                                    <td>{{ r.model }}</td>
-                                    <td>{{ r.plate_no }}</td>
-                                    <td>{{ r.color }}</td>
-                                    <td>{{ r.notes }}</td>
-                                    <td>{{ r.cliente }}</td>
-                                    <td>{{ r.tagged }}</td>
-                                    <td>{{ r.paperwork }}</td>
-                                    <td>{{ r.diagnosis }}</td>
-                                    <td>{{ r.estimate }}</td>
-                                    <td>{{ r.parts_and_materials }}</td>
-                                    <td>{{ r.billing }}</td>
-                                    <td>{{ r.posizione }}</td>
-                                    <td>{{ r.day_count }}</td>
-                                    <td>{{ r.released_to }}</td>
-                                    <td>{{ r.received_from }}</td>
-                                    <td>{{ r.related_jo }}</td>
-                                    <td>{{ r.received_by }}</td>
-                                    <td>{{ r.date_checklisted }}</td>
-                                    <td>{{ r.checklisted_by }}</td>
-                                    <td>{{ r.released_by }}</td>
-                                    <td>{{ r.km_mileage }}</td>
-                                    <td>{{ r.concerns_requests }}</td>
-                                    <td>{{ r.scartoffie }}</td>
-                                    <td>{{ r.transazioni }}</td>
-                                    <td>{{ r.created }}</td>
-                                    <td>{{ r.last_edited }}</td>
-                                    <td>{{ r.created_by }}</td>
-                                    <td>{{ r.last_edited_by }}</td>
-                                    <td>{{ r.checklist }}</td>
-                                    <td>{{ r.onsite_details }}</td>
-                                    <td>
-                                         <a href="{{ url_for('home_blueprint.edit_registro', id=r.id) }}" 
-                                            class="btn btn-sm btn-warning">Edit</a>
 
-                                        <form method="POST" action="{{ url_for('home_blueprint.delete_registro', id=r.id) }}" 
-                                            style="display:inline;" 
-                                            onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-
-                                <form method="POST" action="{{ url_for('home_blueprint.registro') }}">
-                                    <div>
-                                        <label for="name">Name &nbsp</label>
-                                        <input type="text" name="name" required>
-                                    </div>
-                                    <div>
-                                        <label for="email">Email &nbsp&nbsp</label>
-                                        <input type="email" name="email" required>
-                                    </div>
-                                    <div>
-                                        <label for="phone">Phone &nbsp</label>
-                                        <input type="text" name="phone" required>
-                                    </div>
-                                    <br>
-                                    <button type="submit">Add Customer</button>
-                                </form>
-                            </tbody>
-                        </table>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="jo_no">Job Order No</label>
+                        <input type="text" class="form-control" name="jo_no" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date_in">Date In</label>
+                        <input type="date" class="form-control" name="date_in" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date_out">Date Out</label>
+                        <input type="date" class="form-control" name="date_out">
+                    </div>
+                    <div class="form-group">
+                        <label for="vin">VIN</label>
+                        <input type="text" class="form-control" name="vin">
+                    </div>
+                    <div class="form-group">
+                        <label for="make">Make</label>
+                        <input type="text" class="form-control" name="make">
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input type="text" class="form-control" name="model">
+                    </div>
+                    <div class="form-group">
+                        <label for="plate_no">Plate No</label>
+                        <input type="text" class="form-control" name="plate_no">
+                    </div>
+                    <div class="form-group">
+                        <label for="color">Color</label>
+                        <input type="text" class="form-control" name="color">
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea class="form-control" name="notes"></textarea>
                     </div>
                 </div>
-            </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
