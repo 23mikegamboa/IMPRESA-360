@@ -116,7 +116,7 @@ def registro():
 
     return render_template('home/registro.html', 
                            segment='registro', 
-                           registro=registro_data,
+                           variable=registro_data,
                            makes=makes)
 
 @blueprint.route('/registro/edit/<int:id>', methods=['GET', 'POST'])
@@ -197,9 +197,16 @@ def edit_registro(id):
 
         return redirect(url_for("home_blueprint.registro"))
 
-    return render_template("home/edit_registro.html",
-                           segment="registro",
-                           registro=registro)
+    #Pass makes for the dropdown in edit form too
+    modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
+    makes = sorted(set([m.make for m in modelo_data]))
+
+    return render_template(
+        "home/edit_registro.html",
+        segment="registro",
+        registro=registro,
+        makes=makes
+    )
 
 @blueprint.route('/registro/delete/<int:id>', methods=['POST'])
 @login_required
@@ -256,5 +263,12 @@ def get_segment(request):
 @blueprint.route('/get_models/<make>')
 @login_required
 def get_models(make):
-    models = Modelo.query.with_entities(Modelo.model).filter_by(make=make).distinct().all()
-    return jsonify([m.model for m in models])
+    # Use explicit filter instead of filter_by, safer for case-sensitive fields
+    models = (
+        Modelo.query.with_entities(Modelo.model)
+        .filter(Modelo.make == make)
+        .distinct()
+        .all()
+    )
+    # Return list of model names (filter out None just in case)
+    return jsonify([m.model for m in models if m.model])

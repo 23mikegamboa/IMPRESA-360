@@ -76,6 +76,7 @@
 
     <script>
         $(document).ready(function () {
+            // Initialize Select2
             $('#make').select2({
                 width: '100%',
                 placeholder: "Select or type Make",
@@ -90,8 +91,10 @@
                 tags: true
             });
 
+            // Function to load models for a given make
             function loadModelsForMake(make, selectedModel = null) {
-                $('#model').empty(); // reset
+                $('#model').empty(); // reset dropdown
+
                 if (make) {
                     $.getJSON('/get_models/' + make, function (data) {
                         $('#model').append('<option></option>'); // placeholder
@@ -113,7 +116,7 @@
                 loadModelsForMake(make);
             });
 
-            // ✅ Preload Model options in Edit form
+            // ✅ Preload model options if editing an existing registro
             var currentMake = $('#make').val();
             var currentModel = "{{ registro.model if registro is defined else '' }}";
             if (currentMake) {
