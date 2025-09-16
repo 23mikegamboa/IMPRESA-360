@@ -109,14 +109,16 @@ def registro():
 
     # Query all registros from DB
     registro_data = Registro.query.all()
-    modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
+    #modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
+
+    modelo_data = Modelo.query.with_entities(Modelo.make).distinct().all()
 
     # Convert to simple lists for dropdowns
     makes = sorted(set([m.make for m in modelo_data]))
 
     return render_template('home/registro.html', 
                            segment='registro', 
-                           variable=registro_data,
+                           registro=registro_data,
                            makes=makes)
 
 @blueprint.route('/registro/edit/<int:id>', methods=['GET', 'POST'])

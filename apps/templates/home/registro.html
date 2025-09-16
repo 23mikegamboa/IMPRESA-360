@@ -128,6 +128,7 @@
                             <div class="form-group col-md-6">
                                 <label for="color">Servici</label>
                                 <select class="form-control" name="color" required>
+                                    <option value="" disabled selected>-- Select Location --</option>
                                     <option value="Black">Shop</option>
                                     <option value="White">On-site</option>
                                 </select>
@@ -161,8 +162,8 @@
                             </div> -->
                             <div class="form-group col-md-6">
                                 <label for="make">Make</label>
-                                <select class="form-control select2" id="make" name="make">
-                                    <option></option>
+                                <select class="form-control" id="make" name="make">
+                                    <option value="" disabled selected>-- Select Make --</option>
                                     {% for make in makes %}
                                     <option value="{{ make }}">{{ make }}</option>
                                     {% endfor %}
@@ -177,8 +178,8 @@
                             </div> -->
                             <div class="form-group col-md-6">
                                 <label for="model">Model</label>
-                                <select class="form-control select2" id="model" name="model">
-                                    <option></option>
+                                <select class="form-control" id="model" name="model">
+                                    <option value="" disabled selected>-- Select Model --</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-6">

@@ -75,54 +75,27 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            // Initialize Select2
-            $('#make').select2({
-                width: '100%',
-                placeholder: "Select or type Make",
-                allowClear: true,
-                tags: true
+$(document).ready(function () {
+    $('#make').on('change', function () {
+        var make = $(this).val();
+        console.log("Selected Make:", make);
+
+        // $('#model').empty().append('<option value="">-- Select Model --</option>');
+
+        if (make) {
+            $.getJSON('/get_models/' + encodeURIComponent(make), function (data) {
+                console.log("Models returned:", data);
+                $.each(data, function (index, value) {
+                    $('#model').append(
+                        $('<option>').val(value).text(value)
+                    );
+                });
+            }).fail(function (jqxhr, textStatus, error) {
+                console.error("Error fetching models:", textStatus, error);
             });
-
-            $('#model').select2({
-                width: '100%',
-                placeholder: "Select or type Model",
-                allowClear: true,
-                tags: true
-            });
-
-            // Function to load models for a given make
-            function loadModelsForMake(make, selectedModel = null) {
-                $('#model').empty(); // reset dropdown
-
-                if (make) {
-                    $.getJSON('/get_models/' + make, function (data) {
-                        $('#model').append('<option></option>'); // placeholder
-                        $.each(data, function (index, value) {
-                            let option = $('<option>').text(value).attr('value', value);
-                            if (selectedModel && value === selectedModel) {
-                                option.attr('selected', 'selected');
-                            }
-                            $('#model').append(option);
-                        });
-                        $('#model').trigger('change'); // refresh Select2
-                    });
-                }
-            }
-
-            // When Make changes in Add/Edit modal
-            $('#make').on('change', function () {
-                var make = $(this).val();
-                loadModelsForMake(make);
-            });
-
-            // ✅ Preload model options if editing an existing registro
-            var currentMake = $('#make').val();
-            var currentModel = "{{ registro.model if registro is defined else '' }}";
-            if (currentMake) {
-                loadModelsForMake(currentMake, currentModel);
-            }
-        });
-    </script>
+        }
+    });
+});
+</script>
 </body>
 </html>
