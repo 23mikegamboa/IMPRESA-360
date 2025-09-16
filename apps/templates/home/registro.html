@@ -18,9 +18,9 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table">
-                    <thead class=" text-primary">
+                    <thead class=" text-primary" style="white-space: nowrap;">
                         <tr>
-                            <th>Servici</th>
+                            <th >Servici</th>
                             <th>J.O No.</th>
                             <th>Date In</th>
                             <th>Date Out</th>
@@ -95,6 +95,7 @@
                             <td>{{ r.created_by }}</td>
                             <td>{{ r.last_edited_by }}</td>
                             <td>{{ r.checklist }}</td>
+                            <td>{{ r.onsite_details }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -109,20 +110,20 @@
 <!-- Add Registro Modal -->
 <div class="modal fade" id="addRegistroModal" tabindex="-1" role="dialog" aria-labelledby="addRegistroLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document" style="margin-top: -16.25vh; max-height: 90vh;">
-            <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
-    <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document"
+    <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
+        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document"
         style="margin-top: -16.25vh; max-height: 90vh;"> -->
-        <!-- <div class="modal-content" style="height: 90vh;"> -->
+            <!-- <div class="modal-content" style="height: 90vh;"> -->
             <form method="POST" action="{{ url_for('home_blueprint.registro') }}">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addRegistroLabel">Add New</h5>
+                    <h5 class="modal-title" id="addRegistroLabel" style="padding: 0.5rem 1rem;">NEW</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
-                <!-- <div class="modal-body" style="overflow-y:auto;"> -->
+                    <!-- <div class="modal-body" style="overflow-y:auto;"> -->
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form-group col-md-6">
@@ -138,7 +139,8 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="date_in">Date In</label>
-                                <input type="date" class="form-control" name="date_in" required>
+                                <input type="date" class="form-control datepicker" name="date_in"
+                                    placeholder="MM/DD/YYYY" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="date_out">Date Out</label>
@@ -296,6 +298,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>
