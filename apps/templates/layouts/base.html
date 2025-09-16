@@ -35,7 +35,7 @@
     <link href="{{ config.ASSETS_ROOT }}/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
 
     <link href="{{ config.ASSETS_ROOT }}/css/theme-switcher.css" rel="stylesheet" />
-    
+
     <!-- Specific Page CSS goes HERE  -->
     {% block stylesheets %}{% endblock stylesheets %}
 
@@ -66,6 +66,60 @@
 
     <!-- Specific Page JS goes HERE  -->
     {% block javascripts %}{% endblock javascripts %}
-</body>
 
+    <!-- jQuery (must load before Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 CSS & JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#make').select2({
+                width: '100%',
+                placeholder: "Select or type Make",
+                allowClear: true,
+                tags: true
+            });
+
+            $('#model').select2({
+                width: '100%',
+                placeholder: "Select or type Model",
+                allowClear: true,
+                tags: true
+            });
+
+            function loadModelsForMake(make, selectedModel = null) {
+                $('#model').empty(); // reset
+                if (make) {
+                    $.getJSON('/get_models/' + make, function (data) {
+                        $('#model').append('<option></option>'); // placeholder
+                        $.each(data, function (index, value) {
+                            let option = $('<option>').text(value).attr('value', value);
+                            if (selectedModel && value === selectedModel) {
+                                option.attr('selected', 'selected');
+                            }
+                            $('#model').append(option);
+                        });
+                        $('#model').trigger('change'); // refresh Select2
+                    });
+                }
+            }
+
+            // When Make changes in Add/Edit modal
+            $('#make').on('change', function () {
+                var make = $(this).val();
+                loadModelsForMake(make);
+            });
+
+            // ✅ Preload Model options in Edit form
+            var currentMake = $('#make').val();
+            var currentModel = "{{ registro.model if registro is defined else '' }}";
+            if (currentMake) {
+                loadModelsForMake(currentMake, currentModel);
+            }
+        });
+    </script>
+</body>
 </html>

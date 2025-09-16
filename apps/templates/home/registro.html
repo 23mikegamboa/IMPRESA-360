@@ -20,7 +20,7 @@
                 <table class="table">
                     <thead class=" text-primary" style="white-space: nowrap;">
                         <tr>
-                            <th >Servici</th>
+                            <th>Servici</th>
                             <th>J.O No.</th>
                             <th>Date In</th>
                             <th>Date Out</th>
@@ -106,7 +106,6 @@
 
 </div>
 
-
 <!-- Add Registro Modal -->
 <div class="modal fade" id="addRegistroModal" tabindex="-1" role="dialog" aria-labelledby="addRegistroLabel"
     aria-hidden="true">
@@ -127,8 +126,11 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="servici">Servici</label>
-                                <input type="text" class="form-control" name="servici" required>
+                                <label for="color">Servici</label>
+                                <select class="form-control" name="color" required>
+                                    <option value="Black">Shop</option>
+                                    <option value="White">On-site</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="jo_no">Job Order No</label>
@@ -153,16 +155,31 @@
                                 <label for="vin">VIN</label>
                                 <input type="text" class="form-control" name="vin">
                             </div>
-                            <div class="form-group col-md-6">
+                            <!-- <div class="form-group col-md-6">
                                 <label for="make">Make</label>
                                 <input type="text" class="form-control" name="make">
+                            </div> -->
+                            <div class="form-group col-md-6">
+                                <label for="make">Make</label>
+                                <select class="form-control select2" id="make" name="make">
+                                    <option></option>
+                                    {% for make in makes %}
+                                    <option value="{{ make }}">{{ make }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <!-- <div class="form-group col-md-6">
                                 <label for="model">Model</label>
                                 <input type="text" class="form-control" name="model">
+                            </div> -->
+                            <div class="form-group col-md-6">
+                                <label for="model">Model</label>
+                                <select class="form-control select2" id="model" name="model">
+                                    <option></option>
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="plate_no">Plate No</label>

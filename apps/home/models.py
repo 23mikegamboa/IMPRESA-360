@@ -15,7 +15,7 @@ class Registro(db.Model):
     
     servici = db.Column(db.String(20))
     jo_no = db.Column(db.Integer, primary_key=True)
-    date_in = db.Column(db.Date)
+    date_in = db.Column(db.Date, nullable=False)
     date_out = db.Column(db.Date)
     vin = db.Column(db.String(17), unique=True, nullable=False)
     make = db.Column(db.String(100))
@@ -52,3 +52,23 @@ class Registro(db.Model):
 
     def __repr__(self):
         return f'<Registro {self.name}>'
+    
+class Modelo(db.Model):
+    modelo_id = db.Column(db.Integer, primary_key=True)
+    make = db.Column(db.String(100))
+    description = db.Column(db.String(200))
+    model = db.Column(db.String(100))
+    trim = db.Column(db.String(100))
+    body = db.Column(db.String(50))
+    fuel_type = db.Column(db.String(50))
+    transmission = db.Column(db.String(200))
+    fuel_system = db.Column(db.String(50))
+    drivetrain = db.Column(db.String(50))
+    engine_displacement = db.Column(db.String(50))
+    cylinders = db.Column(db.String(50))
+    description_2 = db.Column(db.String(200))
+    submodel = db.Column(db.String(100))
+    generation = db.Column(db.String(100))
+
+    def __repr__(self):
+        return f'<Modelo {self.name}>'

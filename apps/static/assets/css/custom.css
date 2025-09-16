@@ -57,6 +57,19 @@ body.white-content .card {
   border: 1px solid #ccc;
 }
 
-.modal-title{
+.modal-title {
   color: #FE001A !important;
+}
+
+select.form-control {
+  padding-right: 1.5rem;
+  background-position: right 0.75rem center;
+  background-size: 1rem auto;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Custom arrow (black, can swap to white for dark mode) */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
 }
