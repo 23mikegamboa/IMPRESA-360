@@ -80,7 +80,7 @@ def registro():
         onsite_details = request.form.get("onsite_details")
         
         # Validate required fields
-        if not (servici and jo_no and date_in and vin and make and model and plate_no and color and cliente and tagged and posizione and received_by):
+        if not (servici and jo_no and date_in and vin and make and model and plate_no and color and cliente and posizione and received_by):
             flash("Please fill required fields", "danger")
             return redirect(url_for("home_blueprint.registro"))
         
@@ -104,7 +104,7 @@ def registro():
         db.session.add(new_registro)
         db.session.commit()
 
-        flash("New registro added successfully!", "success")
+        flash("Successfully Added!", "success")
         return redirect(url_for("home_blueprint.registro"))
 
     # Query all registros from DB
@@ -118,7 +118,7 @@ def registro():
 
     return render_template('home/registro.html', 
                            segment='registro', 
-                           registro=registro_data,
+                           registro_data=registro_data,
                            makes=makes)
 
 @blueprint.route('/registro/edit/<int:id>', methods=['GET', 'POST'])
@@ -151,7 +151,7 @@ def edit_registro(id):
         registro.color = request.form.get("color")
         registro.notes = request.form.get("notes")
         registro.cliente = request.form.get("cliente")
-        registro.tagged = request.form.get("tagged")
+        registro.tagged = bool(request.form.get("tagged"))
         registro.paperwork = request.form.get("paperwork")
         registro.diagnosis = request.form.get("diagnosis")
         registro.estimate = request.form.get("estimate")

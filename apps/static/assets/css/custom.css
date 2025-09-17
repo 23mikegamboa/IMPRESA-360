@@ -73,3 +73,11 @@ select.form-control {
   background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
 }
+
+.table th, 
+.table td {
+  white-space: nowrap;   /* Prevent wrapping */
+  overflow: hidden;      /* Optional: hide overflow */
+  text-overflow: ellipsis; /* Optional: add "..." when content too long */
+  max-width: 200px;      /* Optional: control column width */
+}
