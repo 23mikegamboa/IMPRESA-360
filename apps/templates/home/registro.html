@@ -56,6 +56,7 @@
                             <th>Last edited by</th>
                             <th>Checklist</th>
                             <th>On-site Details</th>
+                            <!-- New Actions Column -->
                             <th class="text-center"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2;">
                                 Actions
@@ -101,6 +102,7 @@
                             <td>{{ r.last_edited_by }}</td>
                             <td>{{ r.checklist }}</td>
                             <td>{{ r.onsite_details }}</td>
+                            <!-- Actions -->
                             <td class="text-center"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2;">
                                 <!-- View Icon -->
@@ -110,6 +112,7 @@
                                 </a>
                             </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -117,7 +120,173 @@
     </div>
 </div>
 
+<!-- Add Registro Modal -->
+<div class="modal fade" id="addRegistroModal" tabindex="-1" role="dialog" aria-labelledby="addRegistroLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
+        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+            <!-- <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document"
+        style="margin-top: -16.25vh; max-height: 90vh;"> -->
+            <!-- <div class="modal-content" style="height: 90vh;"> -->
+            <form method="POST" action="{{ url_for('home_blueprint.registro') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRegistroLabel" style="padding: 0.5rem 1rem;">NEW</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
+                    <!-- <div class="modal-body" style="overflow-y:auto;"> -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="color">Servici</label>
+                                <select class="form-control" name="servici" required>
+                                    <option value="" disabled selected>-- Select Location --</option>
+                                    <option value="Shop">Shop</option>
+                                    <option value="On-site">On-site</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="jo_no">Job Order No</label>
+                                <input type="text" class="form-control" name="jo_no" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="date_in">Date In</label>
+                                <input type="date" class="form-control datepicker" name="date_in"
+                                    placeholder="MM/DD/YYYY" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="date_out">Date Out</label>
+                                <input type="date" class="form-control" name="date_out">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="vin">VIN</label>
+                                <input type="text" class="form-control" name="vin">
+                            </div>
+                            <!-- <div class="form-group col-md-6">
+                                <label for="make">Make</label>
+                                <input type="text" class="form-control" name="make">
+                            </div> -->
+                            <div class="form-group col-md-6">
+                                <label for="make">Make</label>
+                                <select class="form-control" id="make" name="make">
+                                    <option value="" disabled selected>-- Select Make --</option>
+                                    {% for make in makes %}
+                                    <option value="{{ make }}">{{ make }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- <div class="form-group col-md-6">
+                                <label for="model">Model</label>
+                                <input type="text" class="form-control" name="model">
+                            </div> -->
+                            <div class="form-group col-md-6">
+                                <label for="model">Model</label>
+                                <select class="form-control" id="model" name="model">
+                                    <option value="" disabled selected>-- Select Model --</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="plate_no">Plate No</label>
+                                <input type="text" class="form-control" name="plate_no">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="color">Color</label>
+                                <input type="text" class="form-control" name="color">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="cliente">Cliente</label>
+                                <input type="text" class="form-control" name="cliente">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="diagnosis">Diagnosis</label>
+                                <input type="text" class="form-control" name="diagnosis">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="parts_and_materials">Parts & Materials</label>
+                                <input type="text" class="form-control" name="parts_and_materials">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="km_mileage">KM Mileage</label>
+                                <input type="text" class="form-control" name="km_mileage">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="posizione">Posizione</label>
+                                <input type="text" class="form-control" name="posizione">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="received_from">Received From</label>
+                                <input type="text" class="form-control" name="received_from">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="received_by">Received By</label>
+                                <input type="text" class="form-control" name="received_by">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="related_jo">Related J.O</label>
+                                <input type="text" class="form-control" name="related_jo">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="concerns_requests">Concerns/Requests</label>
+                                <input type="text" class="form-control" name="concerns_requests">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="date_checklisted">Date Checklisted</label>
+                                <input type="date" class="form-control" name="date_checklisted">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="checklisted_by">Checklisted By</label>
+                                <input type="text" class="form-control" name="checklisted_by">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="onsite_details">On-site Details</label>
+                                <input type="text" class="form-control" name="onsite_details">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- View Modal -->
+
+{% for r in registro_data %}
 <div class="modal fade" id="viewRegistroModal{{ r.id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
         <!-- same size & position -->
@@ -304,178 +473,17 @@
                             <div class="form-group">
                                 <label>Related J.O</label>
                                 <input type="text" class="form-control" value="{{ r.related_jo }}" readonly>
-                                {% endfor %}
+                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
-                <button type="submit" class="btn btn-primary">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- Add Registro Modal -->
-<div class="modal fade" id="addRegistroModal" tabindex="-1" role="dialog" aria-labelledby="addRegistroLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
-        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
-            <form method="POST" action="{{ url_for('home_blueprint.registro') }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addRegistroLabel" style="padding: 0.5rem 1rem;">NEW</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
-                    <!-- <div class="modal-body" style="overflow-y:auto;"> -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="color">Servici</label>
-                                <select class="form-control" name="servici" required>
-                                    <option value="" disabled selected>-- Select Location --</option>
-                                    <option value="Shop">Shop</option>
-                                    <option value="On-site">On-site</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="jo_no">Job Order No</label>
-                                <input type="text" class="form-control" name="jo_no" required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="date_in">Date In</label>
-                                <input type="date" class="form-control datepicker" name="date_in"
-                                    placeholder="MM/DD/YYYY" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="date_out">Date Out</label>
-                                <input type="date" class="form-control" name="date_out">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="vin">VIN</label>
-                                <input type="text" class="form-control" name="vin">
-                            </div>
-                            <!-- <div class="form-group col-md-6">
-                                <label for="make">Make</label>
-                                <input type="text" class="form-control" name="make">
-                            </div> -->
-                            <div class="form-group col-md-6">
-                                <label for="make">Make</label>
-                                <select class="form-control" id="make" name="make">
-                                    <option value="" disabled selected>-- Select Make --</option>
-                                    {% for make in makes %}
-                                    <option value="{{ make }}">{{ make }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <!-- <div class="form-group col-md-6">
-                                <label for="model">Model</label>
-                                <input type="text" class="form-control" name="model">
-                            </div> -->
-                            <div class="form-group col-md-6">
-                                <label for="model">Model</label>
-                                <select class="form-control" id="model" name="model">
-                                    <option value="" disabled selected>-- Select Model --</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="plate_no">Plate No</label>
-                                <input type="text" class="form-control" name="plate_no">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="color">Color</label>
-                                <input type="text" class="form-control" name="color">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="cliente">Cliente</label>
-                                <input type="text" class="form-control" name="cliente">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="diagnosis">Diagnosis</label>
-                                <input type="text" class="form-control" name="diagnosis">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="parts_and_materials">Parts & Materials</label>
-                                <input type="text" class="form-control" name="parts_and_materials">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="km_mileage">KM Mileage</label>
-                                <input type="text" class="form-control" name="km_mileage">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="posizione">Posizione</label>
-                                <input type="text" class="form-control" name="posizione">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="received_from">Received From</label>
-                                <input type="text" class="form-control" name="received_from">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="received_by">Received By</label>
-                                <input type="text" class="form-control" name="received_by">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="related_jo">Related J.O</label>
-                                <input type="text" class="form-control" name="related_jo">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="concerns_requests">Concerns/Requests</label>
-                                <input type="text" class="form-control" name="concerns_requests">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="date_checklisted">Date Checklisted</label>
-                                <input type="date" class="form-control" name="date_checklisted">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="checklisted_by">Checklisted By</label>
-                                <input type="text" class="form-control" name="checklisted_by">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="onsite_details">On-site Details</label>
-                                <input type="text" class="form-control" name="onsite_details">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+{% endfor %}
 {% endblock %}
