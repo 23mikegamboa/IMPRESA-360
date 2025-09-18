@@ -80,7 +80,7 @@ $(document).ready(function () {
         var make = $(this).val();
         console.log("Selected Make:", make);
 
-        // $('#model').empty().append('<option value="">-- Select Model --</option>');
+        $('#model').empty().append('<option value="">-- Select Model --</option>');
 
         if (make) {
             $.getJSON('/get_models/' + encodeURIComponent(make), function (data) {
