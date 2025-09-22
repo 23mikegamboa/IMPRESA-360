@@ -1,19 +1,17 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Registro {% endblock %}
+{% block title %} REGISTRO {% endblock %}
 
 {% block content %}
 <div class="content">
-
-    <!-- Add Registro Button -->
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addRegistroModal">
-        +
-    </button>
-
     <!-- Registro Table -->
     <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Registro</h4>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">REGISTRO</h4>
+            <!-- Add Registro Button -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRegistroModal">
+                +
+            </button>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -25,37 +23,38 @@
                             <th>Date In</th>
                             <th>Date Out</th>
                             <th>VIN</th>
+                            <th>Plate No.</th>
                             <th>Make</th>
                             <th>Model</th>
-                            <th>Plate No.</th>
                             <th>Color</th>
+                            <th>KM Mileage</th>
                             <th>Notes</th>
+                            <th>Posizione</th>
                             <th>Cliente</th>
+                            <th>Concerns/Requests</th>
+                            <th>Diagnosis</th>
+                            <th>On-site Details</th>
                             <th>Tagged</th>
                             <th>Paperwork</th>
-                            <th>Diagnosis</th>
                             <th>Estimate</th>
                             <th>Parts & Materials</th>
                             <th>Billing</th>
-                            <th>Posizione</th>
-                            <th>Days Count</th>
-                            <th>Released To</th>
+                            <th>Day Count</th>
                             <th>Received From</th>
-                            <th>Related J.O</th>
                             <th>Received By</th>
                             <th>Date Checklisted</th>
                             <th>Checklisted By</th>
-                            <th>Released By</th>
-                            <th>KM Mileage</th>
-                            <th>Concerns/Requests</th>
+                            <th>Checklist</th>
                             <th>Scartoffie</th>
                             <th>Transazioni</th>
+                            <th>Transazioni (Int'l)</th>
+                            <th>Related J.O</th>
+                            <th>Released To</th>
+                            <th>Released By</th>
                             <th>Created</th>
-                            <th>Last edited</th>
                             <th>Created by</th>
+                            <th>Last edited</th>
                             <th>Last edited by</th>
-                            <th>Checklist</th>
-                            <th>On-site Details</th>
                             <!-- New Actions Column -->
                             <th class="text-center"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2;">
@@ -71,44 +70,53 @@
                             <td>{{ r.date_in }}</td>
                             <td>{{ r.date_out }}</td>
                             <td>{{ r.vin }}</td>
+                            <td>{{ r.plate_no }}</td>
                             <td>{{ r.make }}</td>
                             <td>{{ r.model }}</td>
-                            <td>{{ r.plate_no }}</td>
                             <td>{{ r.color }}</td>
+                            <td>{{ r.km_mileage }}</td>
                             <td>{{ r.notes }}</td>
+                            <td>{{ r.posizione }}</td>
                             <td>{{ r.cliente }}</td>
+                            <td>{{ r.concerns_requests }}</td>
+                            <td>{{ r.diagnosis }}</td>
+                            <td>{{ r.onsite_details }}</td>
                             <td>{{ r.tagged }}</td>
                             <td>{{ r.paperwork }}</td>
-                            <td>{{ r.diagnosis }}</td>
                             <td>{{ r.estimate }}</td>
                             <td>{{ r.parts_and_materials }}</td>
                             <td>{{ r.billing }}</td>
-                            <td>{{ r.posizione }}</td>
                             <td>{{ r.day_count }}</td>
-                            <td>{{ r.released_to }}</td>
                             <td>{{ r.received_from }}</td>
-                            <td>{{ r.related_jo }}</td>
                             <td>{{ r.received_by }}</td>
                             <td>{{ r.date_checklisted }}</td>
                             <td>{{ r.checklisted_by }}</td>
-                            <td>{{ r.released_by }}</td>
-                            <td>{{ r.km_mileage }}</td>
-                            <td>{{ r.concerns_request }}</td>
+                            <td>{{ r.checklist }}</td>
                             <td>{{ r.scartoffie }}</td>
                             <td>{{ r.transazioni }}</td>
+                            <td>{{ r.transazioni_intl }}</td>
+                            <td>{{ r.related_jo }}</td>
+                            <td>{{ r.released_to }}</td>
+                            <td>{{ r.released_by }}</td>
                             <td>{{ r.created }}</td>
-                            <td>{{ r.last_edited }}</td>
                             <td>{{ r.created_by }}</td>
+                            <td>{{ r.last_edited }}</td>
                             <td>{{ r.last_edited_by }}</td>
-                            <td>{{ r.checklist }}</td>
-                            <td>{{ r.onsite_details }}</td>
                             <!-- Actions -->
                             <td class="text-center"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2;">
                                 <!-- View Icon -->
                                 <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
-                                    data-target="#viewRegistroModal{{ r.id }}">
+                                    data-target="#viewRegistroModal{{ r.jo_no }}">
                                     <i class="tim-icons icon-zoom-split"></i>
+                                </a>
+                                <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+                                    data-target="#editRegistroModal{{ r.jo_no }}">
+                                    <i class="tim-icons icon-pencil"></i>
+                                </a>
+                                <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+                                    data-target="#viewRegistroModal{{ r.jo_no }}">
+                                    <i class="tim-icons icon-trash-simple"></i>
                                 </a>
                             </td>
                         </tr>
@@ -142,7 +150,7 @@
                             <div class="form-group col-md-6">
                                 <label for="color">Servici</label>
                                 <select class="form-control" name="servici" required>
-                                    <option value="" disabled selected>-- Select Location --</option>
+                                    <option value="" disabled selected>-- Select Servici --</option>
                                     <option value="Shop">Shop</option>
                                     <option value="On-site">On-site</option>
                                 </select>
@@ -152,7 +160,6 @@
                                 <input type="text" class="form-control" name="jo_no" required>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="date_in">Date In</label>
@@ -164,16 +171,17 @@
                                 <input type="date" class="form-control" name="date_out">
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="vin">VIN</label>
                                 <input type="text" class="form-control" name="vin">
                             </div>
-                            <!-- <div class="form-group col-md-6">
-                                <label for="make">Make</label>
-                                <input type="text" class="form-control" name="make">
-                            </div> -->
+                            <div class="form-group col-md-6">
+                                <label for="plate_no">Plate No</label>
+                                <input type="text" class="form-control" name="plate_no">
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="make">Make</label>
                                 <select class="form-control" id="make" name="make">
@@ -183,95 +191,99 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <!-- <div class="form-group col-md-6">
-                                <label for="model">Model</label>
-                                <input type="text" class="form-control" name="model">
-                            </div> -->
                             <div class="form-group col-md-6">
                                 <label for="model">Model</label>
                                 <select class="form-control" id="model" name="model">
                                     <option value="" disabled selected>-- Select Model --</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="plate_no">Plate No</label>
-                                <input type="text" class="form-control" name="plate_no">
-                            </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="color">Color</label>
                                 <input type="text" class="form-control" name="color">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="cliente">Cliente</label>
-                                <input type="text" class="form-control" name="cliente">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="diagnosis">Diagnosis</label>
-                                <input type="text" class="form-control" name="diagnosis">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="parts_and_materials">Parts & Materials</label>
-                                <input type="text" class="form-control" name="parts_and_materials">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
                                 <label for="km_mileage">KM Mileage</label>
                                 <input type="text" class="form-control" name="km_mileage">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="posizione">Posizione</label>
-                                <input type="text" class="form-control" name="posizione">
-                            </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="received_from">Received From</label>
-                                <input type="text" class="form-control" name="received_from">
+                                <label for="notes">Notes</label>
+                                <input type="text" class="form-control" name="notes">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="received_by">Received By</label>
-                                <input type="text" class="form-control" name="received_by">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Posizione</label>
+                                    <select class="form-control" name="posizione">
+                                        <option value="" disabled selected>-- Select Posizione --</option>
+                                        <option value="San Pedro">
+                                            San Pedro</option>
+                                        <option value="13th Ave - A">
+                                            13th Ave - A</option>
+                                        <option value="13th Ave - B">
+                                            13th Ave - B</option>
+                                        <option value="13th Ave - C">
+                                            13th Ave - C</option>
+                                        <option value="13th Ave - D">
+                                            13th Ave - D</option>
+                                        <option value="13th Ave - E">
+                                            13th Ave - E</option>
+                                        <option value="Manhattan">
+                                            Manhattan</option>
+                                        <option value="MGV">
+                                            MGV</option>
+                                        <option value="12th Ave">
+                                            12th Ave</option>
+                                        <option value="Binagonan">
+                                            Binagonan</option>
+                                        <option value="Annapolis">
+                                            Annapolis</option>
+                                        <option value="Others">
+                                            Others</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="related_jo">Related J.O</label>
-                                <input type="text" class="form-control" name="related_jo">
+                                <label for="cliente">Cliente</label>
+                                <input type="text" class="form-control" name="cliente">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="concerns_requests">Concerns/Requests</label>
                                 <input type="text" class="form-control" name="concerns_requests">
                             </div>
                         </div>
-
                         <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="onsite_details">On-site Details</label>
+                                <input type="text" class="form-control" name="onsite_details">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="received_from">Received From</label>
+                                <input type="text" class="form-control" name="received_by">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="received_by">Received By</label>
+                                <input type="text" class="form-control" name="received_by">
+                            </div>
                             <div class="form-group col-md-6">
                                 <label for="date_checklisted">Date Checklisted</label>
                                 <input type="date" class="form-control" name="date_checklisted">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="checklisted_by">Checklisted By</label>
                                 <input type="text" class="form-control" name="checklisted_by">
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label for="onsite_details">On-site Details</label>
-                                <input type="text" class="form-control" name="onsite_details">
+                            <div class="form-group col-md-6">
+                                <label for="related_jo">Related J.O</label>
+                                <input type="text" class="form-control" name="related_jo">
                             </div>
                         </div>
                     </div>
@@ -285,9 +297,8 @@
 </div>
 
 <!-- View Modal -->
-
 {% for r in registro_data %}
-<div class="modal fade" id="viewRegistroModal{{ r.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="viewRegistroModal{{ r.jo_no }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
         <!-- same size & position -->
         <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
@@ -297,184 +308,127 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
             <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
                 <div class="container-fluid">
-
                     <!-- Row 1 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Servici</label>
-                                <input type="text" class="form-control" value="{{ r.servici }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Servici</label>
+                            <input type="text" class="form-control" value="{{ r.servici }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>J.O No.</label>
-                                <input type="text" class="form-control" value="{{ r.jo_no }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>J.O No.</label>
+                            <input type="text" class="form-control" value="{{ r.jo_no }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 2 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date In</label>
-                                <input type="text" class="form-control" value="{{ r.date_in }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Date In</label>
+                            <input type="text" class="form-control" value="{{ r.date_in }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date Out</label>
-                                <input type="text" class="form-control" value="{{ r.date_out }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Date Out</label>
+                            <input type="text" class="form-control" value="{{ r.date_out }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 3 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>VIN</label>
-                                <input type="text" class="form-control" value="{{ r.vin }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>VIN</label>
+                            <input type="text" class="form-control" value="{{ r.vin }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Make</label>
-                                <input type="text" class="form-control" value="{{ r.make }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Make</label>
+                            <input type="text" class="form-control" value="{{ r.make }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 4 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Model</label>
-                                <input type="text" class="form-control" value="{{ r.model }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Model</label>
+                            <input type="text" class="form-control" value="{{ r.model }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Plate No.</label>
-                                <input type="text" class="form-control" value="{{ r.plate_no }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Plate No.</label>
+                            <input type="text" class="form-control" value="{{ r.plate_no }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 5 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Color</label>
-                                <input type="text" class="form-control" value="{{ r.color }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Color</label>
+                            <input type="text" class="form-control" value="{{ r.color }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Notes</label>
-                                <input type="text" class="form-control" value="{{ r.notes }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Notes</label>
+                            <input type="text" class="form-control" value="{{ r.notes }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 6 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Cliente</label>
-                                <input type="text" class="form-control" value="{{ r.cliente }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Cliente</label>
+                            <input type="text" class="form-control" value="{{ r.cliente }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Tagged</label>
-                                <input type="text" class="form-control" value="{{ r.tagged }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Tagged</label>
+                            <input type="text" class="form-control" value="{{ r.tagged }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 7 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Paperwork</label>
-                                <input type="text" class="form-control" value="{{ r.paperwork }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Paperwork</label>
+                            <input type="text" class="form-control" value="{{ r.paperwork }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Diagnosis</label>
-                                <input type="text" class="form-control" value="{{ r.diagnosis }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Diagnosis</label>
+                            <input type="text" class="form-control" value="{{ r.diagnosis }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 8 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Estimate</label>
-                                <input type="text" class="form-control" value="{{ r.estimate }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Estimate</label>
+                            <input type="text" class="form-control" value="{{ r.estimate }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Parts & Materials</label>
-                                <input type="text" class="form-control" value="{{ r.estimate }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Parts & Materials</label>
+                            <input type="text" class="form-control" value="{{ r.estimate }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 9 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Billing</label>
-                                <input type="text" class="form-control" value="{{ r.billing }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Billing</label>
+                            <input type="text" class="form-control" value="{{ r.billing }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Posizione</label>
-                                <input type="text" class="form-control" value="{{ r.posizione }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Posizione</label>
+                            <input type="text" class="form-control" value="{{ r.posizione }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 10 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Days Count</label>
-                                <input type="text" class="form-control" value="{{ r.days_count }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Day Count</label>
+                            <input type="text" class="form-control" value="{{ r.days_count }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Released To</label>
-                                <input type="text" class="form-control" value="{{ r.released_to }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Released To</label>
+                            <input type="text" class="form-control" value="{{ r.released_to }}" readonly>
                         </div>
                     </div>
-
                     <!-- Row 11 -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Received From</label>
-                                <input type="text" class="form-control" value="{{ r.received_from }}" readonly>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Received From</label>
+                            <input type="text" class="form-control" value="{{ r.received_from }}" readonly>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Related J.O</label>
-                                <input type="text" class="form-control" value="{{ r.related_jo }}" readonly>
-                                
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Related J.O</label>
+                            <input type="text" class="form-control" value="{{ r.related_jo }}" readonly>
                         </div>
                     </div>
                 </div>
@@ -482,6 +436,280 @@
             <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endfor %}
+
+<!-- Edit Modal -->
+{% for r in registro_data %}
+<div class="modal fade" id="editRegistroModal{{ r.jo_no }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
+        <!-- same size & position -->
+        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+            <form method="POST" action="{{ url_for('home_blueprint.edit_registro', id=r.jo_no) }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="padding: 0.5rem 1rem;">EDIT</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Servici</label>
+                                <select class="form-control" name="servici" required>
+                                    <option value="Shop" {% if r.servici=="Shop" %}selected{% endif %}>Shop</option>
+                                    <option value="On-site" {% if r.servici=="On-site" %}selected{% endif %}>On-site
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>J.O No.</label>
+                                <input type="text" class="form-control" name="jo_no" value="{{ r.jo_no }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Date In</label>
+                                <input type="date" class="form-control" name="date_in" value="{{ r.date_in }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Date Out</label>
+                                <input type="date" class="form-control" name="date_out" value="{{ r.date_out }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>VIN</label>
+                                <input type="text" class="form-control" name="vin" value="{{ r.vin }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Plate No.</label>
+                                <input type="text" class="form-control" name="plate_no" value="{{ r.plate_no }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Make</label>
+                                <select class="form-control" name="make">
+                                    {% for make in makes %}
+                                    <option value="{{ make }}" {% if r.make==make %}selected{% endif %}>{{ make }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Model</label>
+                                <select class="form-control" name="model">
+                                    <option value="{{ r.model }}" selected>{{ r.model }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Color</label>
+                                <input type="text" class="form-control" name="color" value="{{ r.color }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>KM Mileage</label>
+                                <input type="text" class="form-control" name="km_mileage" value="{{ r.km_mileage }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Notes</label>
+                                <input type="text" class="form-control" name="notes" value="{{ r.notes }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Posizione</label>
+                                <select class="form-control" name="posizione">
+                                    <option value="San Pedro" {% if r.posizione %}selected{% endif %}>
+                                        San Pedro</option>
+                                    <option value="13th Ave - A" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - A</option>
+                                    <option value="13th Ave - B" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - B</option>
+                                    <option value="13th Ave - C" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - C</option>
+                                    <option value="13th Ave - D" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - D</option>
+                                    <option value="13th Ave - E" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - E</option>
+                                    <option value="Manhattan" {% if r.posizione %}selected{% endif %}>
+                                        Manhattan</option>
+                                    <option value="MGV" {% if r.posizione %}selected{% endif %}>
+                                        MGV</option>
+                                    <option value="12th Ave" {% if r.posizione %}selected{% endif %}>
+                                        12th Ave</option>
+                                    <option value="Binagonan" {% if r.posizione %}selected{% endif %}>
+                                        Binagonan</option>
+                                    <option value="Annapolis" {% if r.posizione %}selected{% endif %}>
+                                        Annapolis</option>
+                                    <option value="Others" {% if r.posizione %}selected{% endif %}>
+                                        Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Cliente</label>
+                                <input type="text" class="form-control" name="cliente" value="{{ r.cliente }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Concerns/Requests</label>
+                                <input type="text" class="form-control" name="concerns_requests"
+                                    value="{{ r.concerns_requests }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Diagnosis</label>
+                                <select class="form-control" name="diagnosis">
+                                    <option value="PDD (Pending Diagnosis)" {% if r.diagnosis %}selected{% endif %}>
+                                        PDD (Pending Diagnosis)</option>
+                                    <option value="OGD (On-going Diagnosis)" {% if not r.diagnosis %}selected{% endif
+                                        %}>OGD
+                                        (On-going
+                                        Diagnosis)</option>
+                                    <option value="CPD (Complicated Diagnosis)" {% if not r.diagnosis %}selected{% endif
+                                        %}>
+                                        CPD
+                                        (Complicated
+                                        Diagnosis)</option>
+                                    <option value="ICD (Inconclusive Diagnosis)" {% if not r.diagnosis %}selected{%
+                                        endif %}>ICD
+                                        (Inconclusive Diagnosis)</option>
+                                    <option value="Diagnosed" {% if not r.diagnosis %}selected{% endif %}>Diagnosed
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>On-site Details</label>
+                                <input type="text" class="form-control" name="onsite_details"
+                                    value="{{ r.onsite_details }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Tagged</label>
+                                <select class="form-control" name="tagged">
+                                    <option value="Yes" {% if r.tagged %}selected{% endif %}>Yes</option>
+                                    <option value="No" {% if not r.tagged %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Paperwork</label>
+                                <select class="form-control" name="paperwork">
+                                    <option value="Yes" {% if r.paperwork %}selected{% endif %}>Yes</option>
+                                    <option value="No" {% if not r.paperwork %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Estimate</label>
+                                <select class="form-control" name="estimate">
+                                    <option value="Pending Estimate" {% if r.estimate %}selected{% endif %}>Pending
+                                        Estimate</option>
+                                    <option value="Preparing Estimate" {% if not r.estimate %}selected{% endif %}>
+                                        Preparing Estimate</option>
+                                    <option value="Pending RJE" {% if not r.estimate %}selected{% endif %}>Pending
+                                        RJE</option>
+                                    <option value="Estimate Complete" {% if not r.estimate %}selected{% endif %}>
+                                        Estimate Complete</option>
+                                    <option value="Forgone" {% if not r.estimate %}selected{% endif %}>Forgone
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Parts & Materials</label>
+                                <select class="form-control" name="estimate">
+                                    <option value="PPS (Parts Procurement Stage)" {% if r.estimate %}selected{% endif
+                                        %}>PPS
+                                        (Parts
+                                        Procurement Stage)</option>
+                                    <option value="PRS (Parts Recovery Stage)" {% if not r.estimate %}selected{% endif
+                                        %}>
+                                        PRS (Parts Recovery Stage)</option>
+                                    <option value="POS (Parts Ordering Stage)" {% if not r.estimate %}selected{% endif
+                                        %}>
+                                        Pending
+                                        POS (Parts Ordering Stage)</option>
+                                    <option value="WFP (Waiting for Parts)" {% if not r.estimate %}selected{% endif %}>
+                                        WFP (Waiting for Parts)</option>
+                                    <option value="Parts Complete" {% if not r.estimate %}selected{% endif %}>Parts
+                                        Complete
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Billing</label>
+                                <select class="form-control" name="billing">
+                                    <option value="Pending Billing" {% if r.billing %}selected{% endif %}>Pending
+                                        Billing</option>
+                                    <option value="Preparing Billing" {% if not r.billing %}selected{% endif %}>
+                                        Preparing Billing</option>
+                                    <option value="Pending RJE" {% if not r.billing %}selected{% endif %}>Pending
+                                        RJE</option>
+                                    <option value="Informal/Verbal" {% if not r.billing %}selected{% endif %}>
+                                        Informal/Verbal</option>
+                                    <option value="Billing Complete" {% if not r.billing %}selected{% endif %}>
+                                        Billing Complete
+                                    </option>
+                                    <option value="Backjob" {% if not r.billing %}selected{% endif %}>
+                                        Backjob
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Received From</label>
+                                <input type="text" class="form-control" name="received_from"
+                                    value="{{ r.received_from }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Received By</label>
+                                <input type="text" class="form-control" name="received_by" value="{{ r.received_by }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Date Checklisted</label>
+                                <input type="date" class="form-control" name="date_checklisted"
+                                    value="{{ r.date_checklisted }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Checklisted By</label>
+                                <input type="text" class="form-control" name="checklisted_by"
+                                    value="{{ r.checklisted_by }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Related J.O</label>
+                                <input type="text" class="form-control" name="related_jo" value="{{ r.related_jo }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Released To</label>
+                                <input type="text" class="form-control" name="released_to" value="{{ r.released_to }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Released By</label>
+                                <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
