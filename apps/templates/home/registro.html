@@ -9,7 +9,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">REGISTRO</h4>
             <!-- Add Registro Button -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRegistroModal">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#addRegistroModal">
                 +
             </button>
         </div>
@@ -106,16 +106,16 @@
                             <td class="text-center"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2;">
                                 <!-- View Icon -->
-                                <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+                                <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
                                     data-target="#viewRegistroModal{{ r.jo_no }}">
                                     <i class="tim-icons icon-zoom-split"></i>
                                 </a>
-                                <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+                                <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
                                     data-target="#editRegistroModal{{ r.jo_no }}">
                                     <i class="tim-icons icon-pencil"></i>
                                 </a>
-                                <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
-                                    data-target="#viewRegistroModal{{ r.jo_no }}">
+                                <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
+                                    data-target="#deleteRegistroModal{{ r.jo_no }}">
                                     <i class="tim-icons icon-trash-simple"></i>
                                 </a>
                             </td>
@@ -289,7 +289,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-danger">Save</button>
                 </div>
             </form>
         </div>
@@ -303,7 +303,7 @@
         <!-- same size & position -->
         <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
             <div class="modal-header">
-                <h5 class="modal-title" style="padding: 0.5rem 1rem;">VIEW</h5> <!-- matches Add New title format -->
+                <h5 class="modal-title" style="padding: 0.5rem 1rem;"><b>VIEW</b></h5> <!-- matches Add New title format -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -433,12 +433,11 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-            </div>
+            <!-- <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div> -->
         </div>
     </div>
-</div>
 </div>
 {% endfor %}
 
@@ -450,7 +449,7 @@
         <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
             <form method="POST" action="{{ url_for('home_blueprint.edit_registro', id=r.jo_no) }}">
                 <div class="modal-header">
-                    <h5 class="modal-title" style="padding: 0.5rem 1rem;">EDIT</h5>
+                    <h5 class="modal-title" style="padding: 0.5rem 1rem;"><b>EDIT</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -707,7 +706,34 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-danger">Save</button>
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Delete Modal -->
+{% for r in registro_data %}
+<div class="modal fade" id="deleteRegistroModal{{ r.jo_no }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-top: -20vh; max-height: 90vh;">
+        <div class="modal-content" style="display: flex; flex-direction: column;">
+            <form action="{{ url_for('home_blueprint.delete_registro', id=r.jo_no) }}" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Delete</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <strong>J.O# #{{ r.jo_no }}</strong>?
+                </div>
+                <!-- <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;"> -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Confirm</button>
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
                 </div>
             </form>
         </div>

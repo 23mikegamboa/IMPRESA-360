@@ -47,7 +47,7 @@ body.white-content .card {
 }
 
 .navbar.bg-primary {
-  background: rgba(254, 0, 25, 0.9) !important; /* purple */
+  background: rgba(254, 0, 25, 0.9) !important;
   
 }
 
@@ -80,4 +80,17 @@ select.form-control {
   overflow: hidden;      /* Optional: hide overflow */
   text-overflow: ellipsis; /* Optional: add "..." when content too long */
   max-width: 200px;      /* Optional: control column width */
+}
+
+/* Change color of modal close "×" */
+.close span {
+    color: #FE001A !important;   /* your red */
+    /* font-size: 2rem;             optional: make it bigger */
+    /* font-weight: bold;           optional: make it thicker */
+}
+
+/* Optional: change hover color */
+.close span:hover {
+    color: #ff4d4d !important;
+    /* cursor: pointer; */
 }
