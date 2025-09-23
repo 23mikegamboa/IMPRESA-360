@@ -55,7 +55,7 @@ class Registro(db.Model):
         return f'<Registro {self.name}>'
     
 class Modelo(db.Model):
-    modelo_id = db.Column(db.Integer, primary_key=True)
+    modelo_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     make = db.Column(db.String(100))
     description = db.Column(db.String(200))
     model = db.Column(db.String(100))

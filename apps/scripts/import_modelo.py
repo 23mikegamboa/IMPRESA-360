@@ -6,6 +6,7 @@ from apps.home.models import Modelo
 CSV_FILE = "apps/scripts/MODELO_UPDATED.csv"
 
 def import_modelo():
+    Modelo.query.delete()
     with open(CSV_FILE, newline='', encoding="utf-8") as f:
         reader = csv.DictReader(f)
 
