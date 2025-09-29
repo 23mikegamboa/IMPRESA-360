@@ -94,3 +94,27 @@ select.form-control {
     color: #ff4d4d !important;
     /* cursor: pointer; */
 }
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #414141 !important; /* adjust color for dark theme */
+}
+
+.table-bordered {
+  border: 1px solid #414141 !important;
+}
+
+/* Sticky action column with fake borders using box-shadow */
+.sticky-action {
+  position: sticky;
+  right: 0;
+  background-color: #1e1e1e;  /* match your dark theme */
+  z-index: 99;                /* stay on top of other cells */
+
+  /* Fake left & right borders */
+  box-shadow: inset 1px 0 0 #414141, inset -1px 0 0 #414141;
+
+  /* Optional: top & bottom borders for full box effect */
+  border-top: 1px solid #414141;
+  border-bottom: 1px solid #414141;
+}

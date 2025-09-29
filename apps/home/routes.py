@@ -11,7 +11,7 @@ from jinja2 import TemplateNotFound
 from apps import db
 from apps.home.models import Modelo
 from datetime import datetime
-
+from sqlalchemy import asc, func
 
 @blueprint.route('/index')
 @login_required
@@ -25,8 +25,6 @@ def index():
 def registro():
 
     if request.method == "POST":
-        # Get form inputs
-
          # Convert to Python date objects (if provided)
         date_in_str = request.form.get("date_in")
         date_out_str = request.form.get("date_out")
@@ -73,7 +71,7 @@ def registro():
         last_edited_by = request.form.get("last_edited_by")
         
         # Validate required fields
-        if not (servici and jo_no and date_in and vin and plate_no and make and model and color and cliente and posizione and received_by):
+        if not (servici and jo_no and date_in and make and model and color and posizione and received_by):
             flash("Please fill required fields", "danger")
             return redirect(url_for("home_blueprint.registro"))
         
@@ -81,6 +79,18 @@ def registro():
         existing_registro = Registro.query.filter_by(jo_no=jo_no).first()
         if existing_registro:
             flash("J.O No. already exists.", "danger")
+            return redirect(url_for("home_blueprint.registro"))
+        
+        # Check duplicate VIN
+        existing_registro = Registro.query.filter_by(vin=vin).first()
+        if existing_registro:
+            flash("VIN already exists.", "danger")
+            return redirect(url_for("home_blueprint.registro"))
+        
+        # Check duplicate Plate No
+        existing_registro = Registro.query.filter_by(plate_no=plate_no).first()
+        if existing_registro:
+            flash("Plate No. already exists.", "danger")
             return redirect(url_for("home_blueprint.registro"))
         
         # Ensure Make/Model exist in Modelo table, else insert them
@@ -141,17 +151,19 @@ def registro():
 
     # Query all registros from DB
     registro_data = Registro.query.all()
-    #modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
 
-    modelo_data = Modelo.query.with_entities(Modelo.make).distinct().all()
+    modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
 
     # Convert to simple lists for dropdowns
     makes = sorted(set([m.make for m in modelo_data]))
+    #models = sorted(set([m.model for m in modelo_data]))
 
     return render_template('home/registro.html', 
                            segment='registro', 
                            registro_data=registro_data,
-                           makes=makes)
+                           makes=makes#,
+                           #models=models
+                           )
 
 @blueprint.route('/registro/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -227,12 +239,14 @@ def edit_registro(id):
     #Pass makes for the dropdown in edit form too
     modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
     makes = sorted(set([m.make for m in modelo_data]))
+    #models = sorted(set([m.model for m in modelo_data]))
 
     return render_template(
         "home/registro.html",
         segment="registro",
         registro=registro,
-        makes=makes
+        makes=makes#,
+        #models=models
     )
 
 @blueprint.route('/registro/delete/<int:id>', methods=['POST'])
@@ -295,7 +309,8 @@ def get_models(make):
         Modelo.query.with_entities(Modelo.model)
         .filter(Modelo.make == make)
         .distinct()
+        .order_by(func.lower(Modelo.model)) 
         .all()
     )
-    # Return list of model names (filter out None just in case)
+    # Return list of model names (filter out None just in case)    
     return jsonify([m.model for m in models if m.model])
