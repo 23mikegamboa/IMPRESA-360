@@ -19,6 +19,11 @@ def index():
 
     return render_template('home/index.html', segment='index')
 
+# VALIDATE VALUES
+def get_value(field_name):
+    value = request.form.get(field_name, "").strip()
+    return value if value else "None"
+
 # NEW: Customer view & add route
 @blueprint.route('/registro', methods=['GET', 'POST'])
 @login_required
@@ -32,66 +37,79 @@ def registro():
         created_str = request.form.get("created")
         last_edited_str = request.form.get("last_edited")
 
-        servici = request.form.get("servici")
-        jo_no = request.form.get("jo_no")
+        servici = get_value("servici")
+        jo_no = get_value("jo_no")
         date_in = datetime.strptime(date_in_str, "%Y-%m-%d").date() if date_in_str else None
         date_out = datetime.strptime(date_out_str, "%Y-%m-%d").date() if date_out_str else None
-        vin = request.form.get("vin")
-        plate_no = request.form.get("plate_no")
-        make = request.form.get("make")
-        model = request.form.get("model")
-        color = request.form.get("color")
-        km_mileage = request.form.get("km_mileage")
-        notes = request.form.get("notes")
-        posizione = request.form.get("posizione")
-        cliente = request.form.get("cliente")
-        concerns_requests = request.form.get("concerns_requests")
-        diagnosis = request.form.get("diagnosis")
-        onsite_details = request.form.get("onsite_details")
-        tagged = request.form.get("tagged")
-        paperwork = request.form.get("paperwork")
-        estimate = request.form.get("estimate")
-        parts_and_materials = request.form.get("parts_and_materials")
-        billing = request.form.get("billing")
-        day_count = request.form.get("day_count")
-        received_from = request.form.get("received_from")
-        received_by = request.form.get("received_by")
+        vin = get_value("vin")
+        plate_no = get_value("plate_no")
+        make = get_value("make")
+        model = get_value("model")
+        color = get_value("color")
+        km_mileage = get_value("km_mileage")
+        notes = get_value("notes")
+        posizione = get_value("posizione")
+        cliente = get_value("cliente")
+        concerns_requests = get_value("concerns_requests")
+        diagnosis = get_value("diagnosis")
+        onsite_details = get_value("onsite_details")
+        tagged = get_value("tagged")
+        paperwork = get_value("paperwork")
+        estimate = get_value("estimate")
+        parts_and_materials = get_value("parts_and_materials")
+        billing = get_value("billing")
+        day_count = get_value("day_count")
+        received_from = get_value("received_from")
+        received_by = get_value("received_by")
         date_checklisted = datetime.strptime(date_checklisted_str, "%Y-%m-%d").date() if date_checklisted_str else None
-        checklisted_by = request.form.get("checklisted_by")
-        checklist = request.form.get("checklist")
-        scartoffie = request.form.get("scartoffie")
-        transazioni = request.form.get("transazioni")
-        transazioni_intl = request.form.get("transazioni_intl")
-        related_jo = request.form.get("related_jo")
-        released_to = request.form.get("released_to")
-        released_by = request.form.get("released_by")
+        checklisted_by = get_value("checklisted_by")
+        checklist = get_value("checklist")
+        scartoffie = get_value("scartoffie")
+        transazioni = get_value("transazioni")
+        transazioni_intl = get_value("transazioni_intl")
+        related_jo = get_value("related_jo")
+        released_to = get_value("released_to")
+        released_by = get_value("released_by")
         created = datetime.strptime(created_str, "%Y-%m-%d %H:%M:%S") if created_str else datetime.now()
-        created_by = request.form.get("created_by")
+        created_by = get_value("created_by")
         last_edited = datetime.strptime(last_edited_str, "%Y-%m-%d %H:%M:%S") if last_edited_str else datetime.now()
-        last_edited_by = request.form.get("last_edited_by")
+        last_edited_by = get_value("last_edited_by")
         
-        # Validate required fields
-        if not (servici and jo_no and date_in and make and model and color and posizione and received_by):
-            flash("Please fill required fields", "danger")
-            return redirect(url_for("home_blueprint.registro"))
+        if not (servici):
+            flash("Servici required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (jo_no):
+            flash("J.O# required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (date_in):
+            flash("Date In required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (make):
+            flash("Make required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (color):
+            flash("Color required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (posizione):
+            flash("Posizione required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
         
         # Check duplicate JO number
-        existing_registro = Registro.query.filter_by(jo_no=jo_no).first()
-        if existing_registro:
-            flash("J.O No. already exists.", "danger")
-            return redirect(url_for("home_blueprint.registro"))
+        existing_jo_no = Registro.query.filter_by(jo_no=jo_no).first()
+        if existing_jo_no:
+            flash("JO No. already exists.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
         
-        # Check duplicate VIN
-        existing_registro = Registro.query.filter_by(vin=vin).first()
-        if existing_registro:
-            flash("VIN already exists.", "danger")
-            return redirect(url_for("home_blueprint.registro"))
-        
-        # Check duplicate Plate No
-        existing_registro = Registro.query.filter_by(plate_no=plate_no).first()
-        if existing_registro:
-            flash("Plate No. already exists.", "danger")
-            return redirect(url_for("home_blueprint.registro"))
+        # Check invalid date in & date out
+        if date_in is not None and date_out is not None:
+            if date_out < date_in:
+                flash("Invalid date out.", "danger")
+                # return redirect(url_for("home_blueprint.registro"))
         
         # Ensure Make/Model exist in Modelo table, else insert them
         existing_modelo = Modelo.query.filter_by(make=make, model=model).first()
@@ -132,21 +150,27 @@ def registro():
             parts_and_materials="PPS (Parts Procurement Stage)", 
             billing="Pending Billing",  
             day_count=(datetime.today().date()-date_in).days, 
-            checklist="None", 
-            scartoffie="None", 
-            transazioni="None", 
-            transazioni_intl="None", 
+            checklist=checklist,
+            scartoffie=scartoffie,
+            transazioni=transazioni,
+            transazioni_intl=transazioni_intl,
+            #checklist="None", 
+            #scartoffie="None", 
+            #transazioni="None", 
+            #transazioni_intl="None", 
             created=datetime.now(), 
             created_by=created_by, 
             last_edited=last_edited, 
             last_edited_by=last_edited_by
             )
+        try:
+            db.session.add(new_registro)
+            db.session.commit()
+            flash("Successfully added.", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash("Error: " + str(e), "danger")
 
-        # Add to DB session
-        db.session.add(new_registro)
-        db.session.commit()
-
-        flash("Successfully Added!", "success")
         return redirect(url_for("home_blueprint.registro"))
 
     # Query all registros from DB
@@ -161,8 +185,7 @@ def registro():
     return render_template('home/registro.html', 
                            segment='registro', 
                            registro_data=registro_data,
-                           makes=makes#,
-                           #models=models
+                           makes=makes
                            )
 
 @blueprint.route('/registro/edit/<int:id>', methods=['GET', 'POST'])
@@ -179,43 +202,73 @@ def edit_registro(id):
         created_str = request.form.get("created")
         last_edited_str = request.form.get("last_edited")
 
-        registro.servici = request.form.get("servici")
-        registro.jo_no = request.form.get("jo_no")
+        registro.servici = get_value("servici")
+        registro.jo_no = get_value("jo_no")
         registro.date_in = datetime.strptime(date_in_str, "%Y-%m-%d").date() if date_in_str else None
         registro.date_out = datetime.strptime(date_out_str, "%Y-%m-%d").date() if date_out_str else None
-        registro.vin = request.form.get("vin")
-        registro.make = request.form.get("make")
-        registro.model = request.form.get("model")
-        registro.plate_no = request.form.get("plate_no")
-        registro.color = request.form.get("color")
-        registro.notes = request.form.get("notes")
-        registro.cliente = request.form.get("cliente")
-        registro.tagged = request.form.get("tagged")
-        registro.paperwork = request.form.get("paperwork")
-        registro.diagnosis = request.form.get("diagnosis")
-        registro.estimate = request.form.get("estimate")
-        registro.parts_and_materials = request.form.get("parts_and_materials")
-        registro.billing = request.form.get("billing")
-        registro.posizione = request.form.get("posizione")
-        registro.day_count = request.form.get("day_count")
-        registro.released_to = request.form.get("released_to")
-        registro.received_from = request.form.get("received_from")
-        registro.related_jo = request.form.get("related_jo")
-        registro.received_by = request.form.get("received_by")
+        registro.vin = get_value("vin")
+        registro.make = get_value("make")
+        registro.model = get_value("model")
+        registro.plate_no = get_value("plate_no")
+        registro.color = get_value("color")
+        registro.notes = get_value("notes")
+        registro.cliente = get_value("cliente")
+        registro.tagged = get_value("tagged")
+        registro.paperwork = get_value("paperwork")
+        registro.diagnosis = get_value("diagnosis")
+        registro.estimate = get_value("estimate")
+        registro.parts_and_materials = get_value("parts_and_materials")
+        registro.billing = get_value("billing")
+        registro.posizione = get_value("posizione")
+        registro.day_count = get_value("day_count")
+        registro.released_to = get_value("released_to")
+        registro.received_from = get_value("received_from")
+        registro.related_jo = get_value("related_jo")
+        registro.received_by = get_value("received_by")
         registro.date_checklisted = datetime.strptime(date_checklisted_str, "%Y-%m-%d").date() if date_checklisted_str else None
-        registro.checklisted_by = request.form.get("checklisted_by")
-        registro.released_by = request.form.get("released_by")
-        registro.km_mileage = request.form.get("km_mileage")
-        registro.concerns_requests = request.form.get("concerns_requests")
-        registro.scartoffie = request.form.get("scartoffie")
-        registro.transazioni = request.form.get("transazioni")
-        registro.transazioni_intl = request.form.get("transazioni_intl")
+        registro.checklisted_by = get_value("checklisted_by")
+        registro.released_by = get_value("released_by")
+        registro.km_mileage = get_value("km_mileage")
+        registro.concerns_requests = get_value("concerns_requests")
+        registro.scartoffie = get_value("scartoffie")
+        registro.transazioni = get_value("transazioni")
+        registro.transazioni_intl = get_value("transazioni_intl")
         registro.created = datetime.strptime(created_str, "%Y-%m-%d %H:%M:%S") if created_str else datetime.now()
         registro.last_edited = datetime.strptime(last_edited_str, "%Y-%m-%d %H:%M:%S") if last_edited_str else datetime.now()
-        registro.created_by = request.form.get("created_by")
-        registro.last_edited_by = request.form.get("last_edited_by")
-        registro.checklist = request.form.get("checklist")
-        registro.onsite_details = request.form.get("onsite_details")
+        registro.created_by = get_value("created_by")
+        registro.last_edited_by = get_value("last_edited_by")
+        registro.checklist = get_value("checklist")
+        registro.onsite_details = get_value("onsite_details")
+        
+        if not (registro.servici):
+            flash("Servici required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (registro.jo_no):
+            flash("J.O# required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (registro.date_in):
+            flash("Date In required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (registro.make):
+            flash("Make required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (registro.color):
+            flash("Color required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+        
+        if not (registro.posizione):
+            flash("Posizione required.", "danger")
+            # return redirect(url_for("home_blueprint.registro"))
+
+        # Check invalid date in & date out
+        if registro.date_in is not None and registro.date_out is not None:
+            if registro.date_out < registro.date_in:
+                flash("Invalid date out.", "danger")
+            #return redirect(url_for("home_blueprint.registro"))
 
         #Ensure Make/Model exist in Modelo table, else insert them
         make = registro.make
@@ -229,7 +282,7 @@ def edit_registro(id):
 
         try:
             db.session.commit()
-            flash("Updated successfully!", "success")
+            flash("Updated successfully.", "success")
         except Exception as e:
             db.session.rollback()
             flash("Error updating: " + str(e), "danger")
@@ -239,14 +292,12 @@ def edit_registro(id):
     #Pass makes for the dropdown in edit form too
     modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
     makes = sorted(set([m.make for m in modelo_data]))
-    #models = sorted(set([m.model for m in modelo_data]))
-
+    
     return render_template(
         "home/registro.html",
         segment="registro",
         registro=registro,
-        makes=makes#,
-        #models=models
+        makes=makes
     )
 
 @blueprint.route('/registro/delete/<int:id>', methods=['POST'])
@@ -257,10 +308,10 @@ def delete_registro(id):
     try:
         db.session.delete(registro)
         db.session.commit()
-        flash("Registro deleted successfully!", "success")
+        flash("Deleted successfully.", "success")
     except Exception as e:
         db.session.rollback()
-        flash("Error deleting registro: " + str(e), "danger")
+        flash("Error deleting Job Order:" + str(e), "danger")
 
     return redirect(url_for("home_blueprint.registro"))
 

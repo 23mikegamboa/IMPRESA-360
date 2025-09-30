@@ -118,3 +118,47 @@ select.form-control {
   border-top: 1px solid #414141;
   border-bottom: 1px solid #414141;
 }
+
+/* Flash messages container */
+.flash-messages {
+  position: fixed;
+  top: 20px;        /* slightly below navbar */
+  right: 32px;
+  z-index: 2000;
+  max-width: 400px; /* wider bubble */
+}
+
+/* Flash alert bubble */
+.flash-messages .alert {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.95) !important; /* white with opacity */
+  color: #000000;
+  font-size: 1rem;        /* bigger text */
+  /*padding: 15px 50px 15px 20px; /* more room for text and close button */
+  padding: 13px 40px 13px 18px; /* reduced right padding */
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  margin-bottom: 12px;
+  border: 1px solid #DDD;
+}
+
+/* Force the close "x" inside flash alerts */
+.flash-messages .alert .close span {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* Position the close button correctly */
+.flash-messages .alert .close {
+  position: absolute;
+  top: 15px;
+  right: 7px;
+  opacity: 0.8;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.flash-messages .alert .close:hover span {
+  opacity: 1;
+}
