@@ -38,7 +38,6 @@ def registro():
         last_edited_str = request.form.get("last_edited")
 
         servici = get_value("servici")
-        jo_no = get_value("jo_no")
         date_in = datetime.strptime(date_in_str, "%Y-%m-%d").date() if date_in_str else None
         date_out = datetime.strptime(date_out_str, "%Y-%m-%d").date() if date_out_str else None
         vin = get_value("vin")
@@ -79,10 +78,6 @@ def registro():
             flash("Servici required.", "danger")
             # return redirect(url_for("home_blueprint.registro"))
         
-        if not (jo_no):
-            flash("J.O# required.", "danger")
-            # return redirect(url_for("home_blueprint.registro"))
-        
         if not (date_in):
             flash("Date In required.", "danger")
             # return redirect(url_for("home_blueprint.registro"))
@@ -97,12 +92,6 @@ def registro():
         
         if not (posizione):
             flash("Posizione required.", "danger")
-            # return redirect(url_for("home_blueprint.registro"))
-        
-        # Check duplicate JO number
-        existing_jo_no = Registro.query.filter_by(jo_no=jo_no).first()
-        if existing_jo_no:
-            flash("JO No. already exists.", "danger")
             # return redirect(url_for("home_blueprint.registro"))
         
         # Check invalid date in & date out
@@ -121,7 +110,6 @@ def registro():
         # If unique, create new record
         new_registro = Registro(
             servici=servici, 
-            jo_no=jo_no, 
             date_in=date_in, 
             date_out=date_out, 
             vin=vin, 
@@ -182,10 +170,15 @@ def registro():
     makes = sorted(set([m.make for m in modelo_data]))
     #models = sorted(set([m.model for m in modelo_data]))
 
+    # Find last jo_no
+    last_jo = db.session.query(func.max(Registro.jo_no)).scalar() or 0
+    next_jo = last_jo + 1
+
     return render_template('home/registro.html', 
                            segment='registro', 
                            registro_data=registro_data,
-                           makes=makes
+                           makes=makes,
+                           next_jo=next_jo
                            )
 
 @blueprint.route('/registro/edit/<int:id>', methods=['GET', 'POST'])

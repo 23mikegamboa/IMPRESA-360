@@ -157,7 +157,8 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="jo_no">Job Order No</label>
-                                <input type="text" class="form-control" name="jo_no" required>
+                                <input type="text" class="form-control" id="jo_no" name="jo_no"
+                                    value="{{ next_jo }}" readonly>
                             </div>
                         </div>
                         <div class="row">
@@ -552,7 +553,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label>J.O No.</label>
-                                <input type="text" class="form-control" name="jo_no" value="{{ r.jo_no }}">
+                                <input type="text" class="form-control" name="jo_no" value="{{ r.jo_no }}" readonly>
                             </div>
                         </div>
                         <div class="row">

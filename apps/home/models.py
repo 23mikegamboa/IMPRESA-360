@@ -14,7 +14,7 @@ class Registro(db.Model):
     #timestamp_col = 
     
     servici = db.Column(db.String(20))
-    jo_no = db.Column(db.Integer, primary_key=True)
+    jo_no = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date_in = db.Column(db.Date, nullable=False)
     date_out = db.Column(db.Date)
     vin = db.Column(db.String(17), unique=True, nullable=False)
