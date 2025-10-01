@@ -30,7 +30,6 @@ class Registro(db.Model):
     diagnosis = db.Column(db.String(100))
     onsite_details = db.Column(db.String(100))
     tagged = db.Column(db.String(10))
-    paperwork = db.Column(db.String(10))
     estimate = db.Column(db.String(100))
     parts_and_materials = db.Column(db.String(100))
     billing = db.Column(db.String(100))

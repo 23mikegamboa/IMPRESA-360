@@ -53,7 +53,6 @@ def registro():
         diagnosis = get_value("diagnosis")
         onsite_details = get_value("onsite_details")
         tagged = get_value("tagged")
-        paperwork = get_value("paperwork")
         estimate = get_value("estimate")
         parts_and_materials = get_value("parts_and_materials")
         billing = get_value("billing")
@@ -132,7 +131,6 @@ def registro():
             released_by=released_by,
             # auto-fill 
             tagged="No",
-            paperwork="No",
             diagnosis="PDD (Pending Diagnosis)", 
             estimate="Pending Estimate", 
             parts_and_materials="PPS (Parts Procurement Stage)", 
@@ -207,7 +205,6 @@ def edit_registro(id):
         registro.notes = get_value("notes")
         registro.cliente = get_value("cliente")
         registro.tagged = get_value("tagged")
-        registro.paperwork = get_value("paperwork")
         registro.diagnosis = get_value("diagnosis")
         registro.estimate = get_value("estimate")
         registro.parts_and_materials = get_value("parts_and_materials")

@@ -35,7 +35,6 @@
                             <th>Diagnosis</th>
                             <th>On-site Details</th>
                             <th>Tagged</th>
-                            <th>Paperwork</th>
                             <th>Estimate</th>
                             <th>Parts & Materials</th>
                             <th>Billing</th>
@@ -82,7 +81,6 @@
                             <td>{{ r.diagnosis }}</td>
                             <td>{{ r.onsite_details }}</td>
                             <td>{{ r.tagged }}</td>
-                            <td>{{ r.paperwork }}</td>
                             <td>{{ r.estimate }}</td>
                             <td>{{ r.parts_and_materials }}</td>
                             <td>{{ r.billing }}</td>
@@ -401,116 +399,108 @@
                             <input type="text" class="form-control" name="tagged" value="{{ r.tagged }}" readonly>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Paperwork</label>
-                            <input type="text" class="form-control" name="paperwork" value="{{ r.paperwork }}" readonly>
-                        </div>
-                    </div>
-                    <!-- Row 8 -->
-                    <div class="row">
-                        <div class="form-group col-md-6">
                             <label>Estimate</label>
                             <input type="text" class="form-control" name="estimate" value="{{ r.estimate }}" readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Parts & Materials</label>
                             <input type="text" class="form-control" name="parts_and_materials"
                                 value="{{ r.parts_and_materials }}" readonly>
                         </div>
-                    </div>
-                    <!-- Row 9 -->
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Billing</label>
                             <input type="text" class="form-control" name="billing" value="{{ r.billing }}" readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Day Count</label>
                             <input type="text" class="form-control" name="day_count" value="{{ r.day_count }}" readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Received From</label>
                             <input type="text" class="form-control" name="received_from" value="{{ r.received_from }}"
                                 readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Received By</label>
                             <input type="text" class="form-control" name="received_by" value="{{ r.received_by }}"
                                 readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Date Checklisted</label>
                             <input type="date" class="form-control" name="date_checklisted"
                                 value="{{ r.date_checklisted }}">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Checklisted By</label>
                             <input type="text" class="form-control" name="checklisted_by"
                                 value="{{ r.checklisted_by }}">
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Checklist</label>
                             <input type="text" class="form-control" name="checklist" value="{{ r.checklist }}" readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Scartoffie</label>
                             <input type="text" class="form-control" name="scartoffie" value="{{ r.scartoffie }}"
                                 readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Transanzioni</label>
                             <input type="text" class="form-control" name="transazioni" value="{{ r.transazioni }}"
                                 readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Transanzioni (Int'l)</label>
                             <input type="text" class="form-control" name="transazioni_intl"
                                 value="{{ r.transazioni_intl }}" readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Related J.O</label>
                             <input type="text" class="form-control" name="related_jo" value="{{ r.related_jo }}"
                                 readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Released To</label>
                             <input type="text" class="form-control" name="released_to" value="{{ r.released_to }}"
                                 readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Released By</label>
                             <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}"
                                 readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Created</label>
                             <input type="text" class="form-control" name="created" value="{{ r.created }}" readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Created By</label>
                             <input type="text" class="form-control" name="created_by" value="{{ r.created_by }}"
                                 readonly>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Last Edited</label>
                             <input type="text" class="form-control" name="last_edited" value="{{ r.last_edited }}"
                                 readonly>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>Last Edited By</label>
                             <input type="text" class="form-control" name="last_edited_by" value="{{ r.last_edited_by }}"
@@ -686,15 +676,6 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label>Paperwork</label>
-                                <select class="form-control" name="paperwork">
-                                    <option value="Yes" {% if r.paperwork %}selected{% endif %}>Yes</option>
-                                    <option value="No" {% if not r.paperwork %}selected{% endif %}>No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
                                 <label>Estimate</label>
                                 <select class="form-control" name="estimate">
                                     <option value="Pending Estimate" {% if r.estimate %}selected{% endif %}>Pending
@@ -709,6 +690,8 @@
                                     </option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>Parts & Materials</label>
                                 <select class="form-control" name="estimate">
@@ -730,8 +713,6 @@
                                     </option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>Billing</label>
                                 <select class="form-control" name="billing">
@@ -751,38 +732,38 @@
                                     </option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>Received From</label>
                                 <input type="text" class="form-control" name="received_from"
                                     value="{{ r.received_from }}">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>Received By</label>
                                 <input type="text" class="form-control" name="received_by" value="{{ r.received_by }}">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>Date Checklisted</label>
                                 <input type="date" class="form-control" name="date_checklisted"
                                     value="{{ r.date_checklisted }}">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>Related J.O</label>
                                 <input type="text" class="form-control" name="related_jo" value="{{ r.related_jo }}">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6">
                                 <label>Released To</label>
                                 <input type="text" class="form-control" name="released_to" value="{{ r.released_to }}">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label>Released By</label>
-                                <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}">
-                            </div>
+                        <div class="form-group col-md-6">
+                            <label>Released By</label>
+                            <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}">
                         </div>
                     </div>
                 </div>
