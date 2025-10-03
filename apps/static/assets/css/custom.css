@@ -131,7 +131,7 @@ select.form-control {
 /* Flash alert bubble */
 .flash-messages .alert {
   position: relative;
-  background-color: rgba(255, 255, 255, 0.95) !important; /* white with opacity */
+  background-color: rgba(255, 255, 255, 0.9) !important; /* white with opacity */
   color: #000000;
   font-size: 1rem;        /* bigger text */
   /*padding: 15px 50px 15px 20px; /* more room for text and close button */

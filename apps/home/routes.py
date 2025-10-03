@@ -4,14 +4,13 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from apps.home import blueprint
-from apps.home.models import Registro
+from apps.home.models import Registro, Modelo
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from apps import db
-from apps.home.models import Modelo
 from datetime import datetime
-from sqlalchemy import asc, func
+from sqlalchemy import asc, func, case, cast, Integer, desc
 
 @blueprint.route('/index')
 @login_required
@@ -169,20 +168,35 @@ def registro():
     #models = sorted(set([m.model for m in modelo_data]))
 
     # Find last jo_no
-    last_jo = db.session.query(func.max(Registro.jo_no)).scalar() or 0
+    last_jo = db.session.query(func.max(cast(Registro.jo_no, Integer))).scalar() or 0
     next_jo = last_jo + 1
 
+    # Pagination setup
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
+
+    registro_table = Registro.query.order_by(
+        # First: push numeric jo_no to the top (strings last)
+        case(
+            (Registro.jo_no.op('GLOB')('[0-9]*'), 0),  # numeric → 0
+            else_=1                                    # strings → 1
+        ),
+        # Then: order numerics descending
+        desc(cast(Registro.jo_no, Integer))
+    ).paginate(page=page, per_page=per_page)
+    
     return render_template('home/registro.html', 
                            segment='registro', 
                            registro_data=registro_data,
+                           registro_table=registro_table,
                            makes=makes,
                            next_jo=next_jo
                            )
 
-@blueprint.route('/registro/edit/<int:id>', methods=['GET', 'POST'])
+@blueprint.route('/registro/edit/<int:jo_id>', methods=['GET', 'POST'])
 @login_required
-def edit_registro(id):
-    registro = Registro.query.get_or_404(id)
+def edit_registro(jo_id):
+    registro = Registro.query.get_or_404(jo_id)
 
     if request.method == "POST":
 
@@ -290,10 +304,10 @@ def edit_registro(id):
         makes=makes
     )
 
-@blueprint.route('/registro/delete/<int:id>', methods=['POST'])
+@blueprint.route('/registro/delete/<int:jo_id>', methods=['POST'])
 @login_required
-def delete_registro(id):
-    registro = Registro.query.get_or_404(id)
+def delete_registro(jo_id):
+    registro = Registro.query.get_or_404(jo_id)
 
     try:
         db.session.delete(registro)

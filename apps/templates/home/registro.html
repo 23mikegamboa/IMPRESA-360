@@ -17,7 +17,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead class="text-primary" style="white-space: nowrap;">
-                        <tr>
+                        <tr style="text-align: center;">
                             <th>Servici</th>
                             <th>J.O No.</th>
                             <th>Date In</th>
@@ -62,7 +62,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for r in registro_data %}
+                        {% for r in registro_table.items %}
                         <tr>
                             <td>{{ r.servici }}</td>
                             <td>{{ r.jo_no }}</td>
@@ -105,15 +105,15 @@
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2; border: 1px solid #414141;">
                                 <!-- View Icon -->
                                 <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
-                                    data-target="#viewRegistroModal{{ r.jo_no }}">
+                                    data-target="#viewRegistroModal{{ r.jo_id }}">
                                     <i class="tim-icons icon-zoom-split"></i>
                                 </a>
                                 <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
-                                    data-target="#editRegistroModal{{ r.jo_no }}">
+                                    data-target="#editRegistroModal{{ r.jo_id }}">
                                     <i class="tim-icons icon-pencil"></i>
                                 </a>
                                 <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
-                                    data-target="#deleteRegistroModal{{ r.jo_no }}">
+                                    data-target="#deleteRegistroModal{{ r.jo_id }}">
                                     <i class="tim-icons icon-trash-simple"></i>
                                 </a>
                             </td>
@@ -121,6 +121,23 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination justify-content-center mt-3">
+                    {% if registro_table.has_prev %}
+                    <a class="btn btn-outline-primary btn-sm"
+                        href="{{ url_for('home_blueprint.registro', page=registro_table.prev_num) }}">Previous</a>
+                    {% else %}
+                    <span class="btn btn-outline-secondary btn-sm disabled">Previous</span>
+                    {% endif %}
+
+                    <span class="mx-2">Page {{ registro_table.page }} of {{ registro_table.pages }}</span>
+
+                    {% if registro_data.has_next %}
+                    <a class="btn btn-outline-primary btn-sm"
+                        href="{{ url_for('home_blueprint.registro', page=registro_table.next_num) }}">Next</a>
+                    {% else %}
+                    <span class="btn btn-outline-secondary btn-sm">Next</span>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -155,8 +172,8 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="jo_no">Job Order No</label>
-                                <input type="text" class="form-control" id="jo_no" name="jo_no"
-                                    value="{{ next_jo }}" readonly>
+                                <input type="text" class="form-control" id="jo_no" name="jo_no" value="{{ next_jo }}"
+                                    readonly>
                             </div>
                         </div>
                         <div class="row">
@@ -297,7 +314,7 @@
 
 <!-- View Modal -->
 {% for r in registro_data %}
-<div class="modal fade" id="viewRegistroModal{{ r.jo_no }}" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="viewRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
         <!-- same size & position -->
         <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
@@ -519,11 +536,11 @@
 
 <!-- Edit Modal -->
 {% for r in registro_data %}
-<div class="modal fade" id="editRegistroModal{{ r.jo_no }}" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="editRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
         <!-- same size & position -->
         <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
-            <form method="POST" action="{{ url_for('home_blueprint.edit_registro', id=r.jo_no) }}">
+            <form method="POST" action="{{ url_for('home_blueprint.edit_registro', jo_id=r.jo_id) }}">
                 <div class="modal-header">
                     <h5 class="modal-title" style="padding: 0.5rem 1rem;"><b>EDIT</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -578,7 +595,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Model</label>
-                                <select class="form-control" id ="model" name="model">
+                                <select class="form-control" id="model" name="model">
                                     <option value="{{ r.model }}" selected>{{ r.model }}</option>
                                 </select>
                             </div>
@@ -779,10 +796,10 @@
 
 <!-- Delete Modal -->
 {% for r in registro_data %}
-<div class="modal fade" id="deleteRegistroModal{{ r.jo_no }}" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="deleteRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-top: -20vh; max-height: 90vh;">
         <div class="modal-content" style="display: flex; flex-direction: column;">
-            <form action="{{ url_for('home_blueprint.delete_registro', id=r.jo_no) }}" method="POST">
+            <form action="{{ url_for('home_blueprint.delete_registro', jo_id=r.jo_id) }}" method="POST">
                 <div class="modal-header">
                     <h5 class="modal-title"><b>CONFIRM DELETE</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

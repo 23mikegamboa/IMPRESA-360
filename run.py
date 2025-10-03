@@ -13,6 +13,7 @@ from sys import exit
 from apps.config import config_dict
 from apps import create_app, db
 from apps.scripts.import_modelo import import_modelo
+from apps.scripts.import_registro import import_registro
 from apps.scripts.auto_import import auto_upgrade
 
 # WARNING: Don't run with debug turned on in production!
@@ -45,8 +46,16 @@ def import_modelo_command():
     """Import vehicle data from CSV into Modelo table"""
     import_modelo()
 
+# ✅ Define CLI command OUTSIDE of function scope
+@click.command("import-registro")
+@with_appcontext
+def import_registro_command():
+    """Import data from CSV into Registro table"""
+    import_registro()
+
 # ✅ Register the command
 app.cli.add_command(import_modelo_command)
+app.cli.add_command(import_registro_command)
 app.cli.add_command(auto_upgrade)
 
 if __name__ == "__main__":

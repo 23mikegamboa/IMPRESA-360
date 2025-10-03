@@ -12,12 +12,15 @@ class Registro(db.Model):
     #date_col = db.Column(db.Date)
     #bool_col = db.Column(db.Boolean, default=False) 
     #timestamp_col = 
-    
+    jo_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     servici = db.Column(db.String(20))
-    jo_no = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    date_in = db.Column(db.Date, nullable=False)
+    #jo_no = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    jo_no = db.Column(db.Integer)
+    #date_in = db.Column(db.Date, nullable=False)
+    date_in = db.Column(db.Date, nullable=True)
     date_out = db.Column(db.Date)
-    vin = db.Column(db.String(17), unique=True, nullable=False)
+    #vin = db.Column(db.String(17), unique=True, nullable=False)
+    vin = db.Column(db.String(17), nullable=False)
     plate_no = db.Column(db.String(100))
     make = db.Column(db.String(100))
     model = db.Column(db.String(100))
@@ -50,6 +53,11 @@ class Registro(db.Model):
     last_edited = db.Column(db.String(100))
     last_edited_by = db.Column(db.String(100))
 
+    __table_args__ = (
+        db.Index('idx_jo_id', 'jo_id'),
+        db.Index('idx_jo_no', 'jo_no')
+    )
+    
     def __repr__(self):
         return f'<Registro {self.name}>'
     
