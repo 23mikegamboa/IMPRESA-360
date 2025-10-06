@@ -55,7 +55,16 @@ class Registro(db.Model):
 
     __table_args__ = (
         db.Index('idx_jo_id', 'jo_id'),
-        db.Index('idx_jo_no', 'jo_no')
+        db.Index('idx_servici', 'servici'),
+        db.Index('idx_jo_no', 'jo_no'),
+        db.Index('idx_date_in', 'date_in'),
+        db.Index('idx_date_out', 'date_out'),
+        db.Index('idx_vin', 'vin'),
+        db.Index('idx_make', 'make'),
+        db.Index('idx_model', 'model'),
+        db.Index('idx_plate_no', 'plate_no'),
+        db.Index('idx_cliente', 'cliente'),
+        db.Index('idx_posizione', 'posizione')    
     )
     
     def __repr__(self):

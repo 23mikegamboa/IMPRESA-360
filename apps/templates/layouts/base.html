@@ -81,9 +81,6 @@
 
     {% include 'includes/scripts.html' %}
 
-    <!-- Specific Page JS goes HERE  -->
-    {% block javascripts %}{% endblock javascripts %}
-
     <!-- jQuery (must load before Select2) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
@@ -125,5 +122,44 @@
             }, 4000);
         });
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    {% block javascripts %}
+    <script>
+        // === GLOBAL SEARCH DROPDOWN HANDLER (Option 2 Bootstrap Style) ===
+        document.addEventListener("DOMContentLoaded", function () {
+            // Tracks the selected column for DataTables
+            let selectedCol = 1;
+
+            // Handle dropdown item click
+            $(document).on("click", ".dropdown-item", function (e) {
+                e.preventDefault();
+                selectedCol = $(this).data("value");
+                $("#selectedFieldLabel").text($(this).text());
+            });
+
+            // Run search on button click
+            $(document).on("click", "#runSearch", function (e) {
+                e.preventDefault();
+
+                const table = $("#registroTable").DataTable();
+                const searchValue = $("#fieldSearch").val();
+
+                // Clear previous searches and filter selected column only
+                table.columns().search("");
+                table.column(selectedCol).search(searchValue).draw();
+            });
+
+            // Run search when pressing Enter inside search box
+            $(document).on("keypress", "#fieldSearch", function (e) {
+                if (e.which === 13) {
+                    $("#runSearch").click();
+                }
+            });
+        });
+    </script>
+    {% endblock %}
 </body>
 </html>

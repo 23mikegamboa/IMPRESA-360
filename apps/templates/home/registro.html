@@ -14,8 +14,57 @@
             </button>
         </div>
         <div class="card-body">
+            <!-- <div class="d-flex align-items-center mb-3"> -->
+            <div class="d-flex justify-content-between align-items-center py-2 mb-2">
+                <!-- Left: Search field -->
+                <div class="d-flex align-items-center">
+                    <div class="dropdown mr-2">
+                        <button id="searchDropdown" class="btn-sm dropdown-toggle" type="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span id="selectedFieldLabel">Select field</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="searchDropdown">
+                            <a class="dropdown-item" href="#" data-value="1">JO No.</a>
+                            <a class="dropdown-item" href="#" data-value="2">Date In</a>
+                            <a class="dropdown-item" href="#" data-value="3">Date Out</a>
+                            <a class="dropdown-item" href="#" data-value="4">Plate No.</a>
+                            <a class="dropdown-item" href="#" data-value="5">VIN</a>
+                            <a class="dropdown-item" href="#" data-value="6">Make</a>
+                            <a class="dropdown-item" href="#" data-value="7">Model</a>
+                            <a class="dropdown-item" href="#" data-value="8">Cliente</a>
+                            <a class="dropdown-item" href="#" data-value="9">Posizione</a>
+                        </div>
+                    </div>
+                    <input type="text" id="fieldSearch" class="form-control form-control-sm" placeholder="Search"
+                        style="width: 250px;">
+                    <button id="runSearch" class="btn btn-danger btn-sm">
+                        <i class="tim-icons icon-zoom-split"></i>
+                    </button>
+                </div>
+                <!-- Pagination controls -->
+                <div class="mini-pagination-box">
+                    <nav>
+                        <ul class="pagination mb-0 justify-content-center">
+                            <li class="page-item {% if not registro_table.has_prev %}disabled{% endif %}">
+                                <a class="page-link text-white"
+                                    href="{% if registro_table.has_prev %}?page={{ registro_table.prev_num }}{% else %}#{% endif %}">
+                                    Prev
+                                </a>
+                            </li>
+                            <li class="mx-2 text-white">|</li>
+                            <li class="page-item {% if not registro_table.has_next %}disabled{% endif %}">
+                                <a class="page-link text-white"
+                                    href="{% if registro_table.has_next %}?page={{ registro_table.next_num }}{% else %}#{% endif %}">
+                                    Next
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table id="registroTable" class="table table-bordered">
                     <thead class="text-primary" style="white-space: nowrap;">
                         <tr style="text-align: center;">
                             <th>Servici</th>
@@ -103,11 +152,6 @@
                             <!-- Actions -->
                             <td class="text-center sticky-action"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2; border: 1px solid #414141;">
-                                <!-- View Icon -->
-                                <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
-                                    data-target="#viewRegistroModal{{ r.jo_id }}">
-                                    <i class="tim-icons icon-zoom-split"></i>
-                                </a>
                                 <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
                                     data-target="#editRegistroModal{{ r.jo_id }}">
                                     <i class="tim-icons icon-pencil"></i>
@@ -121,29 +165,12 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="pagination justify-content-center mt-3">
-                    {% if registro_table.has_prev %}
-                    <a class="btn btn-outline-primary btn-sm"
-                        href="{{ url_for('home_blueprint.registro', page=registro_table.prev_num) }}">Previous</a>
-                    {% else %}
-                    <span class="btn btn-outline-secondary btn-sm disabled">Previous</span>
-                    {% endif %}
-
-                    <span class="mx-2">Page {{ registro_table.page }} of {{ registro_table.pages }}</span>
-
-                    {% if registro_data.has_next %}
-                    <a class="btn btn-outline-primary btn-sm"
-                        href="{{ url_for('home_blueprint.registro', page=registro_table.next_num) }}">Next</a>
-                    {% else %}
-                    <span class="btn btn-outline-secondary btn-sm">Next</span>
-                    {% endif %}
-                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add Registro Modal -->
+<!-- Add Modal -->
 <div class="modal fade" id="addRegistroModal" tabindex="-1" role="dialog" aria-labelledby="addRegistroLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
@@ -312,230 +339,8 @@
     </div>
 </div>
 
-<!-- View Modal -->
-{% for r in registro_data %}
-<div class="modal fade" id="viewRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
-        <!-- same size & position -->
-        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
-            <div class="modal-header">
-                <h5 class="modal-title" style="padding: 0.5rem 1rem;"><b>VIEW</b></h5>
-                <!-- matches Add New title format -->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Servici</label>
-                            <input type="text" class="form-control" name="servici" value="{{ r.servici }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>J.O No.</label>
-                            <input type="text" class="form-control" name="jo_no" value="{{ r.jo_no }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Date In</label>
-                            <input type="text" class="form-control" name="date_in" value="{{ r.date_in }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Date Out</label>
-                            <input type="text" class="form-control" name="date_out" value="{{ r.date_out }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>VIN</label>
-                            <input type="text" class="form-control" name="vin" value="{{ r.vin }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Plate No.</label>
-                            <input type="text" class="form-control" name="plate_no" value="{{ r.plate_no }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Make</label>
-                            <input type="text" class="form-control" name="make" value="{{ r.make }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Model</label>
-                            <input type="text" class="form-control" name="model" value="{{ r.model }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Color</label>
-                            <input type="text" class="form-control" name="color" value="{{ r.color }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>KM Mileage</label>
-                            <input type="text" class="form-control" name="km_mileage" value="{{ r.km_mileage }}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Notes</label>
-                            <input type="text" class="form-control" name="notes" value="{{ r.notes }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Posizione</label>
-                            <input type="text" class="form-control" name="posizione" value="{{ r.posizione }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Cliente</label>
-                            <input type="text" class="form-control" name="cliente" value="{{ r.cliente }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Concerns/Requests</label>
-                            <input type="text" class="form-control" name="concerns_requests"
-                                value="{{ r.concerns_requests }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Diagnosis</label>
-                            <input type="text" class="form-control" name="diagnosis" value="{{ r.diagnosis }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>On-site Details</label>
-                            <input type="text" class="form-control" name="onsite_details" value="{{ r.onsite_details }}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Tagged</label>
-                            <input type="text" class="form-control" name="tagged" value="{{ r.tagged }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Estimate</label>
-                            <input type="text" class="form-control" name="estimate" value="{{ r.estimate }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Parts & Materials</label>
-                            <input type="text" class="form-control" name="parts_and_materials"
-                                value="{{ r.parts_and_materials }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Billing</label>
-                            <input type="text" class="form-control" name="billing" value="{{ r.billing }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Day Count</label>
-                            <input type="text" class="form-control" name="day_count" value="{{ r.day_count }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Received From</label>
-                            <input type="text" class="form-control" name="received_from" value="{{ r.received_from }}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Received By</label>
-                            <input type="text" class="form-control" name="received_by" value="{{ r.received_by }}"
-                                readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Date Checklisted</label>
-                            <input type="date" class="form-control" name="date_checklisted"
-                                value="{{ r.date_checklisted }}">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Checklisted By</label>
-                            <input type="text" class="form-control" name="checklisted_by"
-                                value="{{ r.checklisted_by }}">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Checklist</label>
-                            <input type="text" class="form-control" name="checklist" value="{{ r.checklist }}" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Scartoffie</label>
-                            <input type="text" class="form-control" name="scartoffie" value="{{ r.scartoffie }}"
-                                readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Transanzioni</label>
-                            <input type="text" class="form-control" name="transazioni" value="{{ r.transazioni }}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Transanzioni (Int'l)</label>
-                            <input type="text" class="form-control" name="transazioni_intl"
-                                value="{{ r.transazioni_intl }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Related J.O</label>
-                            <input type="text" class="form-control" name="related_jo" value="{{ r.related_jo }}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Released To</label>
-                            <input type="text" class="form-control" name="released_to" value="{{ r.released_to }}"
-                                readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Released By</label>
-                            <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Created</label>
-                            <input type="text" class="form-control" name="created" value="{{ r.created }}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Created By</label>
-                            <input type="text" class="form-control" name="created_by" value="{{ r.created_by }}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Last Edited</label>
-                            <input type="text" class="form-control" name="last_edited" value="{{ r.last_edited }}"
-                                readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Last Edited By</label>
-                            <input type="text" class="form-control" name="last_edited_by" value="{{ r.last_edited_by }}"
-                                readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div> -->
-        </div>
-    </div>
-</div>
-{% endfor %}
-
 <!-- Edit Modal -->
-{% for r in registro_data %}
+{% for r in registro_table.items %}
 <div class="modal fade" id="editRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
         <!-- same size & position -->
@@ -777,14 +582,14 @@
                                 <label>Released To</label>
                                 <input type="text" class="form-control" name="released_to" value="{{ r.released_to }}">
                             </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Released By</label>
-                            <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}">
+                            <div class="form-group col-md-6">
+                                <label>Released By</label>
+                                <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
+                <div class="modal-footer" style="padding: 0.5rem 2.5refm; margin-bottom: 0;">
                     <button type="submit" class="btn btn-danger">Save</button>
                     <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
                 </div>
@@ -795,7 +600,7 @@
 {% endfor %}
 
 <!-- Delete Modal -->
-{% for r in registro_data %}
+{% for r in registro_table.items %}
 <div class="modal fade" id="deleteRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-top: -20vh; max-height: 90vh;">
         <div class="modal-content" style="display: flex; flex-direction: column;">

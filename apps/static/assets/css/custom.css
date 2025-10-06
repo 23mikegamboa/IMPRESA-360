@@ -162,3 +162,129 @@ select.form-control {
 .flash-messages .alert .close:hover span {
   opacity: 1;
 }
+
+
+.pagination .page-link {
+  background: transparent !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 500;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.pagination .page-link:hover {
+  color: #FE001A !important;
+  /* red */
+  background-color: transparent !important;
+  /* remove bootstrap hover bg */
+  text-decoration: none;
+}
+
+.mini-pagination-box {
+  background-color: #1e1e1e;
+  /* match your card dark background */
+  border: 1px solid #414141;
+  /* subtle border */
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  width: 153px;
+  /* match Actions column width */
+  text-align: center;
+  /* center the links */
+}
+
+/* Normalize pagination inside mini box */
+.mini-pagination-box .pagination {
+  margin-bottom: 0;
+  align-items: center;
+  /* vertical center */
+}
+
+/* === SEARCH DROPDOWN BUTTON & MENU === */
+#searchDropdown {
+  border: 1px solid #414141 !important;
+  color: #fff !important;
+  background-color: #1e1e1e !important;
+  box-shadow: none !important;
+}
+
+#searchDropdown:hover,
+#searchDropdown:focus,
+#searchDropdown:active,
+.show>#searchDropdown {
+  border-color: #FE001A !important;
+  color: #fff !important;
+}
+
+/* White dropdown caret */
+#searchDropdown::after {
+  display: inline-block;
+  margin-left: 0.35em;
+  vertical-align: 0.15em;
+  content: "";
+  border-top: 0.4em solid #fff;
+  /* white arrow */
+  border-right: 0.4em solid transparent;
+  border-left: 0.4em solid transparent;
+  transition: border-top-color 0.2s ease
+}
+
+/* Red arrow when active or hovered */
+#searchDropdown:hover::after,
+.show>#searchDropdown::after {
+  border-top-color: #FE001A;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  background-color: #1e1e1e !important;
+  border: 1px solid #414141 !important;
+}
+
+.dropdown-item {
+  color: #fff !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #FE001A !important;
+  color: #fff !important;
+}
+
+/* DO NOT REMOVE */
+#fieldSearch {
+  border: 1px solid #414141 !important;
+  color: #fff !important;
+  background-color: #1e1e1e !important;
+  height: 31px;
+}
+
+#fieldSearch:active,
+#fieldSearch:focus {
+  border-color: #FE001A !important;
+}
+
+/* DO NOT REMOVE */
+#fieldSearch::placeholder {
+  color: #ddd !important;
+  opacity: 0.8;
+}
+
+/* DO NOT REMOVE */
+#runSearch {
+  border-radius: 4px !important;
+  height: 31px;
+  /* align with form-control-sm height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  padding: 0 10px;
+}
+
+.dropdown-menu::before,
+.dropdown-menu::after {
+  display: none !important;
+  content: none !important;
+}

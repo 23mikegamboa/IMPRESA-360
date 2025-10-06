@@ -10,7 +10,7 @@ from flask_login import login_required
 from jinja2 import TemplateNotFound
 from apps import db
 from datetime import datetime
-from sqlalchemy import asc, func, case, cast, Integer, desc
+from sqlalchemy import asc, func, case, cast, Integer, desc, or_
 
 @blueprint.route('/index')
 @login_required
@@ -159,7 +159,7 @@ def registro():
         return redirect(url_for("home_blueprint.registro"))
 
     # Query all registros from DB
-    registro_data = Registro.query.all()
+    #registro_data = Registro.query.all()
 
     modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
 
@@ -187,7 +187,7 @@ def registro():
     
     return render_template('home/registro.html', 
                            segment='registro', 
-                           registro_data=registro_data,
+                           #registro_data=registro_data,
                            registro_table=registro_table,
                            makes=makes,
                            next_jo=next_jo
