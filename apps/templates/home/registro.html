@@ -15,31 +15,47 @@
         </div>
         <div class="card-body">
             <!-- <div class="d-flex align-items-center mb-3"> -->
+                <!-- duv class="d-flex align-it" -->
             <div class="d-flex justify-content-between align-items-center py-2 mb-2">
                 <!-- Left: Search field -->
                 <div class="d-flex align-items-center">
-                    <div class="dropdown mr-2">
-                        <button id="searchDropdown" class="btn-sm dropdown-toggle" type="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span id="selectedFieldLabel">Select field</span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="searchDropdown">
-                            <a class="dropdown-item" href="#" data-value="1">JO No.</a>
-                            <a class="dropdown-item" href="#" data-value="2">Date In</a>
-                            <a class="dropdown-item" href="#" data-value="3">Date Out</a>
-                            <a class="dropdown-item" href="#" data-value="4">Plate No.</a>
-                            <a class="dropdown-item" href="#" data-value="5">VIN</a>
-                            <a class="dropdown-item" href="#" data-value="6">Make</a>
-                            <a class="dropdown-item" href="#" data-value="7">Model</a>
-                            <a class="dropdown-item" href="#" data-value="8">Cliente</a>
-                            <a class="dropdown-item" href="#" data-value="9">Posizione</a>
+                    <form method="get" action="{{ url_for('home_blueprint.registro') }}" class="form-inline">
+                        <div class="dropdown mr-2">
+                            <button id="searchDropdown" class="btn-sm dropdown-toggle" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="selectedFieldLabel">
+                                    {% set labels = {
+                                    'jo_no': 'JO No.',
+                                    'date_in': 'Date In',
+                                    'date_out': 'Date Out',
+                                    'plate_no': 'Plate No.',
+                                    'vin': 'VIN',
+                                    'make': 'Make',
+                                    'model': 'Model',
+                                    'cliente': 'Cliente',
+                                    'posizione': 'Posizione'
+                                    } %}
+                                    {{ labels.get(search_field, 'Select field') }}
+                                </span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="searchDropdown">
+                                <a class="dropdown-item" href="#" data-value="jo_no">JO No.</a>
+                                <a class="dropdown-item" href="#" data-value="date_in">Date In</a>
+                                <a class="dropdown-item" href="#" data-value="date_out">Date Out</a>
+                                <a class="dropdown-item" href="#" data-value="plate_no">Plate No.</a>
+                                <a class="dropdown-item" href="#" data-value="vin">VIN</a>
+                                <a class="dropdown-item" href="#" data-value="make">Make</a>
+                                <a class="dropdown-item" href="#" data-value="model">Model</a>
+                                <a class="dropdown-item" href="#" data-value="cliente">Cliente</a>
+                                <a class="dropdown-item" href="#" data-value="posizione">Posizione</a>
+                            </div>
                         </div>
-                    </div>
-                    <input type="text" id="fieldSearch" class="form-control form-control-sm" placeholder="Search"
-                        style="width: 250px;">
-                    <button id="runSearch" class="btn btn-danger btn-sm">
-                        <i class="tim-icons icon-zoom-split"></i>
-                    </button>
+                        <input type="hidden" name="field" id="searchFieldInput" value="{{ search_field or '' }}">
+                        <input type="text" name="query" id="fieldSearch" class="form-control form-control-sm"
+                            placeholder="Search..." value="{{ search_query or '' }}" style="width: 250px;">
+                        <button id="runSearch" class="btn btn-danger btn-sm">
+                            <i class="tim-icons icon-zoom-split"></i>
+                        </button>
                 </div>
                 <!-- Pagination controls -->
                 <div class="mini-pagination-box">
@@ -47,14 +63,14 @@
                         <ul class="pagination mb-0 justify-content-center">
                             <li class="page-item {% if not registro_table.has_prev %}disabled{% endif %}">
                                 <a class="page-link text-white"
-                                    href="{% if registro_table.has_prev %}?page={{ registro_table.prev_num }}{% else %}#{% endif %}">
+                                    href="{% if registro_table.has_prev %}?page={{ registro_table.prev_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
                                     Prev
                                 </a>
                             </li>
                             <li class="mx-2 text-white">|</li>
                             <li class="page-item {% if not registro_table.has_next %}disabled{% endif %}">
                                 <a class="page-link text-white"
-                                    href="{% if registro_table.has_next %}?page={{ registro_table.next_num }}{% else %}#{% endif %}">
+                                    href="{% if registro_table.has_next %}?page={{ registro_table.next_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
                                     Next
                                 </a>
                             </li>

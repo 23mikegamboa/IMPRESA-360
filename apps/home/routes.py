@@ -158,24 +158,46 @@ def registro():
 
         return redirect(url_for("home_blueprint.registro"))
 
-    # Query all registros from DB
-    #registro_data = Registro.query.all()
-
+    # Query all vehicle data
     modelo_data = Modelo.query.with_entities(Modelo.make, Modelo.model).distinct().all()
 
     # Convert to simple lists for dropdowns
     makes = sorted(set([m.make for m in modelo_data]))
-    #models = sorted(set([m.model for m in modelo_data]))
 
     # Find last jo_no
     last_jo = db.session.query(func.max(cast(Registro.jo_no, Integer))).scalar() or 0
     next_jo = last_jo + 1
 
+    # === NEW: SEARCH HANDLER ===
+    search_field = request.args.get("field")
+    search_query = request.args.get("query", "").strip()
+    
+    # Base query
+    registro_query = Registro.query
+
+    # If a search field & query are provided
+    if search_field and search_query:
+        field_map = {
+            "jo_no": Registro.jo_no,
+            "date_in": Registro.date_in,
+            "date_out": Registro.date_out,
+            "plate_no": Registro.plate_no,
+            "vin": Registro.vin,
+            "make": Registro.make,
+            "model": Registro.model,
+            "cliente": Registro.cliente,
+            "posizione": Registro.posizione
+        }
+
+        if search_field in field_map:
+            column = field_map[search_field]
+            registro_query = registro_query.filter(func.lower(column).like(f"%{search_query}%"))
+
     # Pagination setup
     page = request.args.get('page', 1, type=int)
     per_page = 20
 
-    registro_table = Registro.query.order_by(
+    registro_table = registro_query.order_by(
         # First: push numeric jo_no to the top (strings last)
         case(
             (Registro.jo_no.op('GLOB')('[0-9]*'), 0),  # numeric → 0
@@ -190,7 +212,9 @@ def registro():
                            #registro_data=registro_data,
                            registro_table=registro_table,
                            makes=makes,
-                           next_jo=next_jo
+                           next_jo=next_jo,
+                           search_field=search_field,
+                           search_query=search_query
                            )
 
 @blueprint.route('/registro/edit/<int:jo_id>', methods=['GET', 'POST'])

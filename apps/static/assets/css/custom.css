@@ -163,21 +163,65 @@ select.form-control {
   opacity: 1;
 }
 
+/* === FIX: Continuous rapid-click pagination === */
 
+/* Layout fix */
+.pagination {
+  gap: 2px;
+  align-items: center;
+}
+
+/* Base link */
 .pagination .page-link {
   background: transparent !important;
   border: none !important;
   color: white !important;
   font-weight: 500;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  padding: 4px 10px;
+  line-height: 1.4;
+  transition: none !important;        /* no transition delay */
+  user-select: none;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
+/* Remove Bootstrap click delay */
+.pagination .page-link:focus,
+.pagination .page-link:focus-visible,
+.pagination .page-link:active {
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: #FE001A !important;
+}
+
+/* Always clickable — never disabled by hover/focus */
+.pagination .page-item:not(.disabled) .page-link {
+  pointer-events: all !important;
+}
+
+/* Force browser to treat click as pure mousedown */
+.pagination .page-link {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover = Red, Click = Red */
 .pagination .page-link:hover {
   color: #FE001A !important;
-  /* red */
-  background-color: transparent !important;
-  /* remove bootstrap hover bg */
-  text-decoration: none;
+  background: transparent !important;
+}
+
+/* Disabled gray */
+.pagination .page-item.disabled .page-link {
+  color: #777 !important;
+  pointer-events: none !important;
+  cursor: default;
+}
+
+/* Divider alignment */
+.pagination li {
+  display: flex;
+  align-items: center;
 }
 
 .mini-pagination-box {
@@ -202,19 +246,45 @@ select.form-control {
 }
 
 /* === SEARCH DROPDOWN BUTTON & MENU === */
-#searchDropdown {
+/* #searchDropdown {
   border: 1px solid #414141 !important;
   color: #fff !important;
   background-color: #1e1e1e !important;
   box-shadow: none !important;
+} */
+
+#searchDropdown {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #414141 !important;
+  color: #fff !important;
+  background-color: #1e1e1e !important;
+  width: 120px; /* width based on 'Select field' placeholder */
+  height: 31px;
+  padding: 0 10px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-#searchDropdown:hover,
+/* #searchDropdown:hover,
 #searchDropdown:focus,
 #searchDropdown:active,
 .show>#searchDropdown {
   border-color: #FE001A !important;
   color: #fff !important;
+} */
+
+/* Hover, focus, active states */
+#searchDropdown:hover,
+#searchDropdown:focus,
+#searchDropdown:active,
+#searchDropdown.show {
+  border-color: #FE001A !important;
+  color: #fff !important;
+  box-shadow: none !important;
 }
 
 /* White dropdown caret */
@@ -240,10 +310,12 @@ select.form-control {
 .dropdown-menu {
   background-color: #1e1e1e !important;
   border: 1px solid #414141 !important;
+  min-width: 120px !important; /* match button width */
 }
 
 .dropdown-item {
   color: #fff !important;
+  white-space: nowrap;
 }
 
 .dropdown-item:hover,

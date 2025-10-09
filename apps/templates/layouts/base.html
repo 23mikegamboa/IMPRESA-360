@@ -128,38 +128,102 @@
 
     {% block javascripts %}
     <script>
-        // === GLOBAL SEARCH DROPDOWN HANDLER (Option 2 Bootstrap Style) ===
         document.addEventListener("DOMContentLoaded", function () {
-            // Tracks the selected column for DataTables
-            let selectedCol = 1;
-
-            // Handle dropdown item click
+            // When a dropdown item is clicked
             $(document).on("click", ".dropdown-item", function (e) {
                 e.preventDefault();
-                selectedCol = $(this).data("value");
-                $("#selectedFieldLabel").text($(this).text());
-            });
 
-            // Run search on button click
-            $(document).on("click", "#runSearch", function (e) {
-                e.preventDefault();
+                const selectedField = $(this).data("value");
+                const selectedLabel = $(this).text();
 
-                const table = $("#registroTable").DataTable();
-                const searchValue = $("#fieldSearch").val();
-
-                // Clear previous searches and filter selected column only
-                table.columns().search("");
-                table.column(selectedCol).search(searchValue).draw();
-            });
-
-            // Run search when pressing Enter inside search box
-            $(document).on("keypress", "#fieldSearch", function (e) {
-                if (e.which === 13) {
-                    $("#runSearch").click();
-                }
+                // Update hidden input and label text
+                $("#searchFieldInput").val(selectedField);
+                $("#selectedFieldLabel").text(selectedLabel);
             });
         });
     </script>
     {% endblock %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // === CLEAR SEARCH ON PAGE REFRESH ===
+            if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+                // Clear the query string parameters (field & query)
+                const url = new URL(window.location.href);
+                url.searchParams.delete("field");
+                url.searchParams.delete("query");
+
+                // If the URL actually had search params, reload cleanly
+                if (window.location.search.includes("field") || window.location.search.includes("query")) {
+                    window.location.href = url.pathname; // reload page without params
+                } else {
+                    // Also clear the search input visually
+                    const searchBox = document.getElementById("fieldSearch");
+                    const label = document.getElementById("selectedFieldLabel");
+                    if (searchBox) searchBox.value = "";
+                    if (label) label.innerText = "Select field";
+                }
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector('form[action*="registro"]'); // your search form
+            const runSearchBtn = document.getElementById("runSearch");
+            const selectedLabel = document.getElementById("selectedFieldLabel");
+            const flashBox = document.querySelector(".flash-messages");
+            const fieldSearch = document.getElementById("fieldSearch");
+
+            if (form && runSearchBtn) {
+                runSearchBtn.addEventListener("click", function (e) {
+                    e.preventDefault(); // Stop default submit first
+
+                    const selectedText = selectedLabel.textContent.trim();
+                    const searchText = fieldSearch.value.trim();
+
+                    // === Validation: No field or no query ===
+                    if (selectedText === "Select field" || searchText === "") {
+                        // Clear existing alert
+                        flashBox.innerHTML = "";
+
+                        // Insert styled alert
+                        flashBox.insertAdjacentHTML("beforeend", `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${selectedText === "Select field"
+                                ? "No search field selected."
+                                : "Search box empty."}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+
+                        // Auto-dismiss after 4 seconds
+                        setTimeout(() => {
+                            $(".flash-messages .alert").fadeTo(500, 0).slideUp(500, function () {
+                                $(this).remove();
+                            });
+                        }, 4000);
+
+                        return; // Stop here, don’t submit
+                    }
+
+                    // ✅ If validation passes, actually submit the form
+                    form.submit();
+                });
+            }
+        });
+    </script>
+    <script>
+        // Fix Bootstrap focus trap for rapid pagination clicking
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.pagination .page-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    this.blur(); // immediately remove focus after click
+                });
+            });
+        });
+    </script>
+
 </body>
+
 </html>
