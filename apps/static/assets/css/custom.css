@@ -2,7 +2,7 @@
 
 /* ===== DARK MODE ===== */
 body {
-  background-color: #121212 !important; /* dark body */
+  background-color: #191919 !important; /* dark body */
 }
 
 .sidebar {
@@ -15,11 +15,11 @@ body {
 
 .main-panel,
 .content {
-  background-color: #121212 !important; /* page container */
+  background-color: #191919 !important; /* page container */
 }
 
 .card {
-  background-color: #1e1e1e !important;
+  background-color: #202020 !important;
   color: #eee !important;
 }
 
@@ -53,7 +53,7 @@ body.white-content .card {
 
 .modal .form-control {
   color: #000 !important;          /* black text */
-  background-color: #f9f9f9 !important; /* light gray background */
+  background-color: #f9f9f9 !important; /* text box color */
   border: 1px solid #ccc;
 }
 
@@ -74,12 +74,21 @@ select.form-control {
   background-repeat: no-repeat;
 }
 
-.table th, 
-.table td {
-  white-space: nowrap;   /* Prevent wrapping */
-  overflow: hidden;      /* Optional: hide overflow */
-  text-overflow: ellipsis; /* Optional: add "..." when content too long */
-  max-width: 200px;      /* Optional: control column width */
+#registroTable th,
+#registroTable td {
+  white-space: nowrap;  /* prevent wrapping by default */
+  vertical-align: middle;
+  overflow: visible;     /* allow content to size the column */
+  text-overflow: initial;
+  max-width: none;       /* remove width restriction */
+  padding: 0.5rem 0.75rem;
+}
+
+/* Allow wrapping only for specific columns if needed (like Cliente) */
+#registroTable td:nth-child(7),
+#registroTable th:nth-child(7) {
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 /* Change color of modal close "×" */
@@ -102,21 +111,6 @@ select.form-control {
 
 .table-bordered {
   border: 1px solid #414141 !important;
-}
-
-/* Sticky action column with fake borders using box-shadow */
-.sticky-action {
-  position: sticky;
-  right: 0;
-  background-color: #1e1e1e;  /* match your dark theme */
-  z-index: 99;                /* stay on top of other cells */
-
-  /* Fake left & right borders */
-  box-shadow: inset 1px 0 0 #414141, inset -1px 0 0 #414141;
-
-  /* Optional: top & bottom borders for full box effect */
-  border-top: 1px solid #414141;
-  border-bottom: 1px solid #414141;
 }
 
 /* Flash messages container */
@@ -236,6 +230,7 @@ select.form-control {
   /* match Actions column width */
   text-align: center;
   /* center the links */
+  margin-right: -10px;
 }
 
 /* Normalize pagination inside mini box */
@@ -246,12 +241,6 @@ select.form-control {
 }
 
 /* === SEARCH DROPDOWN BUTTON & MENU === */
-/* #searchDropdown {
-  border: 1px solid #414141 !important;
-  color: #fff !important;
-  background-color: #1e1e1e !important;
-  box-shadow: none !important;
-} */
 
 #searchDropdown {
   display: inline-flex;
@@ -267,6 +256,7 @@ select.form-control {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-left: -8px;
 }
 
 /* #searchDropdown:hover,
@@ -359,4 +349,147 @@ select.form-control {
 .dropdown-menu::after {
   display: none !important;
   content: none !important;
+}
+
+.modal-content {
+  background-color: #202020 !important; /* match card background */
+  color: #eee !important;               /* light text for readability */
+  border: 1px solid #414141 !important; /* subtle border for separation */
+}
+
+/* === HARD LOCK: Prevent page scroll, only allow table scroll === */
+
+/* Stop scroll everywhere except the table-container */
+html, body {
+  height: 100%;
+  overflow: hidden !important;
+}
+
+.wrapper,
+.main-panel,
+.content {
+  height: 102vh !important;
+  overflow: hidden !important;
+}
+
+/* Let the card fill the viewport properly */
+.content .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+}
+
+.content .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: visible !important; /* ✅ allow sticky header to work */
+  height: 100%;
+  padding-bottom: 0;
+}
+
+/* Card-body fills remaining space but never scrolls */
+.content .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden !important;
+  height: 100%;
+  padding-bottom: 0;
+}
+
+/* Freeze the search + pagination controls */
+.fixed-controls {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background-color: #202020;
+  border-bottom: 1px solid #414141;
+  padding: 0.75rem 0.5rem;
+}
+
+.table-container {
+  position: relative;
+  flex: 1;
+  overflow-y: auto !important; /* vertical scroll */
+  overflow-x: auto !important; /* horizontal scroll if needed */
+  scrollbar-width: thin;
+  scrollbar-color: #414141 #191919;
+  height: 100%;                /* ensure it defines scrollable region */
+}
+
+/* Scrollbar appearance */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+.table-container::-webkit-scrollbar-track {
+  background: #191919;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #414141;
+  border-radius: 10px;
+}
+
+/* === STICKY TABLE HEADERS (FINAL + BORDER FIX) === */
+#registroTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20; /* higher than body rows to keep border visible */
+  background-color: #202020 !important; /* same dark background */
+  border-bottom: 2px solid #414141 !important; /* thicker, always-visible border */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); /* subtle depth */
+  background-clip: padding-box; /* prevent bleed through */
+}
+
+#registroTable thead th::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #414141;
+  z-index: 25; /* sits above everything */
+}
+
+/* === PERMANENT ACTION COLUMN BORDERS FIX (FINAL) === */
+
+/* === TABLE AUTO-WIDTH + WRAP LONG TEXT === */
+#registroTable {
+  width: 100%;
+  table-layout: auto !important;
+  border-collapse: collapse;
+}
+
+#registroTable th,
+#registroTable td {
+  white-space: normal !important; /* allow wrapping */
+  word-wrap: break-word;
+  vertical-align: middle;
+  overflow: visible;
+  text-overflow: unset;
+  padding: 0.5rem 0.75rem;
+}
+
+#registroTable th {
+  background-clip: padding-box; /* prevents shadow bleed */
+}
+
+.reset-search-box {
+  background-color: #1e1e1e;
+  /* match your card dark background */
+  border: 1px solid #414141;
+  /* subtle border */
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  /* match Actions column width */
+  text-align: center;
+  /* center the links */
+  margin-right: -10px;
+  height: 31px;
+  display: inline-flex;
+  align-items: center;
 }

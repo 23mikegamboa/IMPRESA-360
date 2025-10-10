@@ -15,156 +15,110 @@
         </div>
         <div class="card-body">
             <!-- <div class="d-flex align-items-center mb-3"> -->
-                <!-- duv class="d-flex align-it" -->
-            <div class="d-flex justify-content-between align-items-center py-2 mb-2">
-                <!-- Left: Search field -->
-                <div class="d-flex align-items-center">
-                    <form method="get" action="{{ url_for('home_blueprint.registro') }}" class="form-inline">
-                        <div class="dropdown mr-2">
-                            <button id="searchDropdown" class="btn-sm dropdown-toggle" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="selectedFieldLabel">
-                                    {% set labels = {
-                                    'jo_no': 'JO No.',
-                                    'date_in': 'Date In',
-                                    'date_out': 'Date Out',
-                                    'plate_no': 'Plate No.',
-                                    'vin': 'VIN',
-                                    'make': 'Make',
-                                    'model': 'Model',
-                                    'cliente': 'Cliente',
-                                    'posizione': 'Posizione'
-                                    } %}
-                                    {{ labels.get(search_field, 'Select field') }}
-                                </span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="searchDropdown">
-                                <a class="dropdown-item" href="#" data-value="jo_no">JO No.</a>
-                                <a class="dropdown-item" href="#" data-value="date_in">Date In</a>
-                                <a class="dropdown-item" href="#" data-value="date_out">Date Out</a>
-                                <a class="dropdown-item" href="#" data-value="plate_no">Plate No.</a>
-                                <a class="dropdown-item" href="#" data-value="vin">VIN</a>
-                                <a class="dropdown-item" href="#" data-value="make">Make</a>
-                                <a class="dropdown-item" href="#" data-value="model">Model</a>
-                                <a class="dropdown-item" href="#" data-value="cliente">Cliente</a>
-                                <a class="dropdown-item" href="#" data-value="posizione">Posizione</a>
+            <!-- duv class="d-flex align-it" -->
+            <div class="fixed-controls">
+                <div class="d-flex justify-content-between align-items-center py-2 mb-2">
+                    <!-- Left: Search field -->
+                    <div class="d-flex align-items-center">
+                        <form method="get" action="{{ url_for('home_blueprint.registro') }}" class="form-inline">
+                            <div class="dropdown mr-2">
+                                <button id="searchDropdown" class="btn-sm dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="selectedFieldLabel">
+                                        {% set labels = {
+                                        'jo_no': 'JO No.',
+                                        'date_in': 'Date In',
+                                        'date_out': 'Date Out',
+                                        'plate_no': 'Plate No.',
+                                        'vin': 'VIN',
+                                        'make': 'Make',
+                                        'model': 'Model',
+                                        'cliente': 'Cliente',
+                                        'posizione': 'Posizione'
+                                        } %}
+                                        {{ labels.get(search_field, 'Select field') }}
+                                    </span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="searchDropdown">
+                                    <a class="dropdown-item" href="#" data-value="jo_no">JO No.</a>
+                                    <a class="dropdown-item" href="#" data-value="date_in">Date In</a>
+                                    <a class="dropdown-item" href="#" data-value="date_out">Date Out</a>
+                                    <a class="dropdown-item" href="#" data-value="plate_no">Plate No.</a>
+                                    <a class="dropdown-item" href="#" data-value="vin">VIN</a>
+                                    <a class="dropdown-item" href="#" data-value="make">Make</a>
+                                    <a class="dropdown-item" href="#" data-value="model">Model</a>
+                                    <a class="dropdown-item" href="#" data-value="cliente">Cliente</a>
+                                    <a class="dropdown-item" href="#" data-value="posizione">Posizione</a>
+                                </div>
                             </div>
-                        </div>
-                        <input type="hidden" name="field" id="searchFieldInput" value="{{ search_field or '' }}">
-                        <input type="text" name="query" id="fieldSearch" class="form-control form-control-sm"
-                            placeholder="Search..." value="{{ search_query or '' }}" style="width: 250px;">
-                        <button id="runSearch" class="btn btn-danger btn-sm">
-                            <i class="tim-icons icon-zoom-split"></i>
-                        </button>
-                </div>
-                <!-- Pagination controls -->
-                <div class="mini-pagination-box">
-                    <nav>
-                        <ul class="pagination mb-0 justify-content-center">
-                            <li class="page-item {% if not registro_table.has_prev %}disabled{% endif %}">
-                                <a class="page-link text-white"
-                                    href="{% if registro_table.has_prev %}?page={{ registro_table.prev_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
-                                    Prev
-                                </a>
-                            </li>
-                            <li class="mx-2 text-white">|</li>
-                            <li class="page-item {% if not registro_table.has_next %}disabled{% endif %}">
-                                <a class="page-link text-white"
-                                    href="{% if registro_table.has_next %}?page={{ registro_table.next_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
-                                    Next
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                            <input type="hidden" name="field" id="searchFieldInput" value="{{ search_field or '' }}">
+                            <input type="text" name="query" id="fieldSearch" class="form-control form-control-sm"
+                                placeholder="Search" value="{{ search_query or '' }}" style="width: 250px;">
+                            <button id="runSearch" class="btn btn-danger btn-sm">
+                                <i class="tim-icons icon-zoom-split"></i>
+                            </button>
+                            <!-- <div class="reset-search-box"> -->
+                                <nav>
+                                    <ul class="pagination mb-0 justify-content-center">
+                                        <li>
+                                            <a class="page-link text-white"
+                                                href="{{ url_for('home_blueprint.registro') }}">
+                                                RESET
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            <!-- </div> -->
+                    </div>
+                    <!-- Pagination controls -->
+                    <div class="mini-pagination-box">
+                        <nav>
+                            <ul class="pagination mb-0 justify-content-center">
+                                <li class="page-item {% if not registro_table.has_prev %}disabled{% endif %}">
+                                    <a class="page-link text-white"
+                                        href="{% if registro_table.has_prev %}?page={{ registro_table.prev_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
+                                        Prev
+                                    </a>
+                                </li>
+                                <li class="mx-2 text-white">|</li>
+                                <li class="page-item {% if not registro_table.has_next %}disabled{% endif %}">
+                                    <a class="page-link text-white"
+                                        href="{% if registro_table.has_next %}?page={{ registro_table.next_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
-
-            <div class="table-responsive">
+            <div class="table-container table-responsive" style="overflow-y: auto;">
                 <table id="registroTable" class="table table-bordered">
                     <thead class="text-primary" style="white-space: nowrap;">
                         <tr style="text-align: center;">
-                            <th>Servici</th>
+                            <!-- <th>Servici</th> -->
                             <th>J.O No.</th>
                             <th>Date In</th>
                             <th>Date Out</th>
                             <th>VIN</th>
-                            <th>Plate No.</th>
-                            <th>Make</th>
-                            <th>Model</th>
-                            <th>Color</th>
-                            <th>KM Mileage</th>
-                            <th>Notes</th>
-                            <th>Posizione</th>
+                            <th>Vehicle Details</th>
                             <th>Cliente</th>
-                            <th>Concerns/Requests</th>
-                            <th>Diagnosis</th>
-                            <th>On-site Details</th>
-                            <th>Tagged</th>
-                            <th>Estimate</th>
-                            <th>Parts & Materials</th>
-                            <th>Billing</th>
-                            <th>Day Count</th>
-                            <th>Received From</th>
-                            <th>Received By</th>
-                            <th>Date Checklisted</th>
-                            <th>Checklisted By</th>
-                            <th>Checklist</th>
-                            <th>Scartoffie</th>
-                            <th>Transazioni</th>
-                            <th>Transazioni (Int'l)</th>
-                            <th>Related J.O</th>
-                            <th>Released To</th>
-                            <th>Released By</th>
-                            <th>Created</th>
-                            <th>Created by</th>
-                            <th>Last edited</th>
-                            <th>Last edited by</th>
-                            <!-- New Actions Column -->
-                            <th class="text-center sticky-action"
-                                style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2; border: 1px solid #414141;">
-                                Actions
-                            </th>
+                            <th class="text-center sticky-action">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for r in registro_table.items %}
                         <tr>
-                            <td>{{ r.servici }}</td>
                             <td>{{ r.jo_no }}</td>
                             <td>{{ r.date_in }}</td>
                             <td>{{ r.date_out }}</td>
                             <td>{{ r.vin }}</td>
-                            <td>{{ r.plate_no }}</td>
-                            <td>{{ r.make }}</td>
-                            <td>{{ r.model }}</td>
-                            <td>{{ r.color }}</td>
-                            <td>{{ r.km_mileage }}</td>
-                            <td>{{ r.notes }}</td>
-                            <td>{{ r.posizione }}</td>
+                            <td>
+                                {{ r.make }} {{ r.model }}
+                                <br>
+                                <small class="text-muted">{{ r.plate_no }}</small>
+                            </td>
                             <td>{{ r.cliente }}</td>
-                            <td>{{ r.concerns_requests }}</td>
-                            <td>{{ r.diagnosis }}</td>
-                            <td>{{ r.onsite_details }}</td>
-                            <td>{{ r.tagged }}</td>
-                            <td>{{ r.estimate }}</td>
-                            <td>{{ r.parts_and_materials }}</td>
-                            <td>{{ r.billing }}</td>
-                            <td>{{ r.day_count }}</td>
-                            <td>{{ r.received_from }}</td>
-                            <td>{{ r.received_by }}</td>
-                            <td>{{ r.date_checklisted }}</td>
-                            <td>{{ r.checklisted_by }}</td>
-                            <td>{{ r.checklist }}</td>
-                            <td>{{ r.scartoffie }}</td>
-                            <td>{{ r.transazioni }}</td>
-                            <td>{{ r.transazioni_intl }}</td>
-                            <td>{{ r.related_jo }}</td>
-                            <td>{{ r.released_to }}</td>
-                            <td>{{ r.released_by }}</td>
-                            <td>{{ r.created }}</td>
-                            <td>{{ r.created_by }}</td>
-                            <td>{{ r.last_edited }}</td>
-                            <td>{{ r.last_edited_by }}</td>
                             <!-- Actions -->
                             <td class="text-center sticky-action"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2; border: 1px solid #414141;">
