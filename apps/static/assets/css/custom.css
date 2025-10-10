@@ -493,3 +493,22 @@ html, body {
   display: inline-flex;
   align-items: center;
 }
+
+/* === NAVBAR USER DROPDOWN FIX === */
+.navbar .dropdown-menu.dropdown-navbar {
+  left: auto !important;
+  right: -20% !important;
+  top: 85% !important;
+  transform: translate3d(0, 0, 0) !important;
+  margin-top: 0.5rem !important;
+  background-color: #1e1e1e !important; /* match dark theme */
+  border: 1px solid #414141 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 6px !important;
+}
+
+.navbar .dropdown-menu.dropdown-navbar .dropdown-item:hover,
+.navbar .dropdown-menu.dropdown-navbar .dropdown-item:focus {
+  color: #FE001A !important;             /* red text on hover */
+  background-color: transparent !important; /* no bg fill */
+}
