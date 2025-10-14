@@ -109,16 +109,16 @@
                     <tbody>
                         {% for r in registro_table.items %}
                         <tr>
-                            <td>{{ r.jo_no }}</td>
-                            <td>{{ r.date_in }}</td>
-                            <td>{{ r.date_out }}</td>
-                            <td>{{ r.vin }}</td>
+                            <td>{{ '' if r.jo_no in [None, 'None'] else r.jo_no }}</td>
+                            <td>{{ '' if r.date_in in [None, 'None'] else r.date_in }}</td>
+                            <td>{{ '' if r.date_out in [None, 'None'] else r.date_out }}</td>
+                            <td>{{ '' if r.vin in [None, 'None'] else r.vin }}</td>
                             <td>
-                                {{ r.make }} {{ r.model }}
+                                {{ '' if r.make in [None, 'None'] else r.make }} {{ '' if r.model in [None, 'None'] else r.model }}
                                 <br>
-                                <small class="text-muted">{{ r.plate_no }}</small>
+                                <small class="text-muted">{{ '' if r.plate_no in [None, 'None'] else r.plate_no }}</small>
                             </td>
-                            <td>{{ r.cliente }}</td>
+                            <td>{{ '' if r.cliente in [None, 'None'] else r.cliente }}</td>
                             <!-- Actions -->
                             <td class="text-center sticky-action"
                                 style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2; border: 1px solid #414141;">

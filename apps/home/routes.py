@@ -21,7 +21,7 @@ def index():
 # VALIDATE VALUES
 def get_value(field_name):
     value = request.form.get(field_name, "").strip()
-    return value if value else "None"
+    return value if value else None
 
 # NEW: Customer view & add route
 @blueprint.route('/registro', methods=['GET', 'POST'])
