@@ -1,0 +1,592 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} REGISTRO (ON-SITE) {% endblock %}
+
+{% block content %}
+<div class="content">
+    <!-- Registro Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">REGISTRO <span style="color: #FE001A;">ON-SITE</span></h4>
+            <!-- Add Registro Button -->
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#addRegistroModal">
+                +
+            </button>
+        </div>
+        <div class="card-body">
+            <!-- <div class="d-flex align-items-center mb-3"> -->
+            <!-- duv class="d-flex align-it" -->
+            <div class="fixed-controls">
+                <div class="d-flex justify-content-between align-items-center py-2 mb-2">
+                    <!-- Left: Search field -->
+                    <div class="d-flex align-items-center">
+                        <form method="get" action="{{ url_for('home_blueprint.registro_onsite') }}" class="form-inline">
+                            <div class="dropdown mr-2">
+                                <button id="searchDropdown" class="btn-sm dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="selectedFieldLabel">
+                                        {% set labels = {
+                                        'jo_no': 'JO No.',
+                                        'date_in': 'Date In',
+                                        'date_out': 'Date Out',
+                                        'plate_no': 'Plate No.',
+                                        'vin': 'VIN',
+                                        'make': 'Make',
+                                        'model': 'Model',
+                                        'cliente': 'Cliente',
+                                        'posizione': 'Posizione'
+                                        } %}
+                                        {{ labels.get(search_field, 'Select field') }}
+                                    </span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="searchDropdown">
+                                    <a class="dropdown-item" href="#" data-value="jo_no">JO No.</a>
+                                    <a class="dropdown-item" href="#" data-value="date_in">Date In</a>
+                                    <a class="dropdown-item" href="#" data-value="date_out">Date Out</a>
+                                    <a class="dropdown-item" href="#" data-value="plate_no">Plate No.</a>
+                                    <a class="dropdown-item" href="#" data-value="vin">VIN</a>
+                                    <a class="dropdown-item" href="#" data-value="make">Make</a>
+                                    <a class="dropdown-item" href="#" data-value="model">Model</a>
+                                    <a class="dropdown-item" href="#" data-value="cliente">Cliente</a>
+                                    <a class="dropdown-item" href="#" data-value="posizione">Posizione</a>
+                                </div>
+                            </div>
+                            <input type="hidden" name="field" id="searchFieldInput" value="{{ search_field or '' }}">
+                            <input type="text" name="query" id="fieldSearch" class="form-control form-control-sm"
+                                placeholder="Search" value="{{ search_query or '' }}" style="width: 250px;">
+                            <button id="runSearch" class="btn btn-danger btn-sm">
+                                <i class="tim-icons icon-zoom-split"></i>
+                            </button>
+                            <!-- <div class="reset-search-box"> -->
+                                <nav>
+                                    <ul class="pagination mb-0 justify-content-center">
+                                        <li>
+                                            <a class="page-link text-white"
+                                                href="{{ url_for('home_blueprint.registro_onsite') }}">
+                                                RESET
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            <!-- </div> -->
+                    </div>
+                    <!-- Pagination controls -->
+                    <div class="mini-pagination-box">
+                        <nav>
+                            <ul class="pagination mb-0 justify-content-center">
+                                <li class="page-item {% if not registro_table.has_prev %}disabled{% endif %}">
+                                    <a class="page-link text-white"
+                                        href="{% if registro_table.has_prev %}?page={{ registro_table.prev_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
+                                        Prev
+                                    </a>
+                                </li>
+                                <li class="mx-2 text-white">|</li>
+                                <li class="page-item {% if not registro_table.has_next %}disabled{% endif %}">
+                                    <a class="page-link text-white"
+                                        href="{% if registro_table.has_next %}?page={{ registro_table.next_num }}&field={{ search_field }}&query={{ search_query }}{% else %}#{% endif %}">
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="table-container table-responsive" style="overflow-y: auto;">
+                <table id="registroTable" class="table table-bordered">
+                    <thead class="text-primary" style="white-space: nowrap;">
+                        <tr style="text-align: center;">
+                            <!-- <th>Servici</th> -->
+                            <th>J.O No.</th>
+                            <th>Date In</th>
+                            <th>Date Out</th>
+                            <th>VIN</th>
+                            <th>Vehicle Details</th>
+                            <th>Cliente</th>
+                            <th class="text-center sticky-action">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in registro_table.items %}
+                        <tr>
+                            <td>{{ '' if r.jo_no in [None, 'None'] else r.jo_no }}</td>
+                            <td>{{ '' if r.date_in in [None, 'None'] else r.date_in }}</td>
+                            <td>{{ '' if r.date_out in [None, 'None'] else r.date_out }}</td>
+                            <td>{{ '' if r.vin in [None, 'None'] else r.vin }}</td>
+                            <td>
+                                {{ '' if r.make in [None, 'None'] else r.make }} {{ '' if r.model in [None, 'None'] else r.model }}
+                                <br>
+                                <small class="text-muted">{{ '' if r.plate_no in [None, 'None'] else r.plate_no }}</small>
+                            </td>
+                            <td>{{ '' if r.cliente in [None, 'None'] else r.cliente }}</td>
+                            <!-- Actions -->
+                            <td class="text-center sticky-action"
+                                style="position: sticky; right: 0; background-color: #1e1e1e; z-index: 2; border: 1px solid #414141;">
+                                <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
+                                    data-target="#editRegistroModal{{ r.jo_id }}">
+                                    <i class="tim-icons icon-pencil"></i>
+                                </a>&nbsp;&nbsp;&nbsp;
+                                <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal"
+                                    data-target="#deleteRegistroModal{{ r.jo_id }}">
+                                    <i class="tim-icons icon-trash-simple"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addRegistroModal" tabindex="-1" role="dialog" aria-labelledby="addRegistroLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
+        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+            <form method="POST" action="{{ url_for('home_blueprint.registro_onsite') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRegistroLabel" style="padding: 0.5rem 1rem;">NEW</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="color">Servici</label>
+                                <select class="form-control" name="servici" required>
+                                    <option value="" disabled selected>-- Select Servici --</option>
+                                    <option value="Shop">Shop</option>
+                                    <option value="On-site">On-site</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="jo_no">Job Order No</label>
+                                <input type="text" class="form-control" id="jo_no" name="jo_no" value="{{ next_jo }}"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="date_in">Date In</label>
+                                <input type="date" class="form-control datepicker" name="date_in"
+                                    placeholder="MM/DD/YYYY" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="date_out">Date Out</label>
+                                <input type="date" class="form-control" name="date_out">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="vin">VIN</label>
+                                <input type="text" class="form-control" name="vin">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="plate_no">Plate No</label>
+                                <input type="text" class="form-control" name="plate_no">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="make">Make</label>
+                                <select class="form-control" id="make" name="make">
+                                    <option value="" disabled selected>-- Select Make --</option>
+                                    {% for make in makes %}
+                                    <option value="{{ make }}">{{ make }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="model">Model</label>
+                                <select class="form-control" id="model" name="model">
+                                    <option value="" disabled selected>-- Select Model --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="color">Color</label>
+                                <input type="text" class="form-control" name="color">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="km_mileage">KM Mileage</label>
+                                <input type="text" class="form-control" name="km_mileage">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="notes">Notes</label>
+                                <input type="text" class="form-control" name="notes">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Posizione</label>
+                                    <select class="form-control" name="posizione">
+                                        <option value="" disabled selected>-- Select Posizione --</option>
+                                        <option value="San Pedro">
+                                            San Pedro</option>
+                                        <option value="13th Ave - A">
+                                            13th Ave - A</option>
+                                        <option value="13th Ave - B">
+                                            13th Ave - B</option>
+                                        <option value="13th Ave - C">
+                                            13th Ave - C</option>
+                                        <option value="13th Ave - D">
+                                            13th Ave - D</option>
+                                        <option value="13th Ave - E">
+                                            13th Ave - E</option>
+                                        <option value="Manhattan">
+                                            Manhattan</option>
+                                        <option value="MGV">
+                                            MGV</option>
+                                        <option value="12th Ave">
+                                            12th Ave</option>
+                                        <option value="Binagonan">
+                                            Binagonan</option>
+                                        <option value="Annapolis">
+                                            Annapolis</option>
+                                        <option value="Others">
+                                            Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="cliente">Cliente</label>
+                                <input type="text" class="form-control" name="cliente">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="concerns_requests">Concerns/Requests</label>
+                                <input type="text" class="form-control" name="concerns_requests">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="onsite_details">On-site Details</label>
+                                <input type="text" class="form-control" name="onsite_details">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="received_from">Received From</label>
+                                <input type="text" class="form-control" name="received_by">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="received_by">Received By</label>
+                                <input type="text" class="form-control" name="received_by">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="date_checklisted">Date Checklisted</label>
+                                <input type="date" class="form-control" name="date_checklisted">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="checklisted_by">Checklisted By</label>
+                                <input type="text" class="form-control" name="checklisted_by">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="related_jo">Related J.O</label>
+                                <input type="text" class="form-control" name="related_jo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;">
+                    <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+{% for r in registro_table.items %}
+<div class="modal fade" id="editRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="margin-top: -20vh; max-height: 90vh;">
+        <!-- same size & position -->
+        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+            <form method="POST" action="{{ url_for('home_blueprint.edit_registro_onsite', jo_id=r.jo_id) }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="padding: 0.5rem 1rem;"><b>EDIT</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="flex: 1 1 auto; overflow-y: auto; max-height: calc(90vh - 120px);">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Servici</label>
+                                <select class="form-control" name="servici" required>
+                                    <option value="Shop" {% if r.servici=="Shop" %}selected{% endif %}>Shop</option>
+                                    <option value="On-site" {% if r.servici=="On-site" %}selected{% endif %}>On-site
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>J.O No.</label>
+                                <input type="text" class="form-control" name="jo_no" value="{{ r.jo_no }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Date In</label>
+                                <input type="date" class="form-control" name="date_in" value="{{ r.date_in }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Date Out</label>
+                                <input type="date" class="form-control" name="date_out" value="{{ r.date_out }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>VIN</label>
+                                <input type="text" class="form-control" name="vin" value="{{ r.vin }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Plate No.</label>
+                                <input type="text" class="form-control" name="plate_no" value="{{ r.plate_no }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Make</label>
+                                <select class="form-control" id="make" name="make">
+                                    {% for make in makes %}
+                                    <option value="{{ make }}" {% if r.make==make %}selected{% endif %}>{{ make }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Model</label>
+                                <select class="form-control" id="model" name="model">
+                                    <option value="{{ r.model }}" selected>{{ r.model }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Color</label>
+                                <input type="text" class="form-control" name="color" value="{{ r.color }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>KM Mileage</label>
+                                <input type="text" class="form-control" name="km_mileage" value="{{ r.km_mileage }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Notes</label>
+                                <input type="text" class="form-control" name="notes" value="{{ r.notes }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Posizione</label>
+                                <select class="form-control" name="posizione">
+                                    <option value="San Pedro" {% if r.posizione %}selected{% endif %}>
+                                        San Pedro</option>
+                                    <option value="13th Ave - A" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - A</option>
+                                    <option value="13th Ave - B" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - B</option>
+                                    <option value="13th Ave - C" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - C</option>
+                                    <option value="13th Ave - D" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - D</option>
+                                    <option value="13th Ave - E" {% if not r.posizione %}selected{% endif %}>
+                                        13th Ave - E</option>
+                                    <option value="Manhattan" {% if r.posizione %}selected{% endif %}>
+                                        Manhattan</option>
+                                    <option value="MGV" {% if r.posizione %}selected{% endif %}>
+                                        MGV</option>
+                                    <option value="12th Ave" {% if r.posizione %}selected{% endif %}>
+                                        12th Ave</option>
+                                    <option value="Binagonan" {% if r.posizione %}selected{% endif %}>
+                                        Binagonan</option>
+                                    <option value="Annapolis" {% if r.posizione %}selected{% endif %}>
+                                        Annapolis</option>
+                                    <option value="Others" {% if r.posizione %}selected{% endif %}>
+                                        Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Cliente</label>
+                                <input type="text" class="form-control" name="cliente" value="{{ r.cliente }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Concerns/Requests</label>
+                                <input type="text" class="form-control" name="concerns_requests"
+                                    value="{{ r.concerns_requests }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Diagnosis</label>
+                                <select class="form-control" name="diagnosis">
+                                    <option value="PDD (Pending Diagnosis)" {% if r.diagnosis %}selected{% endif %}>
+                                        PDD (Pending Diagnosis)</option>
+                                    <option value="OGD (On-going Diagnosis)" {% if not r.diagnosis %}selected{% endif
+                                        %}>OGD
+                                        (On-going
+                                        Diagnosis)</option>
+                                    <option value="CPD (Complicated Diagnosis)" {% if not r.diagnosis %}selected{% endif
+                                        %}>
+                                        CPD
+                                        (Complicated
+                                        Diagnosis)</option>
+                                    <option value="ICD (Inconclusive Diagnosis)" {% if not r.diagnosis %}selected{%
+                                        endif %}>ICD
+                                        (Inconclusive Diagnosis)</option>
+                                    <option value="Diagnosed" {% if not r.diagnosis %}selected{% endif %}>Diagnosed
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>On-site Details</label>
+                                <input type="text" class="form-control" name="onsite_details"
+                                    value="{{ r.onsite_details }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Tagged</label>
+                                <select class="form-control" name="tagged">
+                                    <option value="Yes" {% if r.tagged %}selected{% endif %}>Yes</option>
+                                    <option value="No" {% if not r.tagged %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Estimate</label>
+                                <select class="form-control" name="estimate">
+                                    <option value="Pending Estimate" {% if r.estimate %}selected{% endif %}>Pending
+                                        Estimate</option>
+                                    <option value="Preparing Estimate" {% if not r.estimate %}selected{% endif %}>
+                                        Preparing Estimate</option>
+                                    <option value="Pending RJE" {% if not r.estimate %}selected{% endif %}>Pending
+                                        RJE</option>
+                                    <option value="Estimate Complete" {% if not r.estimate %}selected{% endif %}>
+                                        Estimate Complete</option>
+                                    <option value="Forgone" {% if not r.estimate %}selected{% endif %}>Forgone
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Parts & Materials</label>
+                                <select class="form-control" name="estimate">
+                                    <option value="PPS (Parts Procurement Stage)" {% if r.estimate %}selected{% endif
+                                        %}>PPS
+                                        (Parts
+                                        Procurement Stage)</option>
+                                    <option value="PRS (Parts Recovery Stage)" {% if not r.estimate %}selected{% endif
+                                        %}>
+                                        PRS (Parts Recovery Stage)</option>
+                                    <option value="POS (Parts Ordering Stage)" {% if not r.estimate %}selected{% endif
+                                        %}>
+                                        Pending
+                                        POS (Parts Ordering Stage)</option>
+                                    <option value="WFP (Waiting for Parts)" {% if not r.estimate %}selected{% endif %}>
+                                        WFP (Waiting for Parts)</option>
+                                    <option value="Parts Complete" {% if not r.estimate %}selected{% endif %}>Parts
+                                        Complete
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Billing</label>
+                                <select class="form-control" name="billing">
+                                    <option value="Pending Billing" {% if r.billing %}selected{% endif %}>Pending
+                                        Billing</option>
+                                    <option value="Preparing Billing" {% if not r.billing %}selected{% endif %}>
+                                        Preparing Billing</option>
+                                    <option value="Pending RJE" {% if not r.billing %}selected{% endif %}>Pending
+                                        RJE</option>
+                                    <option value="Informal/Verbal" {% if not r.billing %}selected{% endif %}>
+                                        Informal/Verbal</option>
+                                    <option value="Billing Complete" {% if not r.billing %}selected{% endif %}>
+                                        Billing Complete
+                                    </option>
+                                    <option value="Backjob" {% if not r.billing %}selected{% endif %}>
+                                        Backjob
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Received From</label>
+                                <input type="text" class="form-control" name="received_from"
+                                    value="{{ r.received_from }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Received By</label>
+                                <input type="text" class="form-control" name="received_by" value="{{ r.received_by }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Date Checklisted</label>
+                                <input type="date" class="form-control" name="date_checklisted"
+                                    value="{{ r.date_checklisted }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Related J.O</label>
+                                <input type="text" class="form-control" name="related_jo" value="{{ r.related_jo }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Released To</label>
+                                <input type="text" class="form-control" name="released_to" value="{{ r.released_to }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Released By</label>
+                                <input type="text" class="form-control" name="released_by" value="{{ r.released_by }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 0.5rem 2.5refm; margin-bottom: 0;">
+                    <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Delete Modal -->
+{% for r in registro_table.items %}
+<div class="modal fade" id="deleteRegistroModal{{ r.jo_id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-top: -20vh; max-height: 90vh;">
+        <div class="modal-content" style="display: flex; flex-direction: column;">
+            <form action="{{ url_for('home_blueprint.delete_registro_onsite', jo_id=r.jo_id) }}" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>CONFIRM DELETE</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <strong>J.O# #{{ r.jo_no }}</strong>?
+                </div>
+                <!-- <div class="modal-footer" style="padding: 0.5rem 2.5rem; margin-bottom: 0;"> -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">DELETE</button>
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
