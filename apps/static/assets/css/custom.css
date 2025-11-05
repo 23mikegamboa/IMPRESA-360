@@ -76,6 +76,9 @@ select.form-control {
 
 #registroTable th,
 #registroTable td {
+  height: 80px;  /* sets consistent row height */
+  min-height: 80px;
+  max-height: 80px;
   white-space: nowrap;  /* prevent wrapping by default */
   vertical-align: middle;
   overflow: visible;     /* allow content to size the column */
@@ -84,11 +87,54 @@ select.form-control {
   padding: 0.5rem 0.75rem;
 }
 
+#registroTable th:nth-child(1), /* JO NO */
+#registroTable td:nth-child(1) {
+  width: 70px;
+  min-width: 70px;
+  max-width: 70px;
+  text-align: center;
+}
+
+#registroTable th:nth-child(2), /* DATE IN */
+#registroTable td:nth-child(2) {
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+  text-align: center;
+}
+
+#registroTable th:nth-child(3), /* DATE OUT */
+#registroTable td:nth-child(3) {
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+  text-align: center;
+}
+
+#registroTable th:nth-child(4), /* VIN */
+#registroTable td:nth-child(4) {
+  width: 185px;
+  min-width: 185px;
+  max-width: 185px;
+  text-align: center;
+}
+
+#registroTable th:nth-child(5), /* VEHICLE DETAILS */
+#registroTable td:nth-child(5) {
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+}
+
 /* Allow wrapping only for specific columns if needed (like Cliente) */
 #registroTable td:nth-child(7),
 #registroTable th:nth-child(7) {
-  white-space: normal;
-  word-wrap: break-word;
+  /* white-space: normal;
+  word-wrap: break-word; */
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+  text-align: center;
 }
 
 /* Change color of modal close "×" */
@@ -530,4 +576,26 @@ html, body {
 .sidebar .nav .collapsing .nav li > a {
   padding: 5px 11px !important;
   line-height: 1.2em;
+}
+
+/* === CENTER ICONS INSIDE ACTION BUTTONS === */
+#registroTable .btn {
+  display: inline-flex !important;      /* make button a flex container */
+  align-items: center;                  /* center vertically */
+  justify-content: center;              /* center horizontally */
+  padding: 0.25rem 0.75rem;             /* adjust to your preferred size */
+}
+
+/* Optional: force consistent button height */
+#registroTable .btn.btn-sm {
+  height: 40px;                         /* match your increased height */
+  width: 40px;                          /* optional, if you want square buttons */
+  line-height: 1;
+}
+
+/* Adjust icon alignment inside buttons */
+#registroTable .btn i {
+  line-height: 1;
+  margin: 0;
+  vertical-align: middle;
 }
