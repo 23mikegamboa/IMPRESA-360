@@ -6,7 +6,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-
+<div class="dashboard-page">
     <div class="content">
         <div class="row">
             <div class="col-12">
@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col-sm-6 text-left">
                                 <h5 class="card-category">Total Vehicles</h5>
-                                <h2 class="card-title">Count</h2>
+                                <h2 class="card-title">80</h2>
                             </div>
                             <!--<div class="col-sm-6">
                                 <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
@@ -57,7 +57,7 @@
                 <div class="card card-chart">
                     <div class="card-header">
                         <h5 class="card-category">Ongoing Job Orders</h5>
-                        <h3 class="card-title"> 52</h3>
+                        <h3 class="card-title">25</h3>
                     </div>
                     <div class="card-body">
                         <div class="chart-area">
@@ -83,7 +83,7 @@
                 <div class="card card-chart">
                     <div class="card-header">
                         <h5 class="card-category">For Billing</h5>
-                        <h3 class="card-title">3</h3>
+                        <h3 class="card-title">12</h3>
                     </div>
                     <div class="card-body">
                         <div class="chart-area">
@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-6 col-md-12">
                 <div class="card card-tasks">
                     <div class="card-header ">
@@ -385,11 +385,11 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
-
+</div>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -401,6 +401,64 @@
         demo.initDashboardPageCharts();
 
     });
+</script>
+
+<script>
+  // Minimal no-hard-lock enabler for this page (index only)
+  document.addEventListener('DOMContentLoaded', function () {
+    // If wrapper already present, ensure the real body also has the class
+    if (document.querySelector('.no-hard-lock') && !document.body.classList.contains('no-hard-lock')) {
+      document.body.classList.add('no-hard-lock');
+    } else if (!document.querySelector('.no-hard-lock') && !document.body.classList.contains('no-hard-lock')) {
+      // As a fallback, still add class to body so CSS override applies
+      document.body.classList.add('no-hard-lock');
+    }
+
+    // Helper to set inline style with !important
+    function setImportant(el, prop, value) {
+      try { el.style.setProperty(prop, value, 'important'); } catch (e) {}
+    }
+
+    // Force html/body to allow scroll using inline !important (beats stylesheet !important)
+    setImportant(document.documentElement, 'overflow', 'auto');
+    setImportant(document.documentElement, 'height', 'auto');
+    setImportant(document.documentElement, 'min-height', '100%');
+
+    setImportant(document.body, 'overflow', 'auto');
+    setImportant(document.body, 'height', 'auto');
+    setImportant(document.body, 'min-height', '100%');
+
+    // Relax main containers if inline styles were set by other scripts
+    ['.wrapper', '.main-panel', '.content'].forEach(function (sel) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      el.style.removeProperty('overflow');
+      el.style.removeProperty('height');
+      el.style.removeProperty('max-height');
+      // set permissive values w/ !important
+      setImportant(el, 'overflow', 'visible');
+      setImportant(el, 'height', 'auto');
+      setImportant(el, 'max-height', 'none');
+      setImportant(el, 'position', 'relative');
+    });
+
+    // Ensure cards can grow (clear inline locks)
+    document.querySelectorAll('.card, .card-body').forEach(function (c) {
+      c.style.removeProperty('overflow');
+      c.style.removeProperty('height');
+      c.style.removeProperty('max-height');
+      c.style.removeProperty('min-height');
+      setImportant(c, 'overflow', 'visible');
+      setImportant(c, 'height', 'auto');
+      setImportant(c, 'max-height', 'none');
+      setImportant(c, 'min-height', '0');
+    });
+
+    // Trigger chart remeasure (Chart.js reacts to resize)
+    setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 80);
+    setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 320);
+    setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 1000);
+  });
 </script>
 
 {% endblock javascripts %}

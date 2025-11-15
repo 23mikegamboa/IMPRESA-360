@@ -156,6 +156,7 @@ demo = {
       }
     };
 
+    // 
     gradientChartOptionsConfigurationWithTooltipPurple = {
       maintainAspectRatio: false,
       legend: {
@@ -182,8 +183,9 @@ demo = {
             zeroLineColor: "transparent",
           },
           ticks: {
-            suggestedMin: 60,
-            suggestedMax: 125,
+            suggestedMin: 0,
+            suggestedMax: 100,
+            stepSize: 20,
             padding: 20,
             fontColor: "#9a9a9a"
           }
@@ -204,6 +206,7 @@ demo = {
       }
     };
 
+    // N/A
     gradientChartOptionsConfigurationWithTooltipOrange = {
       maintainAspectRatio: false,
       legend: {
@@ -252,6 +255,7 @@ demo = {
       }
     };
 
+    //FOR BILLING
     gradientChartOptionsConfigurationWithTooltipGreen = {
       maintainAspectRatio: false,
       legend: {
@@ -278,9 +282,10 @@ demo = {
             zeroLineColor: "transparent",
           },
           ticks: {
-            suggestedMin: 50,
-            suggestedMax: 125,
-            padding: 20,
+            suggestedMin: 0,
+            suggestedMax: 20,
+            stepSize: 5,
+            padding: 25,
             fontColor: "#9e9e9e"
           }
         }],
@@ -300,7 +305,7 @@ demo = {
       }
     };
 
-
+    // FOR RELEASE
     gradientBarChartConfiguration = {
       maintainAspectRatio: false,
       legend: {
@@ -327,8 +332,9 @@ demo = {
             zeroLineColor: "transparent",
           },
           ticks: {
-            suggestedMin: 60,
-            suggestedMax: 120,
+            suggestedMin: 0,
+            suggestedMax: 25,
+            stepSize: 5,
             padding: 20,
             fontColor: "#9e9e9e"
           }
@@ -356,25 +362,26 @@ demo = {
     gradientStroke.addColorStop(1, 'rgba(72,72,176,0.2)');
     gradientStroke.addColorStop(0.2, 'rgba(72,72,176,0.0)');
     gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
-
+    
+    // ONGOING JO
     var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+      labels: ['JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
       datasets: [{
-        label: "Data",
+        label: "Ongoing JOs",
         fill: true,
         backgroundColor: gradientStroke,
-        borderColor: '#d048b6',
+        borderColor: '#ffffffff',
         borderWidth: 2,
         borderDash: [],
         borderDashOffset: 0.0,
-        pointBackgroundColor: '#d048b6',
+        pointBackgroundColor: '#ffffffff',
         pointBorderColor: 'rgba(255,255,255,0)',
-        pointHoverBackgroundColor: '#d048b6',
+        pointHoverBackgroundColor: '#ffffffff',
         pointBorderWidth: 20,
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
         pointRadius: 4,
-        data: [80, 100, 70, 80, 120, 80],
+        data: [40, 20, 50, 30, 45, 25],
       }]
     };
 
@@ -393,24 +400,25 @@ demo = {
     gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
     gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
 
+    // FOR BILLING
     var data = {
       labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
       datasets: [{
-        label: "My First dataset",
+        label: "For Billing",
         fill: true,
         backgroundColor: gradientStroke,
-        borderColor: '#00d6b4',
+        borderColor: '#ffffffff',
         borderWidth: 2,
         borderDash: [],
         borderDashOffset: 0.0,
-        pointBackgroundColor: '#00d6b4',
+        pointBackgroundColor: '#ffffffff',
         pointBorderColor: 'rgba(255,255,255,0)',
-        pointHoverBackgroundColor: '#00d6b4',
+        pointHoverBackgroundColor: '#ffffffff',
         pointBorderWidth: 20,
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
         pointRadius: 4,
-        data: [90, 27, 60, 12, 80],
+        data: [8, 11, 6, 9, 12],
       }]
     };
 
@@ -421,10 +429,8 @@ demo = {
 
     });
 
-
-
-    var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
+    var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV'];
+    var chart_data = [70, 50, 60, 40, 55, 30, 45, 30, 60, 50, 80, 70];
 
 
     var ctx = document.getElementById("chartBig1").getContext('2d');
@@ -439,16 +445,16 @@ demo = {
       data: {
         labels: chart_labels,
         datasets: [{
-          label: "My First dataset",
+          label: "Car Count",
           fill: true,
           backgroundColor: gradientStroke,
-          borderColor: '#d346b1',
+          borderColor: '#FE001A',
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-          pointBackgroundColor: '#d346b1',
+          pointBackgroundColor: '#FE001A',
           pointBorderColor: 'rgba(255,255,255,0)',
-          pointHoverBackgroundColor: '#d346b1',
+          pointHoverBackgroundColor: '#FE001A',
           pointBorderWidth: 20,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
@@ -498,17 +504,17 @@ demo = {
         display: false
       },
       data: {
-        labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+        labels: ['JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
         datasets: [{
-          label: "Countries",
+          label: "For Release",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
-          borderColor: '#1f8ef1',
+          borderColor: '#FE001A',
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-          data: [53, 20, 10, 80, 100, 45],
+          data: [13, 15, 8, 12, 7, 5],
         }]
       },
       options: gradientBarChartConfiguration

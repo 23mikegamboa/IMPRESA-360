@@ -22,6 +22,26 @@ body {
   background-color: #202020 !important;
   color: #eee !important;
 }
+/* LOG NEW JO ACTIVITY (LNJA) */
+.top-card {
+  background-color: #1c1c1c !important;
+  color: #eee !important;
+  height: 32%;
+  width: 100%;
+}
+
+.row2 {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.row2 .form-control{
+  color: #ffffff !important;          /* black text */
+  background-color: #202020 !important; /* text box color */
+  /* border: 1px solid #ccc; */
+}
+/* LNJA END */
 
 /* ===== LIGHT MODE ===== */
 body.white-content {
@@ -92,7 +112,6 @@ select.form-control {
   width: 70px;
   min-width: 70px;
   max-width: 70px;
-  text-align: center;
 }
 
 #registroTable th:nth-child(2), /* DATE IN */
@@ -100,7 +119,6 @@ select.form-control {
   width: 120px;
   min-width: 120px;
   max-width: 120px;
-  text-align: center;
 }
 
 #registroTable th:nth-child(3), /* DATE OUT */
@@ -108,7 +126,6 @@ select.form-control {
   width: 120px;
   min-width: 120px;
   max-width: 120px;
-  text-align: center;
 }
 
 #registroTable th:nth-child(4), /* VIN */
@@ -116,7 +133,6 @@ select.form-control {
   width: 185px;
   min-width: 185px;
   max-width: 185px;
-  text-align: center;
 }
 
 #registroTable th:nth-child(5), /* VEHICLE DETAILS */
@@ -598,4 +614,265 @@ html, body {
   line-height: 1;
   margin: 0;
   vertical-align: middle;
+}
+
+/* UNAPPLY HARD-LOCK when wrapper OR body has no-hard-lock */
+body.no-hard-lock,
+.no-hard-lock,
+body.no-hard-lock html {
+  overflow: auto !important;
+  height: auto !important;
+  min-height: 100% !important;
+}
+
+/* Relax main containers */
+body.no-hard-lock .wrapper,
+.no-hard-lock .wrapper,
+body.no-hard-lock .main-panel,
+.no-hard-lock .main-panel,
+body.no-hard-lock .content,
+.no-hard-lock .content {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* Cards and card-bodies auto-size */
+body.no-hard-lock .card,
+.no-hard-lock .card,
+body.no-hard-lock .card-body,
+.no-hard-lock .card-body {
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+/* Allow table containers to scroll only inside themselves */
+body.no-hard-lock .table-container,
+.no-hard-lock .table-container {
+  max-height: 60vh !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+}
+
+/* Ensure canvases can expand */
+body.no-hard-lock canvas,
+.no-hard-lock canvas,
+body.no-hard-lock .chart-wrapper,
+.no-hard-lock .chart-wrapper {
+  max-height: none !important;
+  height: auto !important;
+}
+
+/* Revert full-screen fixed positioning inside wrapper */
+body.no-hard-lock .fixed-fullscreen,
+.no-hard-lock .fixed-fullscreen,
+body.no-hard-lock .view-full,
+.no-hard-lock .view-full {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+}
+
+/* === DASHBOARD-SCOPED LAYOUT TWEAKS (SAFE & REVERSIBLE) ===
+   Only applies on pages that include .dashboard-page (index.html)
+   Keeps all global hard-lock rules intact for registro_shop.html
+*/
+
+/* Conservative sidebar clearance: push content visually to the right via padding */
+.dashboard-page .content {
+  padding-left: 280px; /* conservative default: increase +10px if overlap remains */
+  padding-right: 18px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  box-sizing: border-box;
+}
+
+/* Keep cards spaced nicely without touching global rules */
+.dashboard-page .card {
+  margin-bottom: 22px;
+}
+
+/* Make top chart slightly taller if it looks squashed; set via class if present */
+.dashboard-page .card.card-top {
+  min-height: 340px;
+}
+
+/* Chart wrappers should size naturally (avoid global forced heights) */
+.dashboard-page .chart-wrapper,
+.dashboard-page canvas {
+  height: auto !important;
+  max-height: none !important;
+}
+
+/* Optional: if you have a 3-column lower row wrapper, make columns equal height */
+.dashboard-page .dashboard-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+.dashboard-page .dashboard-row > .col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Small responsive fallback */
+@media (max-width: 991.98px) {
+  .dashboard-page .content { padding-left: 12px !important; padding-right: 12px !important; }
+  .dashboard-page .chart-wrapper { min-height: 200px; }
+}
+
+/* === DASHBOARD-SCOPED LAYOUT TWEAKS (SAFE & REVERSIBLE) ===
+   Only applies on pages that include .dashboard-page (index.html)
+   Keeps all global hard-lock rules intact for registro_shop.html
+*/
+
+/* Conservative sidebar clearance: push content visually to the right via padding */
+.dashboard-page .content {
+  padding-left: 280px; /* conservative default: increase +10px if overlap remains */
+  padding-right: 18px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  box-sizing: border-box;
+}
+
+/* Keep cards spaced nicely without touching global rules */
+.dashboard-page .card {
+  margin-bottom: 22px;
+}
+
+/* Make top chart slightly taller if it looks squashed; set via class if present */
+.dashboard-page .card.card-top {
+  min-height: 340px;
+}
+
+/* Chart wrappers should size naturally (avoid global forced heights) */
+.dashboard-page .chart-wrapper,
+.dashboard-page canvas {
+  height: auto !important;
+  max-height: none !important;
+}
+
+/* Optional: if you have a 3-column lower row wrapper, make columns equal height */
+.dashboard-page .dashboard-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+.dashboard-page .dashboard-row > .col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Small responsive fallback */
+@media (max-width: 991.98px) {
+  .dashboard-page .content { padding-left: 12px !important; padding-right: 12px !important; }
+  .dashboard-page .chart-wrapper { min-height: 200px; }
+}
+
+/* === DASHBOARD TOP ALIGNMENT FIX === */
+/* Applies ONLY to index.html because only it has .dashboard-page */
+.dashboard-page .content {
+  padding-top: 78px !important;   /* adjust this number until perfectly level */
+}
+/* ---------------------------
+   Log New Job Order — Static Top Styles
+   Scoped: .log-jo-page
+   Paste at bottom of custom.css
+   --------------------------- */
+
+.log-jo-page {
+  font-family: "Inter", "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+  color: #d8d8da;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Card base */
+.log-jo-page .jo-card {
+  background: linear-gradient(180deg, #171718, #1e1e1f);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+/* Page header */
+.log-jo-page .page-header h1 {
+  margin: 0 0 6px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+.log-jo-page .page-header .muted {
+  color: #9b9b9f;
+  margin-bottom: 18px;
+}
+
+/* Static grid (top block) */
+.log-jo-page .static-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 14px;
+  align-items: start;
+}
+.log-jo-page .static-grid .full {
+  grid-column: 1 / -1;
+}
+
+/* Labels and inputs */
+.log-jo-page label {
+  display:block;
+  color: #9b9b9f;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.log-jo-page input[type="text"],
+.log-jo-page input[type="date"],
+.log-jo-page textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.01);
+  color: #d8d8da;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+.log-jo-page textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+/* JO number + regenerate control */
+.log-jo-page .jo-number-wrap {
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.log-jo-page .jo-number-wrap .btn {
+  padding:8px 12px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.06);
+  background:transparent;
+  color:#d8d8da;
+  cursor:pointer;
+  font-size:13px;
+}
+
+/* Form helpers */
+.log-jo-page .muted { color: #9b9b9f; font-size:13px; }
+.log-jo-page .small { font-size:13px; color:#9b9b9f; }
+
+/* Responsive behavior */
+@media (max-width: 920px) {
+  .log-jo-page .static-grid {
+    grid-template-columns: 1fr;
+  }
 }

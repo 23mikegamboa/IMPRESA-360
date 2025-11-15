@@ -7,9 +7,10 @@
     <!-- Registro Table -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">REGISTRO <span style="color: #FE001A;">SHOP</span></h4>
+            <h4 class="card-title mb-0"><span style="color: #FE001A;">REGISTRO</span> SHOP</h4>
             <!-- Add Registro Button -->
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#addRegistroModal">
+            <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#registroModal"> -->
                 +
             </button>
         </div>
@@ -752,4 +753,142 @@
     </div>
 </div>
 {% endfor %}
+
+<!-- Registro Modal (Bootstrap 4 version) -->
+<div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+    <div class="modal-content bg-dark text-light border-0" style="min-height:80vh;">
+      
+      <!-- Header -->
+      <div class="modal-header border-0 px-4 pt-4">
+        <h2 id="registroModalLabel" class="font-weight-bold display-6 text-muted" style="letter-spacing:2px; font-weight:800;">
+          New&nbsp;&nbsp;page
+        </h2>
+        <button type="button" class="close ml-auto" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:#fff;opacity:0.8;">&times;</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body px-4 pb-4" style="overflow:auto;">
+        <div class="container-fluid">
+          <div class="row gx-5">
+            
+            <!-- LEFT COLUMN -->
+            <div class="col-lg-8">
+              <div class="row gy-3 align-items-start">
+                <div class="col-md-3">
+                  <div class="text-secondary small mb-1">Make</div>
+                  <div class="h6 mb-0">{{ registro.make if registro is defined else 'Empty' }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-secondary small mb-1">Model</div>
+                  <div class="h6 mb-0">{{ registro.model if registro is defined else 'Empty' }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-secondary small mb-1">Color</div>
+                  <div class="h6 mb-0">{{ registro.color if registro is defined else 'Empty' }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-secondary small mb-1">Plate No.</div>
+                  <div class="h6 mb-0">{{ registro.plate_no if registro is defined else 'Empty' }}</div>
+                </div>
+              </div>
+
+              <hr class="border-secondary my-4">
+
+              <!-- VIN -->
+              <div class="mb-4">
+                <div class="text-secondary small mb-2">VIN</div>
+                <div class="d-flex align-items-center">
+                  <button type="button" class="btn btn-sm btn-outline-secondary px-2 py-1 mr-2">+ Add new</button>
+                  <a href="#" class="text-decoration-none text-info small">Link existing</a>
+                </div>
+              </div>
+
+              <!-- Notes -->
+              <div class="mb-4">
+                <div class="text-secondary small mb-2">Notes</div>
+                <div class="h6 mb-0">{{ registro.notes if registro is defined else 'Empty' }}</div>
+              </div>
+
+              <!-- Comments -->
+              <div class="mb-4">
+                <div class="text-secondary small mb-2">Comments</div>
+                <div class="d-flex align-items-center">
+                  <div class="rounded-circle d-flex align-items-center justify-content-center mr-3"
+                       style="width:34px;height:34px;background:#d66b2b;color:#fff;font-weight:700;">
+                    M
+                  </div>
+                  <input type="text" class="form-control form-control-sm bg-transparent border-bottom border-secondary text-light"
+                         placeholder="Add a comment...">
+                </div>
+              </div>
+
+              <hr class="border-secondary my-4">
+
+              <!-- Transactions Button -->
+              <div class="mb-2">
+                <button class="btn btn-secondary btn-lg rounded-pill">
+                  <span style="font-family:monospace;letter-spacing:2px;">☰&nbsp;&nbsp;Transazioni</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="col-lg-4">
+              <div class="pl-lg-4 border-left border-secondary">
+                <div class="mb-4">
+                  <div class="text-secondary small mb-2">Days Count</div>
+                  <div class="display-6 font-weight-bold">0</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="text-secondary small mb-2">Cliente</div>
+                  <div class="d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-secondary mr-2">+ Add new</button>
+                    <a class="small text-info" href="#">Link existing</a>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-secondary small">Service Details</div>
+                    <small class="text-secondary">▾</small>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="text-secondary small mb-1">Servici</div>
+                  <span class="badge badge-pill text-light" style="background:#b85b52;">Shop</span>
+                </div>
+
+                <div class="mb-3">
+                  <div class="text-secondary small mb-1">Date In</div>
+                  <div class="h6 mb-0">{{ registro.date_in if registro is defined else '11/05/2025' }}</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="text-secondary small mb-1">Received From</div>
+                  <div class="h6 mb-0">{{ registro.received_from if registro is defined else 'Empty' }}</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="text-secondary small mb-1">Received By</div>
+                  <div class="h6 mb-0">{{ registro.received_by if registro is defined else 'Empty' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 px-4 pb-4">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Log New Job Order — Static Top</title>
+<style>
+  /* ---------------- Theme tokens - swap with your repo values ---------------- */
+  :root{
+    --brand-red: #e21b2b;
+    --bg: #0f0f10;
+    --surface: #171718;
+    --muted-surface: #1e1e1f;
+    --divider: rgba(255,255,255,0.06);
+    --text-primary: #d8d8da;
+    --text-muted: #9b9b9f;
+    --accent: #ff6fb1;
+    --radius: 10px;
+    --gap: 14px;
+    --font: "Inter", "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+  }
+
+  /* ---------------- Base ---------------- */
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#080809);font-family:var(--font);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+  .container{max-width:1200px;margin:28px auto;padding:20px}
+
+  h1{margin:0 0 8px 0;font-size:24px}
+  .muted{color:var(--text-muted);font-size:13px}
+
+  .card{background:linear-gradient(180deg,var(--surface),var(--muted-surface));border-radius:var(--radius);padding:18px;border:1px solid var(--divider);box-shadow:0 8px 30px rgba(0,0,0,0.45);margin-bottom:var(--gap)}
+
+  label{display:block;color:var(--text-muted);font-size:13px;margin-bottom:8px}
+  input[type="text"], input[type="date"], textarea, select {
+    width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.01);color:var(--text-primary);outline:none;font-size:14px;
+  }
+  textarea{min-height:84px;resize:vertical}
+
+  /* ---------------- Static container at top ---------------- */
+  .static-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:12px;
+    align-items:start;
+  }
+  .static-full{grid-column:1 / -1}
+
+  .jo-num-wrap{display:flex;gap:10px;align-items:center}
+  .jo-num-wrap .btn{flex:0 0 auto}
+
+  /* ---------------- Dynamic grid below ---------------- */
+  .form-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr; /* left / right */
+    gap:12px 20px;
+    grid-auto-rows: minmax(40px, auto);
+    align-items:start;
+  }
+  .col-full{grid-column:1 / -1}
+
+  /* ---------------- Repeatable lists ---------------- */
+  .list {
+    margin:0;padding:6px 0 0 0;list-style:none;
+    max-height:220px; /* scroll instead of expanding */
+    overflow:auto;
+    padding-right:6px;
+  }
+  .list li{
+    display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;background:transparent;border:1px dashed rgba(255,255,255,0.02);margin-bottom:8px;
+  }
+  .drag{cursor:grab;padding:4px 6px;color:var(--text-muted);flex:0 0 auto}
+  .text-input{flex:1;min-width:0}
+  .actions{display:flex;gap:6px;flex:0 0 auto}
+
+  /* ---------------- Buttons / small controls ---------------- */
+  .btn{border-radius:8px;padding:8px 10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-primary);cursor:pointer;font-size:13px;white-space:nowrap}
+  .btn.primary{background:var(--accent);color:#fff;border:none}
+  .btn.danger{border-color:rgba(255,50,50,0.25);color:#ffb3b3}
+
+  .inline-add{display:flex;gap:8px;align-items:center}
+  .inline-add .text-input{flex:1}
+
+  /* ---------------- Preview area ---------------- */
+  .preview-area{display:flex;gap:16px;flex-wrap:wrap}
+  .preview-main{flex:1;min-width:360px}
+  .preview-side{width:240px;min-width:200px}
+
+  .preview-box{padding:14px;border-radius:8px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+
+  /* utilities */
+  .flex{display:flex;gap:12px;align-items:center}
+  .right{justify-content:flex-end}
+
+  @media (max-width:920px){
+    .static-grid{grid-template-columns:1fr}
+    .form-grid{grid-template-columns:1fr}
+    .list{max-height:180px}
+    .preview-side{width:100%}
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Log New Job Order</h1>
+    <div class="muted" style="margin-bottom:16px">Fill static details at the top, then add repeatable items below.</div>
+
+    <!-- STATIC DATA CONTAINER -->
+    <section class="card">
+      <div class="static-grid">
+        <div>
+          <label for="jo-date">Date</label>
+          <input type="date" id="jo-date" />
+        </div>
+
+        <div>
+          <label for="jo-number">Job Order Number</label>
+          <div class="jo-num-wrap">
+            <input type="text" id="jo-number" />
+            <button type="button" class="btn" onclick="generateJO()">Regenerate</button>
+          </div>
+        </div>
+
+        <div class="static-full" style="margin-top:8px">
+          <label for="concern">Concern / Complaint</label>
+          <textarea id="concern" placeholder="Describe main concern"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- DYNAMIC/FUNCTIONAL AREA -->
+    <form id="jo-form" onsubmit="event.preventDefault(); submitForm();" class="card">
+      <div class="form-grid">
+        <!-- LEFT COLUMN: core fields -->
+        <div>
+          <label for="vin">VIN / Plate</label>
+          <input type="text" id="vin" placeholder="Enter VIN or Plate # (optional)" />
+
+          <label for="model" style="margin-top:12px">Vehicle Model</label>
+          <input type="text" id="model" placeholder="e.g. Mercedes-Benz G63" />
+
+          <label for="client" style="margin-top:12px">Client Name</label>
+          <input type="text" id="client" placeholder="Client full name" />
+        </div>
+
+        <!-- RIGHT COLUMN: Work list -->
+        <div>
+          <label>Work Description (steps)</label>
+          <ul class="list" id="work-list" aria-label="work steps"></ul>
+          <div class="inline-add" style="margin-top:8px">
+            <input type="text" id="work-input" class="text-input" placeholder="Describe a work step" />
+            <button type="button" class="btn primary" onclick="addToList('work')">Add</button>
+          </div>
+        </div>
+
+        <!-- LEFT: parts -->
+        <div>
+          <label>Parts &amp; Materials</label>
+          <ul class="list" id="parts-list" aria-label="parts"></ul>
+          <div class="inline-add" style="margin-top:8px">
+            <input type="text" id="parts-input" class="text-input" placeholder="Part or material name" />
+            <button type="button" class="btn" onclick="addToList('parts')">Add</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: tools -->
+        <div>
+          <label>Tools</label>
+          <ul class="list" id="tools-list" aria-label="tools"></ul>
+          <div class="inline-add" style="margin-top:8px">
+            <input type="text" id="tools-input" class="text-input" placeholder="Tool name" />
+            <button type="button" class="btn" onclick="addToList('tools')">Add</button>
+          </div>
+        </div>
+
+        <!-- LEFT: staff -->
+        <div>
+          <label>Staff / Team</label>
+          <ul class="list" id="staff-list" aria-label="staff"></ul>
+          <div class="inline-add" style="margin-top:8px">
+            <input type="text" id="staff-input" class="text-input" placeholder="Team member name (role optional)" />
+            <button type="button" class="btn" onclick="addToList('staff')">Add</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: remarks -->
+        <div>
+          <label>Remarks</label>
+          <ul class="list" id="remarks-list" aria-label="remarks"></ul>
+          <div class="inline-add" style="margin-top:8px">
+            <input type="text" id="remarks-input" class="text-input" placeholder="Short remark" />
+            <button type="button" class="btn" onclick="addToList('remarks')">Add</button>
+          </div>
+        </div>
+
+        <!-- Full width: preview + actions -->
+        <div class="col-full">
+          <div class="preview-area">
+            <div class="preview-main preview-box">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div class="muted">New Job Order Preview</div>
+                  <h3 id="preview-title" style="margin:8px 0 0 0">—</h3>
+                </div>
+                <div class="muted" id="preview-meta">—</div>
+              </div>
+
+              <div style="margin-top:12px" id="preview-body">
+                <div class="muted">Concern</div>
+                <div id="preview-concern" style="margin:8px 0 12px 0"></div>
+
+                <div class="muted">Work</div>
+                <div id="preview-work" style="margin:8px 0 12px 0"></div>
+
+                <div style="display:flex;gap:14px;flex-wrap:wrap">
+                  <div>
+                    <div class="muted">Parts</div>
+                    <div id="preview-parts"></div>
+                  </div>
+                  <div>
+                    <div class="muted">Tools</div>
+                    <div id="preview-tools"></div>
+                  </div>
+                  <div>
+                    <div class="muted">Staff</div>
+                    <div id="preview-staff"></div>
+                  </div>
+                </div>
+
+                <div style="margin-top:12px">
+                  <div class="muted">Remarks</div>
+                  <div id="preview-remarks" style="margin-top:8px"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-side preview-box">
+              <h3 style="margin-top:4px">Quick Info</h3>
+              <div style="margin-top:10px">
+                <div class="muted">JO #</div>
+                <div id="quick-jo" style="font-weight:600;margin-bottom:8px">—</div>
+
+                <div class="muted">Date</div>
+                <div id="quick-date" style="margin-bottom:8px">—</div>
+
+                <div class="muted">Vehicle</div>
+                <div id="quick-v" style="margin-bottom:8px">—</div>
+
+                <div class="muted">Client</div>
+                <div id="quick-client" style="margin-bottom:8px">—</div>
+              </div>
+
+              <div style="margin-top:14px">
+                <button type="button" class="btn primary" onclick="submitForm()" style="width:100%;margin-bottom:8px">Save Job Order</button>
+                <button type="button" class="btn" onclick="resetForm()" style="width:100%">Reset</button>
+              </div>
+              <div id="form-error" class="muted" style="color:#ff7a7a;margin-top:8px;display:none"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+<script>
+  /* ---------------- Utilities ---------------- */
+  const $ = s => document.querySelector(s);
+  const $all = s => Array.from(document.querySelectorAll(s));
+
+  window.addEventListener('DOMContentLoaded', ()=> {
+    $('#jo-date').value = new Date().toISOString().slice(0,10);
+    generateJO();
+    // seed lightweight defaults for demo
+    addToList('work','Initial inspection');
+    addToList('parts','Coolant');
+    addToList('tools','Wrench set');
+    addToList('staff','John Smith - Lead Tech');
+    addToList('remarks','Logged on arrival');
+    refreshPreview();
+  });
+
+  /* ---------------- JO generator ---------------- */
+  function generateJO(){
+    const now = Date.now().toString();
+    const jo = now.slice(-6) + String(Math.floor(Math.random()*90+10));
+    $('#jo-number').value = jo;
+    $('#quick-jo').textContent = jo;
+    refreshPreview();
+  }
+
+  /* ---------------- Repeatable list management ---------------- */
+  function addToList(kind, prefill){
+    const map = {
+      work: ['#work-list','#work-input'],
+      parts: ['#parts-list','#parts-input'],
+      tools: ['#tools-list','#tools-input'],
+      staff: ['#staff-list','#staff-input'],
+      remarks: ['#remarks-list','#remarks-input']
+    };
+    const ids = map[kind];
+    if(!ids) return;
+    const list = document.querySelector(ids[0]);
+    const input = document.querySelector(ids[1]);
+    const text = (prefill !== undefined) ? prefill : (input ? input.value.trim() : '');
+    if(!text) return;
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="drag" title="drag/handle">⋮</span>
+      <input class="text-input" value="${escapeHtml(text)}" />
+      <div class="actions">
+        <button type="button" class="btn" onclick="moveItem(this,-1)" title="Move up">▲</button>
+        <button type="button" class="btn" onclick="moveItem(this,1)" title="Move down">▼</button>
+        <button type="button" class="btn danger" onclick="removeItem(this)" title="Remove">✕</button>
+      </div>`;
+    list.appendChild(li);
+    if(input) input.value = '';
+    li.scrollIntoView({behavior:'smooth', block:'nearest'});
+    refreshPreview();
+  }
+
+  function removeItem(btn){
+    btn.closest('li')?.remove();
+    refreshPreview();
+  }
+  function moveItem(btn, dir){
+    const li = btn.closest('li');
+    const parent = li?.parentElement;
+    if(!li || !parent) return;
+    const idx = Array.from(parent.children).indexOf(li);
+    const swapIdx = idx + dir;
+    if(swapIdx < 0 || swapIdx >= parent.children.length) return;
+    parent.insertBefore(parent.children[swapIdx], parent.children[idx]);
+    refreshPreview();
+  }
+
+  function collectList(id){
+    const list = document.getElementById(id);
+    if(!list) return [];
+    return Array.from(list.querySelectorAll('.text-input')).map(n=>n.value.trim()).filter(Boolean);
+  }
+
+  /* ---------------- Preview ---------------- */
+  function refreshPreview(){
+    $('#preview-title').textContent = $('#model').value || 'New Job Order';
+    $('#preview-meta').textContent = 'JO #' + $('#jo-number').value;
+    $('#preview-concern').textContent = $('#concern').value || '—';
+
+    const renderList = (arr, targetId) => {
+      const el = document.getElementById(targetId);
+      el.innerHTML = '';
+      if(!arr.length){ el.textContent = '—'; return; }
+      arr.forEach(i=>{
+        const span = document.createElement('div');
+        span.textContent = '• ' + i;
+        el.appendChild(span);
+      });
+    };
+    renderList(collectList('work-list'), 'preview-work');
+    renderList(collectList('parts-list'), 'preview-parts');
+    renderList(collectList('tools-list'), 'preview-tools');
+    renderList(collectList('staff-list'), 'preview-staff');
+    renderList(collectList('remarks-list'), 'preview-remarks');
+
+    $('#quick-date').textContent = $('#jo-date').value || '—';
+    $('#quick-v').textContent = $('#vin').value || '—';
+    $('#quick-client').textContent = $('#client').value || '—';
+  }
+
+  // update preview when inputs change
+  ['#jo-date','#model','#client','#concern','#vin','#jo-number'].forEach(sel=>{
+    const el = document.querySelector(sel);
+    if(el) el.addEventListener('input', refreshPreview);
+  });
+  document.addEventListener('input', (e)=>{ if(e.target?.classList?.contains('text-input')) refreshPreview(); });
+
+  /* ---------------- Submit / reset ---------------- */
+  function submitForm(){
+    const errors = [];
+    if(!$('#model').value.trim()) errors.push('Vehicle model required');
+    if(!$('#client').value.trim()) errors.push('Client name required');
+    if(!$('#concern').value.trim()) errors.push('Concern required');
+    if(errors.length){
+      $('#form-error').style.display = 'block';
+      $('#form-error').textContent = errors.join(' • ');
+      return;
+    }
+    $('#form-error').style.display = 'none';
+
+    const payload = {
+      jo_number: $('#jo-number').value,
+      date: $('#jo-date').value,
+      vin: $('#vin').value.trim(),
+      model: $('#model').value.trim(),
+      client: $('#client').value.trim(),
+      concern: $('#concern').value.trim(),
+      work: collectList('work-list'),
+      parts: collectList('parts-list'),
+      tools: collectList('tools-list'),
+      staff: collectList('staff-list'),
+      remarks: collectList('remarks-list')
+    };
+
+    // TODO: replace with real API call (fetch)
+    console.log('NEW JO PAYLOAD', payload);
+    alert('Job Order saved (demo). JO #: ' + payload.jo_number);
+    resetForm();
+  }
+
+  function resetForm(){
+    $('#jo-date').value = new Date().toISOString().slice(0,10);
+    generateJO();
+    $('#vin').value = '';
+    $('#model').value = '';
+    $('#client').value = '';
+    $('#concern').value = '';
+    ['work-list','parts-list','tools-list','staff-list','remarks-list'].forEach(id=>document.getElementById(id).innerHTML = '');
+    ['work-input','parts-input','tools-input','staff-input','remarks-input'].forEach(id=>{
+      const el = document.getElementById(id); if(el) el.value = '';
+    });
+    $('#form-error').style.display = 'none';
+    refreshPreview();
+  }
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+</script>
+</body>
+</html>

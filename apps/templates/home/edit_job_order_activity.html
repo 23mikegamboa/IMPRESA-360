@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Job Order — Peg</title>
+<style>
+  :root{
+    /* Theme tokens - replace these with your repo values */
+    --brand-red: #e21b2b;        /* left sidebar color */
+    --bg: #111114;              /* page bg */
+    --surface: #171718;         /* card bg */
+    --muted-surface: #202021;   /* slightly lighter surface */
+    --divider: rgba(255,255,255,0.06);
+    --text-primary: #d8d8da;
+    --text-muted: #9b9b9f;
+    --accent: #ff6fb1;
+    --radius: 10px;
+    --gap: 18px;
+    --font: "Inter", "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    padding:0;
+    background:linear-gradient(180deg, var(--bg), #0e0e0f);
+    font-family: var(--font);
+    color:var(--text-primary);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* Layout */
+  .app {
+    display:flex;
+    min-height:100vh;
+  }
+
+  .sidebar {
+    width:260px;
+    background:linear-gradient(180deg, var(--brand-red), #c11422);
+    padding:32px 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+  }
+  .sidebar .brand{
+    color:white;
+    font-weight:600;
+    margin-bottom:28px;
+    font-size:18px;
+    letter-spacing:1px;
+  }
+
+  .main {
+    flex:1;
+    padding:28px;
+  }
+
+  .page {
+    max-width:1200px;
+    margin:0 auto;
+  }
+
+  /* Top header */
+  .jo-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .jo-title{
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:0.6px;
+  }
+  .jo-meta{
+    color:var(--text-muted);
+    font-size:14px;
+  }
+
+  /* Card */
+  .card {
+    background:linear-gradient(180deg, var(--surface), var(--muted-surface));
+    border-radius:var(--radius);
+    padding:20px;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.45);
+    border:1px solid var(--divider);
+    margin-bottom:var(--gap);
+  }
+
+  .row {
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .field {
+    flex:1 1 320px;
+    min-width:240px;
+  }
+
+  .label {
+    display:block;
+    font-size:12px;
+    color:var(--text-muted);
+    margin-bottom:8px;
+    letter-spacing:0.6px;
+  }
+  .value {
+    font-size:16px;
+    color:var(--text-primary);
+    background:transparent;
+    padding:8px 0;
+    border-bottom:1px solid var(--divider);
+  }
+
+  /* Sections */
+  .section-title{
+    font-size:14px;
+    color:var(--text-muted);
+    margin-bottom:10px;
+    letter-spacing:0.7px;
+  }
+
+  /* Repeatable lists */
+  .list {
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+  .list li {
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:10px 8px;
+    border-radius:8px;
+    margin-bottom:8px;
+    background:transparent;
+    border:1px dashed rgba(255,255,255,0.02);
+  }
+  .bullet {
+    min-width:8px;
+    height:8px;
+    margin-top:7px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 10px rgba(255,111,177,0.12);
+  }
+  .list .text {
+    flex:1;
+    color:var(--text-primary);
+    font-size:15px;
+  }
+  .list .meta {
+    color:var(--text-muted);
+    font-size:12px;
+    margin-left:8px;
+  }
+
+  /* Controls */
+  .controls {
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+  }
+  .btn {
+    background:transparent;
+    color:var(--text-primary);
+    border:1px solid rgba(255,255,255,0.06);
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13px;
+  }
+  .btn.primary {
+    background:var(--accent);
+    color:white;
+    border:none;
+  }
+
+  /* Staff + Remarks two-column */
+  .two-col {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .two-col .card {
+    padding:14px;
+    min-height:140px;
+  }
+  .small-muted {
+    font-size:13px;
+    color:var(--text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width:900px){
+    .sidebar { display:none; }
+    .page { padding:12px; }
+    .two-col { grid-template-columns: 1fr; }
+    .jo-title { font-size:22px; }
+  }
+
+  /* simple form element styles for edit mode */
+  .input, textarea {
+    width:100%;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.01);
+    color:var(--text-primary);
+    outline:none;
+    font-size:14px;
+  }
+  textarea { min-height:80px; resize:vertical; }
+  .small-muted { color:var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">IMPRESA 360</div>
+      <!-- placeholder nav -->
+      <nav style="color:rgba(255,255,255,0.95);font-size:14px;line-height:2.6">
+        <div>Dashboard</div>
+        <div style="opacity:0.9;margin-top:8px">Registro</div>
+        <div style="opacity:0.85;margin-top:8px">Job Orders</div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="page">
+
+        <div class="jo-header">
+          <div>
+            <div class="jo-title">JOB ORDER</div>
+            <div class="small-muted" style="margin-top:6px">Vehicle: Mercedes-Benz G63 · Client: Luther Jao</div>
+          </div>
+          <div class="jo-meta">Date &nbsp;<strong>2025-09-30</strong></div>
+        </div>
+
+        <!-- top card: basic meta -->
+        <section class="card">
+          <div class="row">
+            <div class="field">
+              <div class="label">Job Order Number</div>
+              <div class="value">8825</div>
+            </div>
+
+            <div class="field">
+              <div class="label">Status</div>
+              <div class="value small-muted">Ongoing</div>
+            </div>
+
+            <div class="field" style="flex:0 0 160px;">
+              <div class="label">Priority</div>
+              <div class="value small-muted">High</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- concern -->
+        <section class="card" id="concern-card">
+          <div class="section-title">CONCERN / COMPLAINT</div>
+          <div style="font-size:18px;margin-top:6px;color:var(--text-primary)">Engine overheating</div>
+        </section>
+
+        <!-- work / parts / tools -->
+        <section class="card" id="work-card">
+          <div class="section-title">WORK DESCRIPTION</div>
+
+          <ul class="list" id="work-list">
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Inspect radiator and cooling fan</div>
+            </li>
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Check for coolant leaks</div>
+            </li>
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Test thermostat operation</div>
+            </li>
+          </ul>
+
+          <div class="controls">
+            <button class="btn" onclick="addItem('work')">+ Add step</button>
+            <button class="btn" onclick="enableEditMode('work')">Edit</button>
+          </div>
+        </section>
+
+        <section class="card" id="parts-card">
+          <div class="section-title">PARTS &amp; MATERIALS</div>
+
+          <ul class="list" id="parts-list">
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Radiator</div>
+            </li>
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Coolant</div>
+            </li>
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Thermostat</div>
+            </li>
+          </ul>
+
+          <div class="controls">
+            <button class="btn" onclick="addItem('parts')">+ Add part</button>
+            <button class="btn" onclick="enableEditMode('parts')">Edit</button>
+          </div>
+        </section>
+
+        <section class="card" id="tools-card">
+          <div class="section-title">TOOLS</div>
+
+          <ul class="list" id="tools-list">
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Wrench set</div>
+            </li>
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Coolant pressure tester</div>
+            </li>
+            <li>
+              <div class="bullet"></div>
+              <div class="text">Multimeter</div>
+            </li>
+          </ul>
+
+          <div class="controls">
+            <button class="btn" onclick="addItem('tools')">+ Add tool</button>
+            <button class="btn" onclick="enableEditMode('tools')">Edit</button>
+          </div>
+        </section>
+
+        <!-- staff + remarks two column -->
+        <section class="two-col">
+          <div class="card">
+            <div class="section-title">STAFF / TEAM</div>
+            <ul class="list" id="staff-list">
+              <li>
+                <div class="bullet"></div>
+                <div class="text">John Smith</div>
+                <div class="meta">Lead Tech</div>
+              </li>
+              <li>
+                <div class="bullet"></div>
+                <div class="text">David Brown</div>
+                <div class="meta">Assistant</div>
+              </li>
+            </ul>
+
+            <div class="controls">
+              <button class="btn" onclick="addItem('staff')">+ Add staff</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">REMARKS</div>
+            <ul class="list" id="remarks-list">
+              <li>
+                <div class="bullet"></div>
+                <div class="text">Replaced faulty thermostat</div>
+              </li>
+              <li>
+                <div class="bullet"></div>
+                <div class="text">Radiator showed small crack - replaced</div>
+              </li>
+            </ul>
+
+            <div class="controls">
+              <button class="btn" onclick="addItem('remarks')">+ Add remark</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- save area -->
+        <div style="display:flex;gap:12px;margin-top:22px;justify-content:flex-end;">
+          <button class="btn">Cancel</button>
+          <button class="btn primary" onclick="saveJO()">Save Job Order</button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+<script>
+  // small JS for adding/removing items; for demonstration only.
+  function addItem(kind){
+    let text = prompt('Add ' + kind.replace(/^\w/, c=>c.toUpperCase()) + ':');
+    if(!text) return;
+    const map = {
+      work: 'work-list',
+      parts: 'parts-list',
+      tools: 'tools-list',
+      staff: 'staff-list',
+      remarks: 'remarks-list'
+    };
+    const id = map[kind];
+    if(!id) return;
+    const ul = document.getElementById(id);
+    const li = document.createElement('li');
+    li.innerHTML = '<div class="bullet"></div><div class="text"></div>';
+    li.querySelector('.text').textContent = text;
+    ul.appendChild(li);
+    // smooth scroll into view
+    li.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function enableEditMode(kind){
+    // convert selected list to textarea for bulk edit (simple UX)
+    const map = {
+      work: 'work-list',
+      parts: 'parts-list',
+      tools: 'tools-list'
+    };
+    const id = map[kind];
+    if(!id) return alert('Bulk edit only for work/parts/tools in this demo.');
+    const ul = document.getElementById(id);
+    const items = Array.from(ul.querySelectorAll('.text')).map(n=>n.textContent);
+    const value = items.join('\\n');
+    const edited = prompt('Edit items (one per line):', value);
+    if(edited === null) return;
+    const lines = edited.split('\\n').map(s=>s.trim()).filter(Boolean);
+    ul.innerHTML = '';
+    lines.forEach(line=>{
+      const li = document.createElement('li');
+      li.innerHTML = '<div class="bullet"></div><div class="text"></div>';
+      li.querySelector('.text').textContent = line;
+      ul.appendChild(li);
+    });
+  }
+
+  function saveJO(){
+    // Collect data (demo) - replace with actual AJAX / form submit.
+    const collect = id => Array.from(document.getElementById(id).querySelectorAll('.text')).map(n=>n.textContent.trim());
+    const data = {
+      jo: 8825,
+      date: '2025-09-30',
+      concern: document.querySelector('#concern-card .section-title') ? document.querySelector('#concern-card .section-title').nextElementSibling?.textContent : '',
+      work: collect('work-list'),
+      parts: collect('parts-list'),
+      tools: collect('tools-list'),
+      staff: collect('staff-list'),
+      remarks: collect('remarks-list')
+    };
+    console.log('JOB ORDER SAVED (demo):', data);
+    alert('Job Order saved (demo). Check console for payload.');
+  }
+</script>
+</body>
+</html>
