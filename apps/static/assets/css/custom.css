@@ -22,26 +22,6 @@ body {
   background-color: #202020 !important;
   color: #eee !important;
 }
-/* LOG NEW JO ACTIVITY (LNJA) */
-.top-card {
-  background-color: #1c1c1c !important;
-  color: #eee !important;
-  height: 32%;
-  width: 100%;
-}
-
-.row2 {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-
-.row2 .form-control{
-  color: #ffffff !important;          /* black text */
-  background-color: #202020 !important; /* text box color */
-  /* border: 1px solid #ccc; */
-}
-/* LNJA END */
 
 /* ===== LIGHT MODE ===== */
 body.white-content {
@@ -876,3 +856,103 @@ body.no-hard-lock .view-full,
     grid-template-columns: 1fr;
   }
 }
+
+/* LOG NEW JO ACTIVITY (LNJA) */
+.top-card {
+  background-color: #1c1c1c !important;
+  color: #eee !important;
+  height: 13%;
+  width: 100%;
+  border-radius: 0.2857rem;
+  margin-bottom: 10px;
+}
+
+.top-card-2 {
+  background-color: #1c1c1c !important;
+  /* color: #eee !important; */
+  height: 50%;
+  width: 100%;
+  border-radius: 0.2857rem;
+}
+
+.row2 {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.row2 .form-control{
+  color: #ffffff !important;          /* white text */
+  background-color: #202020 !important; /* text box color */
+  border: 0px solid #ccc;
+  height: 50px !important;
+  /* border-color: #9f9f9f; */
+}
+
+.row2 .form-control:focus{
+  border-color: #FE001A !important;
+  background-color: #202020 !important; /* text box color */
+}
+
+/* ----- SLY LABEL: always small at top-left, no scaling ----- */
+
+/* optional helper class so you can apply only to these floating groups */
+.form-floating.sly {
+  position: relative;
+}
+
+/* Input baseline: leave padding so label doesn't overlap typed text */
+.form-floating.sly > .form-control,
+.form-floating.sly > textarea.form-control {
+  padding: 14px 12px 10px 12px; /* top padding gives room for label */
+  background-clip: padding-box;
+}
+
+/* Permanent small label in the top-left inside the input */
+.form-floating.sly > label {
+  position: absolute !important;
+  top: 8px !important;        /* tweak to place label vertically */
+  left: 8px !important;      /* tweak to place label horizontally */
+  margin: 0 !important;
+  padding: 0 4px !important;
+  font-size: 0.7rem !important;  /* small label size */
+  line-height: 1 !important;
+  color: rgba(189,189,189,0.95) !important; /* subtle, readable in dark theme */
+  transform: none !important;   /* NO scaling / moving */
+  transition: none !important;  /* NO animation */
+  pointer-events: none !important;
+  z-index: 2 !important;
+  white-space: nowrap !important;
+}
+
+/* Make sure focus or filled state does not change label
+   (prevent Bootstrap or theme rules from scaling/moving it) */
+.form-floating.sly .form-control:focus + label,
+.form-floating.sly .form-control:not(:placeholder-shown) + label,
+.form-floating.sly textarea.form-control:focus + label,
+.form-floating.sly textarea.form-control:not(:placeholder-shown) + label {
+  transform: none !important;
+  font-size: 0.7rem !important;
+  top: 8px !important;
+  left: 8px !important;
+  opacity: 50 !important;
+}
+
+/* Textarea tweaks so label doesn't overlap multiple lines */
+.form-floating.sly > textarea.form-control {
+  padding-top: 22px !important; /* give label extra room on multi-line fields */
+}
+
+/* Defensive: stop other rules from setting label to display:block and pushing things */
+.form-floating.sly > label,
+.form-floating.sly > .form-control {
+  display: block !important;
+}
+
+/* Push input text further down under the label */
+.form-floating.sly > .form-control {
+    padding-top: 25px !important;    /* ← increase this number */
+    /* padding-bottom: 10px !important; */
+}
+
+/* LNJA END */

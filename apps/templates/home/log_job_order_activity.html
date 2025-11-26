@@ -1,0 +1,69 @@
+{% extends "layouts/base.html" %}
+
+<!-- {% block title %} JOB ORDER {% endblock %} -->
+
+{% block content %}
+<div class="content">
+    <!-- Registro Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0"><span style="color: #FE001A;">JOB ORDER</span></h4>
+        </div>
+        <div class="card-body">
+            <div class="top-card">
+                <div class="row2">
+                    <div class="form-group col-md-2">
+                        <!-- <label for="date">DATE</label>
+                        <input type="text" class="form-control" id="date" name="txt_date" value="{{ date }}"> -->
+                        <div class="form-floating sly">
+                            <input type="text" class="form-control" id="log_jo_date" name="txt_date" placeholder="mm/dd/yyyy">
+                            <label for="sly_date">DATE</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div class="form-floating sly">
+                            <input type="text" class="form-control" id="log_jo_jo_no" name="txt_jo_no" placeholder="">
+                            <label for="sly_date">J.O#</label>
+                        </div>
+                        <!-- <label for="jo_no">J.O#</label>
+                        <input type="text" class="form-control" id="jo_no" name="txt_jo_no" value="{{ jo_no }}"> -->
+                    </div>
+                    <div class="form-group col-md-8">
+                        <div class="form-floating sly">
+                            <input type="text" class="form-control" id="log_jo_car" name="txt_car" placeholder="">
+                            <label for="sly_date">CAR</label>
+                        </div>
+                        <!-- <label for="car">CAR</label>
+                        <input type="text" class="form-control" id="car" name="txt_car" value="{{ car }}"> -->
+                    </div>
+                </div>
+            </div>
+            <div class="top-card-2">
+                <div class="row2">
+                    <div class="form-group col-md-12">
+                        <div class="form-floating sly">
+                            <input type="text" class="form-control" id="log_jo_main_task_1" name="txt_main_task_1" placeholder="">
+                            <label for="sly_date">MAIN TASK</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="form-group col-md-6">
+                        <label for="date">SUBTASK</label>
+                        <input type="text" class="form-control" id="date" name="txt_date" value="{{ date }}">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="jo_no">WORKER</label>
+                        <input type="text" class="form-control" id="jo_no" name="txt_jo_no" value="{{ jo_no }}">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="car">PARTS</label>
+                        <input type="text" class="form-control" id="car" name="txt_car" value="{{ car }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
